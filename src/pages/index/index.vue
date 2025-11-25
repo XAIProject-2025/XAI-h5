@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { formatAmount } from '@/utils/util'
+import chatAi from './components/chatAi.vue'
+
 defineOptions({
   name: 'Home',
 })
@@ -30,10 +33,8 @@ const swiperList = ref([
   'https://wot-ui.cn/assets/meng.jpg',
 ])
 function handleClick(e) {
-  console.log(e)
 }
 function onChange(e) {
-  console.log(e)
 }
 </script>
 
@@ -112,13 +113,22 @@ function onChange(e) {
       </view>
     </view>
     <view class="my-[15px]">
-      <up-line-progress :percentage="30" active-color="#3f808a" />
+      <view class="mb-[5px] flex items-center justify-between text-[12px] text-[#666]">
+        <view>AI对话 3/5</view>
+        <view>奖励{{ formatAmount(100) }}KDK</view>
+      </view>
+      <up-line-progress height="16px" :percentage="30" active-color="#3f808a" />
     </view>
+    <chat-ai />
   </view>
 </template>
 
 <style scoped lang="scss">
 :deep(.u-swiper__wrapper) {
   height: 40px !important;
+}
+
+:deep(.u-line-progress__text) {
+  font-size: 13px;
 }
 </style>
