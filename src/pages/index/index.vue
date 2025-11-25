@@ -43,7 +43,7 @@ function onChange(e) {
     <view class="border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[10px]">
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">
-          <up-image :width="40" :height="40" round src="/static/images/avatar.jpg" />
+          <up-image :width="40" :height="40" round src="/static/images/ai_logo.png" />
           <view class="ml-[20px]">
             <view class="text-[14px] text-[#666]">
               客服代码
@@ -54,14 +54,14 @@ function onChange(e) {
           </view>
         </view>
         <view class="flex items-center">
-          <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.jpg" />
+          <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" />
           <up-image :width="40" :height="40" src="/static/index/tg.png" />
         </view>
       </view>
       <view class="my-[15px] h-[1px] w-full bg-[#eeefeb]" />
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">
-          <up-image :width="40" :height="40" round src="/static/images/avatar.jpg" />
+          <up-image :width="40" :height="40" round src="/static/images/avatar.png" />
           <view class="ml-[20px]">
             <view class="text-[14px]">
               用户名

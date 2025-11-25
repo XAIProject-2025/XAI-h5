@@ -11,7 +11,9 @@ export function debounce(fn: Function, delay: number) {
   }
 }
 export function getImage(name) {
-  return new URL(`/src/assets/${name}`, import.meta.url).href
+  console.log('name :>> ', name)
+  console.log('object :>> ', new URL(`/static/${name}`, import.meta.url).href)
+  return new URL(`/static/${name}`, import.meta.url).href
 }
 export function openLink(link: string, type = '_blank') {
   if (type == '_blank') {

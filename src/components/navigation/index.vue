@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { getImage } from '@/utils/util'
+
 const show = ref(false)
 function handleClose() {
   show.value = false
@@ -13,42 +15,42 @@ defineExpose({
 })
 const navList = ref([
   {
-    icon: 'home1',
+    icon: 'sy',
     title: '首页',
     url: '/pages/index/index',
   },
   {
-    icon: 'dong',
+    icon: 'xl',
     title: '训练中心',
-    url: '/pages/user/index',
+    url: '/pages/training/index',
   },
   {
-    icon: 'dong',
+    icon: 'sl',
     title: '算力服务器',
     url: '/pages/user/index',
   },
   {
-    icon: 'dong',
+    icon: 'cp',
     title: '产品中心',
     url: '/pages/user/index',
   },
   {
-    icon: 'dong',
+    icon: 'dh',
     title: '兑换中心',
     url: '/pages/user/index',
   },
   {
-    icon: 'dong',
+    icon: 'yq',
     title: '邀请好友',
     url: '/pages/user/index',
   },
   {
-    icon: 'dong',
+    icon: 'zj',
     title: '资金管理',
     url: '/pages/user/index',
   },
   {
-    icon: 'dong',
+    icon: 'sz',
     title: '设置中心',
     url: '/pages/user/index',
   },
@@ -59,13 +61,14 @@ const navList = ref([
   <up-popup :show="show" mode="left" close-on-click-overlay @close="handleClose">
     <view class="w-[50vw] p-[20px]">
       <view>logo</view>
-      <view class="mb-[20px] text-center text-[16px] text-[#2d3738] font-bold">
+      <view class="mb-[40px] text-center text-[16px] text-[#2d3738] font-bold">
         6v AI
       </view>
-      <view v-for="(itme, index) in navList" :key="index" class="flex items-center py-[7px]">
-        <!-- <wd-icon :name="itme.icon" size="20px" class="mr-[10px]" /> -->
-        <navigator :url="itme.url" class="text-[14px] text-[#2d3738]">
-          {{ itme.title }}
+      <view v-for="(item, index) in navList" :key="index" class="flex items-center py-[10px]">
+        <!-- <wd-icon :name="item.icon" size="20px" class="mr-[10px]" /> -->
+        <img :src="`/static/nav/${item.icon}.png`" class="mr-[10px] h-[16px] w-[16px]" alt="">
+        <navigator :url="item.url" class="text-[14px] text-[#2d3738]">
+          {{ item.title }}
         </navigator>
       </view>
     </view>

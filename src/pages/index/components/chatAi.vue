@@ -15,7 +15,7 @@
 
         <!-- AI 消息 -->
         <view v-if="msg.role === 'assistant'" class="row left">
-          <image src="/static/images/avatar.jpg" class="avatar" />
+          <image src="/static/images/avatar.png" class="avatar" />
           <view class="bubble left-b animate-bubble" @longpress="copy(msg.text)">
             <view v-if="msg.folded">
               {{ msg.shortText }}...
@@ -32,7 +32,7 @@
           <view class="bubble right-b animate-bubble" @longpress="copy(msg.text)">
             {{ msg.text }}
           </view>
-          <image src="/static/images/avatar.jpg" class="avatar" />
+          <image src="/static/images/avatar.png" class="avatar" />
         </view>
       </view>
 

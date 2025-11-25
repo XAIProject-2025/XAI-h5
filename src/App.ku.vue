@@ -27,7 +27,7 @@ defineExpose({
 
 <template>
   <view>
-    <up-navbar title="个人中心" placeholder>
+    <up-navbar placeholder>
       <template #left>
         <!-- <up-icon name="view-list" size="52rpx" color="#000" @click="navigationRef.openPopup()" /> -->
         <up-icon name="list" size="52rpx" color="#000" @click="navigationRef.openPopup()" />
