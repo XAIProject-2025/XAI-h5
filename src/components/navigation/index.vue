@@ -66,7 +66,9 @@ const navList = ref([
       </view>
       <view v-for="(item, index) in navList" :key="index" class="flex items-center py-[10px]">
         <!-- <wd-icon :name="item.icon" size="20px" class="mr-[10px]" /> -->
-        <img :src="`/static/nav/${item.icon}.png`" class="mr-[10px] h-[16px] w-[16px]" alt="">
+        <!-- <img :src="`/static/nav/${item.icon}.png`" class="mr-[10px] h-[16px] w-[16px]" alt=""> -->
+        <img :src="getImage(`nav/${item.icon}.png`)" class="mr-[10px] h-[16px] w-[16px]" alt="">
+
         <navigator :url="item.url" class="text-[14px] text-[#2d3738]">
           {{ item.title }}
         </navigator>

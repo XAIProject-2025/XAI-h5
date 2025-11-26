@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { formatAmount } from '@/utils/util'
 import chatAi from './components/chatAi.vue'
+// import level from './components/level/index.vue'
 
 defineOptions({
   name: 'Home',
@@ -66,12 +67,7 @@ function onChange(e) {
             <view class="text-[14px]">
               用户名
             </view>
-            <view
-              class="mt-[2px] flex items-center justify-start rounded-[8px] bg-[#407e8c] px-[10px] py-[2px] text-[12px] text-white"
-            >
-              <up-image :width="15" :height="15" round src="/static/index/level_icon.png" class="mr-[5px]" />
-              P1
-            </view>
+            <level />
           </view>
         </view>
         <up-swiper
