@@ -357,3 +357,9 @@ export function numberToEnglish(num) {
   // 转换为首字母大写的格式
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
+
+export function handleToUrl(
+  url: string,
+) {
+  uni.navigateTo({ url })
+};
