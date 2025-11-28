@@ -21,7 +21,7 @@ const showDetail = ref(false)
       >
         算力服务器
       </view>
-      <img src="/static/server/server.png" class="h-auto w-full rounded-[8px]" alt="">
+      <image src="/static/server/server.png" class="h-auto w-full rounded-[8px]" alt="" />
       <view class="px-[15px] py-[10px] text-[14px]">
         <view class="font-bold">
           01.算力服务器

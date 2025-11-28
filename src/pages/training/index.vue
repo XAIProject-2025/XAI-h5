@@ -15,7 +15,7 @@ definePage({
     <!-- 顶部区域个人信息 -->
     <view class="border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[20px]">
       <view class="flex items-center justify-center">
-        <img src="/static/images/avatar.png" class="h-[30px] w-[30px]" alt="">
+        <image src="/static/images/avatar.png" class="h-[30px] w-[30px]" alt="" />
       </view>
       <view class="mt-[10px] text-center text-[16px] font-bold">
         用户名
@@ -62,24 +62,27 @@ definePage({
       </view>
       <view class="mt-[10px] flex items-center justify-between">
         <view class="flex flex-col items-center justify-center">
-          <img src="" alt="">
-          <view class="text-[14px] text-[#666]">
-            当前等级
-          </view>
-          <view class="mt-[5px] text-[#407e8c] font-bold">
-            P2
-          </view>
+          <image src="" alt="">
+            <view class="text-[14px] text-[#666]">
+              当前等级
+            </view>
+            <view class="mt-[5px] text-[#407e8c] font-bold">
+              P2
+            </view>
+          </image>
         </view>
-        <img src="" alt="">
-        <view class="flex flex-col items-center justify-center">
-          <img src="" alt="">
-          <view class="text-[14px] text-[#666]">
-            下一等级
+        <image src="" alt="">
+          <view class="flex flex-col items-center justify-center">
+            <image src="" alt="">
+              <view class="text-[14px] text-[#666]">
+                下一等级
+              </view>
+              <view class="mt-[5px] text-[#407e8c] font-bold">
+                P2
+              </view>
+            </image>
           </view>
-          <view class="mt-[5px] text-[#407e8c] font-bold">
-            P2
-          </view>
-        </view>
+        </image>
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
         升级条件

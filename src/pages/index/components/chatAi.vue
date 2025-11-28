@@ -58,7 +58,7 @@
       <view class="send-btn" @tap="send">
         <view v-if="sending" class="sending-dot" />
         <view v-else class="h-[20px] w-[20px]">
-          <img src="/static/index/send.png" class="h-full w-full" alt="">
+          <image src="/static/index/send.png" class="h-full w-full" alt="" />
           <!-- 发送 -->
         </view>
       </view>

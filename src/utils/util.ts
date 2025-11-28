@@ -1,4 +1,5 @@
 // 防抖
+
 export function debounce(fn: Function, delay: number) {
   let timer: any = null
   return function (...args: any) {
@@ -10,9 +11,33 @@ export function debounce(fn: Function, delay: number) {
     }, delay)
   }
 }
+
 export function getImage(name) {
-  console.log('name :>> ', name)
-  return new URL(`../static/${name}`, import.meta.url).href
+  // 1. 获取当前运行平台（H5/APP/小程序）
+  const platform = process.env.UNI_PLATFORM
+  // 基础路径（static 文件夹在项目根目录）
+  const basePath = `/static/${name}`
+
+  // 2. 按平台适配路径
+  if (platform === 'app') {
+    // App 端（iOS/Android）：直接返回绝对路径（UniApp 会自动解析沙箱路径）
+    return `../..${basePath}`
+  }
+  else if (platform === 'h5') {
+    // H5 端：兼容 Vite/Webpack，区分构建工具
+    try {
+      // Vite 项目（新版 UniApp）
+      return new URL(`../static/${name}`, import.meta.url).href
+    }
+    catch (e) {
+      // Webpack/Vue CLI 项目（旧版 UniApp）
+      return basePath
+    }
+  }
+  else {
+    // 小程序端（微信/支付宝/抖音等）：直接返回绝对路径
+    return basePath
+  }
 }
 export function openLink(link: string, type = '_blank') {
   if (type == '_blank') {

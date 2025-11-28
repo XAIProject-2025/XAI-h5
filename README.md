@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/unibest-tech/unibest">
-    <img width="160" src="./src/static/logo.svg">
+    <image width="160" src="./src/static/logo.svg">
   </a>
 </p>
 
@@ -93,6 +93,6 @@ Copyright (c) 2025 菲鸽
 ## 捐赠
 
 <p align='center'>
-<img alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/wepay.png" height="330" style="display:inline-block; height:330px;">
-<img alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/alipay.jpg" height="330" style="display:inline-block; height:330px; margin-left:10px;">
+<image alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/wepay.png" height="330" style="display:inline-block; height:330px;">
+<image alt="special sponsor appwrite" src="https://oss.laf.run/ukw0y1-site/pay/alipay.jpg" height="330" style="display:inline-block; height:330px; margin-left:10px;">
 </p>

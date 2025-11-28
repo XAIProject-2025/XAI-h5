@@ -61,16 +61,13 @@ const navList = ref([
   <up-popup :show="show" mode="left" close-on-click-overlay @close="handleClose">
     <view class="w-[50vw] p-[20px]">
       <view class="mt-[20px] flex items-center justify-center">
-        <img src="/static/logo.png" class="h-[40px] w-[40px]" alt="">
+        <image src="/static/logo.png" class="h-[40px] w-[40px]" alt="" />
       </view>
       <view class="mb-[20px] mt-[15px] text-center text-[16px] text-[#2d3738] font-bold">
         3u AI
       </view>
       <view v-for="(item, index) in navList" :key="index" class="flex items-center py-[10px]">
-        <!-- <wd-icon :name="item.icon" size="20px" class="mr-[10px]" /> -->
-        <!-- <img :src="`/static/nav/${item.icon}.png`" class="mr-[10px] h-[16px] w-[16px]" alt=""> -->
-        <img :src="getImage(`nav/${item.icon}.png`)" class="mr-[15px] h-[16px] w-[16px]" alt="">
-
+        <image :src="`/static/nav/${item.icon}.png`" class="mr-[15px] h-[16px] w-[16px]" alt="" />
         <navigator :url="item.url" class="text-[14px] text-[#2d3738]">
           {{ item.title }}
         </navigator>
