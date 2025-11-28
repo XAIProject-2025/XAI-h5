@@ -70,3 +70,44 @@ border-t-1
     0 1px 6px rgba(0, 0, 0, 0.2),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
+
+.btn-block--white {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #151d1f;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    radial-gradient(120% 120% at 0% 50%, #f5f7f8 0%, #cfd3d5 35%, #bfc5c8 55%, #e6eaed 80%, #ffffff 100%) border-box,
+    radial-gradient(120% 120% at 100% 50%, #f5f7f8 0%, #cfd3d5 35%, #bfc5c8 55%, #e6eaed 80%, #ffffff 100%) border-box,
+    linear-gradient(0deg, #f0f2f3, #d5dade, #f0f2f3) border-box;
+  border: 2px solid transparent;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  transition:
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.btn-block--white:active {
+  box-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.bg-shadow {
+  // box-shadow: 0px 1px 6px 1px rgba(0,0,0,0.16);
+  box-shadow: 0px 1px 6px 1px rgba(0, 0, 0, 0.16);
+}

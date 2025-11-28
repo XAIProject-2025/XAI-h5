@@ -15,14 +15,14 @@ definePage({
     <!-- 顶部区域个人信息 -->
     <view class="border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[20px]">
       <view class="flex items-center justify-center">
-        <image src="/static/images/avatar.png" class="h-[30px] w-[30px]" alt="" />
+        <u-image src="/static/images/avatar.png" width="50" height="50" alt="" />
       </view>
       <view class="mt-[10px] text-center text-[16px] font-bold">
         用户名
       </view>
       <view class="mt-[10px] flex items-center justify-center">
         <level />
-        <view class="ml-[10px] rounded-[8px] bg-[#e7f0ee] px-[10px] py-[2px] text-[12px] text-[#407e8c]">
+        <view class="btn-block--white ml-[10px] h-[20px] min-h-[20px] rounded-[12px] px-[15px] py-[4px]">
           无限代理
         </view>
       </view>
@@ -41,15 +41,11 @@ definePage({
         <view><span class="mr-[4px]">活跃度</span>2</view>
       </view>
       <view class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]">
-        <view
-          class="w-1/2 flex items-center justify-center rounded-[8px] bg-[#407e8c] py-[10px] text-center text-[14px] text-[#fff]"
-        >
+        <view class="btn-block w-1/2">
           <image src="/static/training/qr_code.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
           邀请
         </view>
-        <view
-          class="w-1/2 flex items-center justify-center rounded-[8px] bg-[#e7f0ee] py-[10px] text-center text-[14px] text-[#407e8c]"
-        >
+        <view class="btn-block--white w-1/2">
           <image src="/static/training/withdraw.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
           提现
         </view>
@@ -92,21 +88,21 @@ definePage({
           <view>A邀请好友</view>
           <view>176/999999</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#3f808a" />
+        <up-line-progress height="12px" :percentage="30" active-color="#000" />
       </view>
       <view class="mt-[10px]">
         <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#666]">
           <view>直接推荐充值</view>
           <view>176/999999</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#3f808a" />
+        <up-line-progress height="12px" :percentage="30" active-color="#000" />
       </view>
       <view class="mt-[10px]">
         <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#666]">
           <view>活动等级</view>
           <view>176/999999</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#3f808a" />
+        <up-line-progress height="12px" :percentage="30" active-color="#000" />
       </view>
     </view>
     <!-- 手续费信息 -->

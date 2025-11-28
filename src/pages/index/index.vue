@@ -41,7 +41,7 @@ function onChange(e) {
 
 <template>
   <view class="p-[15px]">
-    <view class="border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[10px]">
+    <view>
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">
           <up-image :width="40" :height="40" round src="/static/images/ai_logo.png" />
@@ -55,65 +55,71 @@ function onChange(e) {
           </view>
         </view>
         <view class="flex items-center">
-          <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" />
-          <up-image :width="40" :height="40" src="/static/index/tg.png" />
+          <up-image :width="40" :height="50" class="mr-[10px]" src="/static/level/type_1.gif" />
+          <!-- <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" /> -->
+          <up-image :width="50" :height="50" src="/static/index/tg.png" />
         </view>
       </view>
-      <view class="my-[15px] h-[1px] w-full bg-[#eeefeb]" />
-      <view class="flex items-center justify-between px-[20px]">
-        <view class="flex items-center">
-          <up-image :width="40" :height="40" round src="/static/images/avatar.png" />
-          <view class="ml-[20px]">
-            <view class="text-[14px]">
-              用户名
+      <!-- <view class="my-[15px] h-[1px] w-full bg-[transparent]" /> -->
+      <view class="bg mb-[10px] mt-[10px] py-[25px]">
+        <view class="flex items-center justify-between px-[20px]">
+          <view class="w-1/2 flex items-center justify-center">
+            <up-image :width="60" :height="60" round src="/static/images/avatar.png" />
+            <view class="ml-[15px]">
+              <view class="mb-[5px] text-[14px]">
+                用户名
+              </view>
+              <level />
             </view>
-            <level />
+          </view>
+          <view class="w-1/2 flex items-center justify-center">
+            <up-swiper
+              class="w-[150px] !h-[40px] !bg-[transparent]" :list="swiperList" @change="onChange"
+              @click="handleClick"
+            >
+              <template #default="{ item, index }">
+                <view class="w-full flex flex-col items-center justify-center text-[14px]">
+                  <view class="">
+                    {{ index }}
+                  </view>
+                  <view class="mt-[5px] text-[#666]">
+                    算力服务器
+                  </view>
+                </view>
+              </template>
+            </up-swiper>
           </view>
         </view>
-        <up-swiper
-          class="w-[150px] !h-[40px] !bg-[transparent]" :list="swiperList" @change="onChange"
-          @click="handleClick"
-        >
-          <template #default="{ item, index }">
-            <view class="w-full flex flex-col items-center justify-center text-[14px]">
-              <view class="">
-                {{ index }}
-              </view>
-              <view class="text-[#666]">
-                算力服务器
-              </view>
-            </view>
-          </template>
-        </up-swiper>
-      </view>
-      <view class="my-[15px] h-[1px] w-full bg-[#eeefeb]" />
+        <view class="mx-auto my-[12px] h-[1px] w-[90%] bg-[#374447]" />
 
-      <view class="flex items-center justify-between px-[20px]">
-        <view class="w-1/2 flex flex-col items-center justify-center">
-          <view class="mt-[2px] flex text-[18px] font-bold">
-            <up-count-to bold :start-val="0" :decimals="2" :end-val="10000" :font-size="18" color="#000" />
-            <view class="ml-[5px]">
-              KDK
+        <view class="flex items-center justify-between px-[20px]">
+          <view class="w-1/2 flex flex-col items-center justify-center">
+            <view class="mt-[2px] flex text-[18px] font-bold">
+              <up-count-to bold :start-val="0" :decimals="2" :end-val="10000" :font-size="18" color="#000" />
+              <view class="ml-[5px]">
+                KDK
+              </view>
+            </view>
+            <view class="mt-[5px] text-[14px] text-[#666]">
+              算力币余额
             </view>
           </view>
-          <view class="text-[14px] text-[#666]">
-            算力币余额
-          </view>
-        </view>
-        <view class="w-1/2 flex flex-col items-center justify-center">
-          <up-icon name="plus" size="20px" class="h-[25px]" color="#000" />
-          <view class="text-[14px] text-[#666]">
-            产品中心
+          <view class="h-[50px] w-[1px] bg-[#374447]" />
+          <view class="w-1/2 flex flex-col items-center justify-center">
+            <up-icon name="plus" size="20px" class="h-[25px]" color="#000" />
+            <view class="mt-[5px] text-[14px] text-[#666]">
+              产品中心
+            </view>
           </view>
         </view>
       </view>
     </view>
-    <view class="my-[15px]">
-      <view class="mb-[5px] flex items-center justify-between text-[12px] text-[#666]">
+    <view>
+      <view class="mb-[10px] flex items-center justify-between text-[12px] text-[#666]">
         <view>AI对话 3/5</view>
         <view>奖励{{ formatAmount(100) }}KDK</view>
       </view>
-      <up-line-progress height="16px" :percentage="30" active-color="#3f808a" />
+      <up-line-progress height="16px" :percentage="30" active-color="#000" />
     </view>
     <chat-ai />
   </view>
@@ -121,10 +127,15 @@ function onChange(e) {
 
 <style scoped lang="scss">
 :deep(.u-swiper__wrapper) {
-  height: 40px !important;
+  height: 50px !important;
 }
 
 :deep(.u-line-progress__text) {
   font-size: 13px;
+}
+
+.bg {
+  background: url('/static/index/index_card_bg.png');
+  background-size: 100% 100%;
 }
 </style>

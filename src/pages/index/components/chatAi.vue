@@ -55,12 +55,10 @@
         v-model="input" class="textarea" auto-height :adjust-position="false" :cursor-spacing="12"
         placeholder="输入内容…" confirm-type="send" @confirm="send"
       />
-      <view class="send-btn" @tap="send">
-        <view v-if="sending" class="sending-dot" />
-        <view v-else class="h-[20px] w-[20px]">
-          <image src="/static/index/send.png" class="h-full w-full" alt="" />
-          <!-- 发送 -->
-        </view>
+      <view @tap="send">
+        <!-- <view v-if="sending" class="sending-dot" /> -->
+        <up-image src="/static/index/tg.png" width="50" height="50" class="ml-[5px]" alt="" />
+        <!-- 发送 -->
       </view>
     </view>
   </div>

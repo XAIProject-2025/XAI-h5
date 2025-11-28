@@ -20,10 +20,12 @@ defineExpose({
 
 <template>
   <view>
-    <up-navbar v-if="tokenStore.hasLogin" placeholder>
+    <up-navbar v-if="tokenStore.hasLogin" placeholder class="bg-shadow" height="52px">
       <template #left>
-        <!-- <up-icon name="view-list" size="52rpx" color="#000" @click="navigationRef.openPopup()" /> -->
-        <up-icon name="list" size="52rpx" color="#000" @click="navigationRef.openPopup()" />
+        <image
+          src="/static/images/burgerButton.png" class="mt-[5px] h-[40px] w-[40px]"
+          @click="navigationRef.openPopup()"
+        />
       </template>
     </up-navbar>
     <!-- 这个先隐藏了，知道这样用就行 -->
