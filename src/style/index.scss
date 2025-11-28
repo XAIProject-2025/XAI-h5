@@ -13,7 +13,7 @@
 page {
   // 修改按主题色
   // --wot-color-theme: #37c2bc;
-
+  color: #151d1f;
   // 修改按钮背景色
   // --wot-button-primary-bg-color: green;
 }
@@ -34,3 +34,39 @@ border-t-1
 //   border-style: solid; /* 2 */
 //   border-color: var(--un-default-border-color, #e5e7eb); /* 3 */
 // }
+
+.btn-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  background:
+    linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+    radial-gradient(120% 120% at 0% 50%, #ffffff 0%, #aeb3b6 35%, #6e7578 55%, #cfd3d5 80%, #ffffff 100%) border-box,
+    radial-gradient(120% 120% at 100% 50%, #ffffff 0%, #aeb3b6 35%, #6e7578 55%, #cfd3d5 80%, #ffffff 100%) border-box,
+    linear-gradient(0deg, #e2e2e2, #6f7274, #e2e2e2) border-box;
+  border: 2px solid transparent;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  transition:
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.btn-block:active {
+  box-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}

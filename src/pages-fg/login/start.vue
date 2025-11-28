@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { LOGIN_C_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
-import { handleToUrl } from '@/utils/util'
 
 definePage({
   style: {
@@ -30,14 +28,13 @@ async function doLogin() {
 </script>
 
 <template>
-  <view class="login relative flex flex-col items-center">
-    <image src="/static/logo_big.png" class="mx-auto mt-[140px] h-[130px] w-[130px]" />
-    <view class="mt-[20px] text-[20px] font-bold">
-      3u Ai
+  <view class="login">
+    <!-- <view class="text-center">
+      登录页
     </view>
-    <view class="btn-block absolute bottom-[100px] mx-auto w-[90%]" @click="handleToUrl(LOGIN_C_PAGE)">
-      立即开始
-    </view>
+    <button class="mt-4 w-40 text-center" @click="doLogin">
+      点击模拟登录
+    </button> -->
   </view>
 </template>
 
@@ -46,9 +43,7 @@ async function doLogin() {
 .login {
   width: 100vw;
   height: 100vh;
-  background: url('/static/login/login_bg.png');
-  background-size: 100% 100%;
-
+  background: url('@/static/login/login_bg.png') 100% 100% no-repeat;
   // padding: 20px;
 }
 </style>

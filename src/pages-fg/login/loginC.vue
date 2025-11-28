@@ -11,8 +11,6 @@ definePage({
 const userInfo = reactive({
   username: '菲鸽',
   password: '123456',
-  invitionCode: '123456',
-  isFaceAuth: true,
 })
 const tokenStore = useTokenStore()
 async function doLogin() {
@@ -22,12 +20,11 @@ async function doLogin() {
   }
   try {
     // 调用登录接口
-    // await tokenStore.login({
-    //   username: userInfo.username,
-    //   password: userInfo.password,
-    //   invitionCode: userInfo.invitionCode,
-    // })
-    // handleToUrl('/pages/index/index')
+    await tokenStore.login({
+      username: userInfo.username,
+      password: userInfo.password,
+    })
+    handleToUrl('/pages/index/index')
     // uni.navigateBack()
   }
   catch (error) {
@@ -38,7 +35,7 @@ async function doLogin() {
 
 <template>
   <view class="login relative">
-    <view class="box-border w-full flex items-center px-[20px] pt-[25vh]">
+    <view class="box-border w-full flex items-center px-[20px] pt-[30vh]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
         用户名
       </view>
@@ -70,48 +67,15 @@ async function doLogin() {
         </up-input>
       </view>
     </view>
-    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        邀请码
-      </view>
-      <view
-        class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
-      >
-        <up-input v-model="userInfo.password" placeholder="请输入内容" color="#94999A">
-          <template #prefix>
-            <view class="mr-[10px] flex items-center">
-              <image src="/static/login/invition_icon.png" class="h-[15px] w-[15px]" />
-            </view>
-          </template>
-        </up-input>
-      </view>
+    <view class="mt-[20px] px-[20px] text-right text-[14px]" @click="handleToUrl(REGISTER_PAGE)">
+      注册
     </view>
-    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        人脸识别
-      </view>
-      <view
-        class="w-[30%] flex items-center border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[9px] py-[6px] shadow-blueGray"
-      >
-        <image
-          v-if="!userInfo.isFaceAuth" src="/static/login/face_s.png" class="h-[15px] w-[15px]"
-          mode="scaleToFill"
-        />
-        <view v-if="!userInfo.isFaceAuth" class="ml-[10px] text-[14px] text-[#94999A]">
-          未认证
-        </view>
-
-        <image
-          v-if="userInfo.isFaceAuth" src="/static/login/face_s_a.png" class="h-[15px] w-[15px]"
-          mode="scaleToFill"
-        />
-        <view v-if="userInfo.isFaceAuth" class="ml-[10px] text-[14px]">
-          已认证
-        </view>
-      </view>
+    <view class="absolute bottom-[160px] w-full flex flex-col items-center justify-center">
+      <image src="/static/login/face.png" class="mb-[5px] h-[40px] w-[40px]" />
+      <view>人脸登录</view>
     </view>
     <view class="btn-block absolute bottom-[100px] left-[50%] w-[90%] translate-x-[-50%]" @click="doLogin">
-      注册
+      登录
     </view>
   </view>
 </template>
