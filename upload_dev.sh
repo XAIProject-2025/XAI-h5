@@ -1,4 +1,4 @@
-pnpm run build:h5
+pnpm run build:test
 
 dir=./dist/build/h5
 
