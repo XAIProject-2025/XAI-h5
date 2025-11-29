@@ -1,7 +1,32 @@
-<script lang="ts" setup>
-import { formatAmount } from '@/utils/util'
-import chatAi from './components/chatAi.vue'
-// import level from './components/level/index.vue'
+<template>
+  <view class="content">
+    <z-paging
+      ref="paging" v-model="dataList" use-chat-record-mode safe-area-inset-bottom bottom-bg-color="#f8f8f8"
+      empty-view-text="完成任务领取奖励" @query="queryList" @keyboard-height-change="keyboardHeightChange"
+      @hided-keyboard="hidedKeyboard"
+    >
+      <template #top>
+        <index-top />
+      </template>
+      <!-- 聊天记录渲染 -->
+      <view v-for="(item, index) in dataList" :key="index" style="position: relative;">
+        <view style="transform: scaleY(-1);">
+          <chat-item :item="item" />
+        </view>
+      </view>
+      <!-- 底部输入框 -->
+      <template #bottom>
+        <chat-input-bar ref="inputBar" :disabled="isAnswering" @send="doSend" />
+      </template>
+    </z-paging>
+  </view>
+</template>
+
+<script setup>
+import { nextTick, ref } from 'vue'
+import chatInputBar from './components/chat-input-bar.vue'
+import chatItem from './components/chat-item.vue'
+import indexTop from './components/indexTop.vue'
 
 defineOptions({
   name: 'Home',
@@ -16,126 +41,108 @@ definePage({
   },
 })
 
-const description = ref(
-  'unibest 是一个集成了多种工具和技术的 uniapp 开发模板，由 uniapp + Vue3 + Ts + Vite5 + UnoCss + VSCode 构建，模板具有代码提示、自动格式化、统一配置、代码片段等功能，并内置了许多常用的基本组件和基本功能，让你编写 uniapp 拥有 best 体验。',
-)
-console.log('index/index 首页打印了')
+const paging = ref(null)
+const inputBar = ref(null)
 
-onLoad(() => {
-  console.log('测试 uni API 自动引入: onLoad')
+// 聊天记录
+const dataList = ref([])
+
+// 当前用户发送的问题
+const askMsg = ref('')
+
+// 是否正在回答中
+const isAnswering = ref(false)
+
+// 分页加载（聊天记录翻页用）
+function queryList(pageNo, pageSize) {
+  // 示例：真实项目应该请求历史聊天记录
+  // paging.value.complete([])
+
+  // 示例先返回空
+  paging.value.complete([])
+}
+
+// 监听键盘高度改变
+function keyboardHeightChange(res) {
+  inputBar.value?.updateKeyboardHeightChange(res)
+}
+
+// 隐藏键盘（如果有表情面板）
+function hidedKeyboard() {
+  inputBar.value?.hidedKeyboard()
+}
+
+// 发送消息
+function doSend(msg) {
+  if (isAnswering.value)
+    return
+
+  askMsg.value = msg
+
+  paging.value.addChatRecordData({
+    time: '',
+    icon: '/static/daxiong.jpg',
+    name: '大雄',
+    content: msg,
+    isMe: true,
+  })
+
+  doAnswer()
+}
+
+// 回复消息（流式）
+async function doAnswer() {
+  isAnswering.value = true
+
+  // 添加“思考中...”
+  paging.value.addChatRecordData({
+    time: '',
+    icon: '/static/duola.jpg',
+    name: '哆啦A梦',
+    content: '思考中...',
+    isMe: false,
+  })
+
+  // 模拟网络延迟
+  await new Promise(resolve => setTimeout(resolve, 800))
+
+  const totalAnswerStr = `你发送了：${askMsg.value}`
+  let currentStr = ''
+
+  // 最后一条记录就是“思考中”的那条
+  const lastItem = dataList.value[0]
+
+  streamTextAsync(totalAnswerStr, (char) => {
+    currentStr += char
+    lastItem.content = currentStr
+
+    if (currentStr.length === totalAnswerStr.length) {
+      isAnswering.value = false
+    }
+  })
+}
+
+// 模拟流式输出
+async function streamTextAsync(text, callback, interval = 150) {
+  for (const char of text) {
+    callback(char)
+    await new Promise(resolve => setTimeout(resolve, interval))
+  }
+}
+
+// 触底加载更多（微信/APP）
+onReachBottom(() => {
+  paging.value?.doLoadMore()
 })
-const current = ref<number>(0)
-
-const swiperList = ref([
-  'https://wot-ui.cn/assets/redpanda.jpg',
-  'https://wot-ui.cn/assets/capybara.jpg',
-  'https://wot-ui.cn/assets/panda.jpg',
-  'https://wot-ui.cn/assets/moon.jpg',
-  'https://wot-ui.cn/assets/meng.jpg',
-])
-function handleClick(e) {
-}
-function onChange(e) {
-}
 </script>
 
-<template>
-  <view class="p-[15px]">
-    <view>
-      <view class="flex items-center justify-between px-[20px]">
-        <view class="flex items-center">
-          <up-image :width="40" :height="40" round src="/static/images/ai_logo.png" />
-          <view class="ml-[20px]">
-            <view class="text-[14px] text-[#666]">
-              客服代码
-            </view>
-            <view class="mt-[2px] text-[12px]">
-              6VAI005
-            </view>
-          </view>
-        </view>
-        <view class="flex items-center">
-          <up-image :width="40" :height="50" class="mr-[10px]" src="/static/level/type_1.gif" />
-          <!-- <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" /> -->
-          <up-image :width="50" :height="50" src="/static/index/tg.png" />
-        </view>
-      </view>
-      <!-- <view class="my-[15px] h-[1px] w-full bg-[transparent]" /> -->
-      <view class="bg mb-[10px] mt-[10px] py-[25px]">
-        <view class="flex items-center justify-between px-[20px]">
-          <view class="w-1/2 flex items-center justify-center">
-            <up-image :width="60" :height="60" round src="/static/images/avatar.png" />
-            <view class="ml-[15px]">
-              <view class="mb-[5px] text-[14px]">
-                用户名
-              </view>
-              <level />
-            </view>
-          </view>
-          <view class="w-1/2 flex items-center justify-center">
-            <up-swiper
-              class="w-[150px] !h-[40px] !bg-[transparent]" :list="swiperList" @change="onChange"
-              @click="handleClick"
-            >
-              <template #default="{ item, index }">
-                <view class="w-full flex flex-col items-center justify-center text-[14px]">
-                  <view class="">
-                    {{ index }}
-                  </view>
-                  <view class="mt-[5px] text-[#666]">
-                    算力服务器
-                  </view>
-                </view>
-              </template>
-            </up-swiper>
-          </view>
-        </view>
-        <view class="mx-auto my-[12px] h-[1px] w-[90%] bg-[#374447]" />
-
-        <view class="flex items-center justify-between px-[20px]">
-          <view class="w-1/2 flex flex-col items-center justify-center">
-            <view class="mt-[2px] flex text-[18px] font-bold">
-              <up-count-to bold :start-val="0" :decimals="2" :end-val="10000" :font-size="18" color="#000" />
-              <view class="ml-[5px]">
-                KDK
-              </view>
-            </view>
-            <view class="mt-[5px] text-[14px] text-[#666]">
-              算力币余额
-            </view>
-          </view>
-          <view class="h-[50px] w-[1px] bg-[#374447]" />
-          <view class="w-1/2 flex flex-col items-center justify-center">
-            <up-icon name="plus" size="20px" class="h-[25px]" color="#000" />
-            <view class="mt-[5px] text-[14px] text-[#666]">
-              产品中心
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view>
-      <view class="mb-[10px] flex items-center justify-between text-[12px] text-[#666]">
-        <view>AI对话 3/5</view>
-        <view>奖励{{ formatAmount(100) }}KDK</view>
-      </view>
-      <up-line-progress height="16px" :percentage="30" active-color="#000" />
-    </view>
-    <chat-ai />
-  </view>
-</template>
-
-<style scoped lang="scss">
-:deep(.u-swiper__wrapper) {
-  height: 50px !important;
-}
-
-:deep(.u-line-progress__text) {
-  font-size: 13px;
-}
-
-.bg {
-  background: url('/static/index/index_card_bg.png');
-  background-size: 100% 100%;
+<style scoped>
+.popup {
+  position: absolute;
+  top: -20px;
+  height: 200rpx;
+  width: 400rpx;
+  background-color: red;
+  z-index: 1000;
 }
 </style>

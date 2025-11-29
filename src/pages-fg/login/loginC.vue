@@ -78,7 +78,7 @@ async function doLogin() {
       <image src="/static/login/face.png" class="mb-[5px] h-[40px] w-[40px]" />
       <view>人脸登录</view>
     </view>
-    <view class="btn-block absolute bottom-[100px] left-[50%] w-[90%] translate-x-[-50%]" @click="doLogin">
+    <view class="btn-block absolute bottom-[100px] left-[50%] h-[40px] w-[90%] translate-x-[-50%]" @click="doLogin">
       登录
     </view>
   </view>

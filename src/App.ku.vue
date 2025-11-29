@@ -23,7 +23,7 @@ defineExpose({
     <up-navbar v-if="tokenStore.hasLogin" placeholder class="bg-shadow" height="52px">
       <template #left>
         <image
-          src="/static/images/burgerButton.png" class="mt-[5px] h-[40px] w-[40px]"
+          src="/static/images/burgerButton.png" class="mt-[5px] h-[50px] w-[50px]"
           @click="navigationRef.openPopup()"
         />
       </template>

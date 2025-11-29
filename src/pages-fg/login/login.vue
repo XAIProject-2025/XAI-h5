@@ -18,7 +18,7 @@ const tokenStore = useTokenStore()
     <view class="mt-[20px] text-[20px] font-bold">
       3u Ai
     </view>
-    <view class="btn-block absolute bottom-[100px] mx-auto w-[90%]" @click="handleToUrl(LOGIN_C_PAGE)">
+    <view class="btn-block absolute bottom-[100px] mx-auto h-[40px] w-[90%]" @click="handleToUrl(LOGIN_C_PAGE)">
       立即开始
     </view>
   </view>

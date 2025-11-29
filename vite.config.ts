@@ -4,6 +4,7 @@ import Uni from '@uni-helper/plugin-uni'
 import Components from '@uni-helper/vite-plugin-uni-components'
 // @see https://uni-helper.js.org/vite-plugin-uni-layouts
 import UniLayouts from '@uni-helper/vite-plugin-uni-layouts'
+
 // @see https://github.com/uni-helper/vite-plugin-uni-manifest
 import UniManifest from '@uni-helper/vite-plugin-uni-manifest'
 // @see https://uni-helper.js.org/vite-plugin-uni-pages
@@ -23,6 +24,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig, loadEnv } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import ViteRestart from 'vite-plugin-restart'
 import openDevTools from './scripts/open-dev-tools'
 import { createCopyNativeResourcesPlugin } from './vite-plugins/copy-native-resources'
@@ -87,6 +89,13 @@ export default defineConfig(({ command, mode }) => {
           base: 'src/types',
         },
         logger: false,
+      }),
+      createHtmlPlugin({
+        inject: {
+          data: {
+            ENABLE_ERUDA: env.VITE_ENABLE_ERUDA || 'false',
+          },
+        },
       }),
       // UniXXX 需要在 Uni 之前引入
       // 若存在改变 pages.json 的插件，请将 UniKuRoot 放置其后

@@ -2,6 +2,7 @@
 import { formatAmount } from '@/utils/util'
 import circleProgress from './components/circleProgress.vue'
 
+const modelVale = ref(50)
 definePage({
   style: {
     navigationStyle: 'custom',
@@ -13,11 +14,11 @@ definePage({
 <template>
   <view class="p-[15px]">
     <!-- 顶部区域个人信息 -->
-    <view class="border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[20px]">
+    <view class="bg1 py-[20px] pb-[30px]">
       <view class="flex items-center justify-center">
-        <u-image src="/static/images/avatar.png" width="50" height="50" alt="" />
+        <u-image src="/static/images/avatar.png" width="60" height="60" alt="" />
       </view>
-      <view class="mt-[10px] text-center text-[16px] font-bold">
+      <view class="mt-[10px] text-center text-[16px] text-[#fff] font-bold">
         用户名
       </view>
       <view class="mt-[10px] flex items-center justify-center">
@@ -26,14 +27,14 @@ definePage({
           无限代理
         </view>
       </view>
-      <view class="mt-[15px] flex items-center justify-center text-[12px] text-[#666]">
+      <view class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]">
         <view><span class="mr-[4px]">算力服务器</span>2</view>
         <view class="mx-[10px]">
           |
         </view>
-        <view><span class="mr-[4px]">算力币余额</span>2KDK</view>
+        <view><span class="mr-[4px]">算力币余额</span>2 KDK</view>
       </view>
-      <view class="mt-[5px] flex items-center justify-center text-[12px] text-[#666]">
+      <view class="mt-[5px] flex items-center justify-center text-[12px] text-[#94999A]">
         <view><span class="mr-[4px]">稳定币余额</span>2</view>
         <view class="mx-[10px]">
           |
@@ -41,64 +42,65 @@ definePage({
         <view><span class="mr-[4px]">活跃度</span>2</view>
       </view>
       <view class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]">
-        <view class="btn-block w-1/2">
+        <view class="btn-block h-[35px] w-1/2">
           <image src="/static/training/qr_code.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
           邀请
         </view>
-        <view class="btn-block--white w-1/2">
+        <view class="btn-block--white h-[35px] w-1/2">
           <image src="/static/training/withdraw.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
           提现
         </view>
       </view>
     </view>
     <!-- 升级信息 -->
-    <view class="mt-[20px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] px-[20px] py-[20px]">
+    <view class="bg-default mt-[20px] px-[20px] py-[20px]">
       <view class="text-[16px] font-bold">
         升级进度
       </view>
-      <view class="mt-[10px] flex items-center justify-between">
+      <view class="mt-[20px] flex items-center justify-center">
         <view class="flex flex-col items-center justify-center">
-          <image src="" alt="">
-            <view class="text-[14px] text-[#666]">
+          <u-image src="/static/level/level_0.png" width="60" height="60" alt="" />
+          <view class="mt-[10px]">
+            <view class="text-[14px] text-[#94999A]">
               当前等级
             </view>
-            <view class="mt-[5px] text-[#407e8c] font-bold">
+            <view class="mt-[5px] text-center text-[#000] font-bold">
               P2
             </view>
-          </image>
-        </view>
-        <image src="" alt="">
-          <view class="flex flex-col items-center justify-center">
-            <image src="" alt="">
-              <view class="text-[14px] text-[#666]">
-                下一等级
-              </view>
-              <view class="mt-[5px] text-[#407e8c] font-bold">
-                P2
-              </view>
-            </image>
           </view>
-        </image>
+        </view>
+        <u-image src="/static/training/arrow.png" width="72" height="20" class="mx-[30px]" alt="" />
+        <view class="flex flex-col items-center justify-center">
+          <u-image src="/static/level/level_1.png" width="60" height="60" alt="" />
+          <view class="mt-[10px]">
+            <view class="text-[14px] text-[#94999A]">
+              下一等级
+            </view>
+            <view class="mt-[5px] text-center text-[#000] font-bold">
+              P2
+            </view>
+          </view>
+        </view>
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
         升级条件
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#666]">
+        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
           <view>A邀请好友</view>
           <view>176/999999</view>
         </view>
         <up-line-progress height="12px" :percentage="30" active-color="#000" />
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#666]">
+        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
           <view>直接推荐充值</view>
           <view>176/999999</view>
         </view>
         <up-line-progress height="12px" :percentage="30" active-color="#000" />
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#666]">
+        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
           <view>活动等级</view>
           <view>176/999999</view>
         </view>
@@ -106,38 +108,48 @@ definePage({
       </view>
     </view>
     <!-- 手续费信息 -->
-    <view class="mt-[20px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#e7f0ee] px-[20px] py-[20px]">
+    <view class="bg3 mt-[20px] px-[20px] py-[20px] text-[#fff]">
       <view class="text-[16px] font-bold">
         费用信息
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        当前费率 <span class="text-[20px]">60</span>%
+        当前费率 <span class="text-[40px] text-[#FFEE00]">60</span> %
       </view>
-      <view class="bg my-[20px] flex items-center gap-[5px] rounded-[6px] p-[10px]">
-        <up-icon name="info-circle" color="#3f808a" />
-        <view class="text-[14px] text-[#3f808a]">
+      <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">
+        <up-icon name="info-circle" color="#94999A" />
+        <view class="text-[14px] text-[#94999A]">
           VIP 等级越高，初始费率越低
         </view>
       </view>
     </view>
     <!-- 手续费减免 -->
-    <view class="mt-[20px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#e7f0ee] px-[20px] py-[20px]">
+    <view class="bg-default mt-[20px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
         下次减免
       </view>
       <view class="flex items-center justify-center">
-        <circle-progress :value="50" :max="100" color="#3f808a" />
+        <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
+        <l-circle
+          :stroke-width="10" size="150px" :trail-width="10" stroke-color="#000" trail-color="#ebedf0"
+          :percent="modelVale"
+        >
+          <text>{{ modelVale }}天</text>
+        </l-circle>
+        <!-- <lime-circle v-model:current="modelVale" :percent="100">
+          <text>{{ modelVale }}%</text>
+        </lime-circle> -->
+        <!-- <circle-progress :value="50" :max="100" color="#3f808a" /> -->
       </view>
       <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
         剩余天数
       </view>
-      <view class="mt-[10px] text-center text-[12px] text-[#666]">
+      <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
         下次的费用减免，还剩 1 天
       </view>
     </view>
 
     <!-- 详细规则 -->
-    <view class="mt-[20px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#e7f0ee] px-[20px] py-[20px]">
+    <view class="bg-desc mt-[20px] rounded-[10px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
         费用规则
       </view>
@@ -179,5 +191,17 @@ definePage({
 //
 .bg {
   background: rgba(63, 128, 138, 0.1);
+}
+
+.bg1 {
+  background: url('/static/training/bg.png');
+  background-size: 100% 100%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
+}
+
+.bg3 {
+  background: url('/static/training/bg1.png');
+  background-size: 100% 100%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
 }
 </style>
