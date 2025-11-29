@@ -1,14 +1,30 @@
 import type { IAuthLoginRes, ICaptcha, IDoubleTokenRes, IUpdateInfo, IUpdatePassword, IUserInfoRes } from './types/login'
 import { http } from '@/http/http'
 
+// 注册
+
 /**
  * 登录表单
  */
 export interface ILoginForm {
-  username: string
+  name: string
   password: string
 }
+/**
+ * 注册表单
+ */
 
+export function register(registerForm) {
+  return http.post('/api/v1/auth/register', registerForm)
+}
+// 检查用户名是否存在
+export function checkName(name: string) {
+  return http.get<boolean>(`/api/v1/auth/checkName?name=${name}`)
+}
+// 检查邀请码是否存在
+export function checkInviteCode(inviteCode: string) {
+  return http.get<boolean>(`/api/v1/auth/checkInviteCode?inviteCode=${inviteCode}`)
+}
 /**
  * 获取验证码
  * @returns ICaptcha 验证码
@@ -22,7 +38,7 @@ export function getCode() {
  * @param loginForm 登录表单
  */
 export function login(loginForm: ILoginForm) {
-  return http.post<IAuthLoginRes>('/auth/login', loginForm)
+  return http.post<IAuthLoginRes>('/api/v1/auth/login', loginForm)
 }
 
 /**
@@ -37,7 +53,7 @@ export function refreshToken(refreshToken: string) {
  * 获取用户信息
  */
 export function getUserInfo() {
-  return http.get<IUserInfoRes>('/user/info')
+  return http.get<IUserInfoRes>('/api/v1/user/info')
 }
 
 /**
@@ -51,14 +67,14 @@ export function logout() {
  * 修改用户信息
  */
 export function updateInfo(data: IUpdateInfo) {
-  return http.post('/user/updateInfo', data)
+  return http.post('/api/v1/user/updateInfo', data)
 }
 
 /**
  * 修改用户密码
  */
 export function updateUserPassword(data: IUpdatePassword) {
-  return http.post('/user/updatePassword', data)
+  return http.post('/api/v1/user/updatePassword', data)
 }
 
 /**

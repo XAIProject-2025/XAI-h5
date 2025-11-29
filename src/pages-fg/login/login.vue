@@ -10,23 +10,6 @@ definePage({
 })
 
 const tokenStore = useTokenStore()
-async function doLogin() {
-  if (tokenStore.hasLogin) {
-    uni.navigateBack()
-    return
-  }
-  try {
-    // 调用登录接口
-    await tokenStore.login({
-      username: '菲鸽',
-      password: '123456',
-    })
-    uni.navigateBack()
-  }
-  catch (error) {
-    console.log('登录失败', error)
-  }
-}
 </script>
 
 <template>

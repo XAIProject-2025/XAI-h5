@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import md5 from 'js-md5'
 import { REGISTER_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
@@ -9,29 +10,40 @@ definePage({
   },
 })
 const userInfo = reactive({
-  username: '菲鸽',
-  password: '123456',
-  invitionCode: '123456',
+  name: '',
+  password: '',
+  inviteCode: '',
   isFaceAuth: true,
 })
 const tokenStore = useTokenStore()
 async function doLogin() {
-  if (tokenStore.hasLogin) {
-    uni.navigateBack()
+  if (!userInfo.name || !userInfo.password || !userInfo.inviteCode) {
+    uni.showToast({
+      title: '请输入用户名、密码和邀请码',
+      icon: 'none',
+    })
     return
   }
   try {
-    // 调用登录接口
-    // await tokenStore.login({
-    //   username: userInfo.username,
-    //   password: userInfo.password,
-    //   invitionCode: userInfo.invitionCode,
-    // })
-    // handleToUrl('/pages/index/index')
-    // uni.navigateBack()
+    await tokenStore.register({
+      name: userInfo.name,
+      password: md5(userInfo.password),
+      inviteCode: userInfo.inviteCode,
+    })
+    uni.showToast({
+      title: '注册成功',
+      icon: 'none',
+    })
+    setTimeout(() => {
+      handleToUrl('/pages/index/index')
+    }, 1000)
   }
   catch (error) {
-    console.log('登录失败', error)
+    console.log('注册失败', error)
+    uni.showToast({
+      title: '注册失败',
+      icon: 'none',
+    })
   }
 }
 </script>
@@ -45,7 +57,7 @@ async function doLogin() {
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
-        <up-input v-model="userInfo.username" placeholder="请输入内容" color="#94999A">
+        <up-input v-model="userInfo.name" placeholder="请输入内容" color="#94999A">
           <template #prefix>
             <view class="mr-[10px] flex items-center">
               <image src="/static/login/pass_icon.png" class="h-[15px] w-[15px]" />
@@ -61,7 +73,7 @@ async function doLogin() {
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
-        <up-input v-model="userInfo.password" placeholder="请输入内容" color="#94999A">
+        <up-input v-model="userInfo.password" placeholder="请输入内容" color="#94999A" type="password">
           <template #prefix>
             <view class="mr-[10px] flex items-center">
               <image src="/static/login/name_icon.png" class="h-[15px] w-[15px]" />
@@ -77,7 +89,7 @@ async function doLogin() {
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
-        <up-input v-model="userInfo.password" placeholder="请输入内容" color="#94999A">
+        <up-input v-model="userInfo.inviteCode" placeholder="请输入内容" color="#94999A">
           <template #prefix>
             <view class="mr-[10px] flex items-center">
               <image src="/static/login/invition_icon.png" class="h-[15px] w-[15px]" />

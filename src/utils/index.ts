@@ -84,7 +84,7 @@ export function getAllPages(key?: string) {
 
   // 这里处理分包
   const subPages: PageMetaDatum[] = []
-  ;(subPackages as SubPackages).forEach((subPageObj) => {
+    ; (subPackages as SubPackages).forEach((subPageObj) => {
     // console.log(subPageObj)
     const { root } = subPageObj
 
@@ -123,8 +123,6 @@ export function getCurrentPageI18nKey() {
       return ''
     }
   }
-  console.log(currPage)
-  console.log(currPage.style.navigationBarTitleText)
   return currPage.style?.navigationBarTitleText || ''
 }
 
