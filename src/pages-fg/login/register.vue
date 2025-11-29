@@ -39,6 +39,7 @@ async function doLogin() {
     }, 1000)
   }
   catch (error) {
+    tokenStore.logout()
     console.log('注册失败', error)
     uni.showToast({
       title: '注册失败',

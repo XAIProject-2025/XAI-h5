@@ -39,36 +39,6 @@ export const useTokenStore = defineStore(
     /** Token 信息 */
     const tokenInfo = ref<IAuthLoginRes>({ ...tokenInfoState })
 
-    // 实际调用逻辑
-    const register = async (registerForm) => {
-      console.log('registerForm :>> ', registerForm)
-      const checkNameRes = await checkName(registerForm.name)
-      if (!checkNameRes) {
-        console.log('checkNameRes :>> ', checkNameRes)
-        uni.showToast({
-          icon: 'none',
-          title: '用户名已存在',
-        })
-        return
-      }
-      const checkInviteCodeRes = await checkInviteCode(registerForm.inviteCode)
-      if (!checkInviteCodeRes) {
-        uni.showToast({
-          icon: 'none',
-          title: '邀请码不存在',
-        })
-        return
-      }
-      const res = await _register(registerForm)
-      if (!res) {
-        uni.showToast({
-          icon: 'none',
-          title: '注册失败',
-        })
-        return
-      }
-      return res
-    }
     /** 设置 token（不考虑过期 -> 永久有效） */
     const setTokenInfo = (val: IAuthLoginRes) => {
       if (isSingleTokenRes(val)) {
@@ -85,7 +55,7 @@ export const useTokenStore = defineStore(
     }
 
     /** 登录成功后的统一处理 */
-    const _postLogin = async (val: IAuthLoginRes) => {
+    const _postLogin = async (val) => {
       setTokenInfo(val)
       // 如有需要，可以请求用户信息
       const userStore = useUserStore()
@@ -125,7 +95,34 @@ export const useTokenStore = defineStore(
         uni.removeStorageSync('token')
       }
     }
-
+    // 实际调用逻辑
+    const register = async (registerForm) => {
+      console.log('registerForm :>> ', registerForm)
+      const checkNameRes = await checkName(registerForm.name)
+      if (!checkNameRes) {
+        console.log('checkNameRes :>> ', checkNameRes)
+        uni.showToast({
+          icon: 'none',
+          title: '用户名已存在',
+        })
+        return
+      }
+      const checkInviteCodeRes = await checkInviteCode(registerForm.inviteCode)
+      if (!checkInviteCodeRes) {
+        uni.showToast({
+          icon: 'none',
+          title: '邀请码不存在',
+        })
+        return
+      }
+      const res = await _register(registerForm)
+      await _postLogin(res)
+      uni.showToast({
+        icon: 'none',
+        title: '注册成功',
+      })
+      return res
+    }
     /** 获取有效 token（永不过期） */
     const validToken = computed(() => {
       if (isSingleTokenRes(tokenInfo.value))
