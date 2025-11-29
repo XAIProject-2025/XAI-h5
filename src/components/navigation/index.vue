@@ -37,7 +37,7 @@ const navList = ref([
   {
     icon: 'dh',
     title: '兑换中心',
-    url: '/pages/user/index',
+    url: '/pages/exchange/index',
   },
   {
     icon: 'yq',
