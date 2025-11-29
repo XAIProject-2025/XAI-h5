@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { formatAmount } from '@/utils/util'
 import transaction from './components/transaction.vue'
+import transactionRecord from './components/transactionRecord.vue'
 
 definePage({
   style: {
@@ -43,15 +44,15 @@ const tabCurrent = ref(0)
       <div class="text-[16px] font-bold" :class="{ 'text-[#000]': tabCurrent === 0 }" @click="tabCurrent = 0">
         交易
       </div>
-      <div
-        class="ml-[15px] text-[16px] font-bold" :class="{ 'text-[#000]': tabCurrent === 1 }"
-        @click="tabCurrent = 1"
-      >
+      <div class="ml-[15px] text-[16px] font-bold" :class="{ 'text-[#000]': tabCurrent === 1 }" @click="tabCurrent = 1">
         交易记录
       </div>
     </view>
     <view v-if="tabCurrent === 0" class="mt-[20px]">
       <transaction />
+    </view>
+    <view v-else class="mt-[20px]">
+      <transactionRecord />
     </view>
   </view>
 </template>
