@@ -3,9 +3,8 @@ import { getI18nText } from '@/tabbar/i18n'
 import { getCurrentPageI18nKey } from '@/utils'
 
 onShow(() => {
-  console.log('layout default - onShow')
   uni.setNavigationBarTitle({
-    title: getI18nText(getCurrentPageI18nKey()),
+    title: import.meta.env.VITE_APP_TITLE,
   })
 })
 </script>

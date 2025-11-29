@@ -208,23 +208,6 @@ export function GetQueryString(param: any) {
   return false
 }
 
-export function formatLargeNumber(number, param_lang = '', precision = 3, symbol = '$') {
-  number = Number(number)
-  const lang = param_lang || $locale.value
-  console.log(param_lang)
-  const en = ['', 'K', 'M', 'B', 'T']
-  const cn = ['', '万', '亿', '兆']
-  const suffixes = lang === 'zh-cn' ? cn : en
-  let suffixIndex = 0
-  const num = lang === 'en' ? 1000 : 10000
-
-  while (Math.abs(number) >= num && suffixIndex < suffixes.length - 1) {
-    number /= num
-    suffixIndex++
-  }
-
-  return symbol + number.toFixed(precision) + suffixes[suffixIndex]
-}
 // 根据数字获取开始时间结束时间
 export function getTime(num: number) {
   const endTime = new Date()
@@ -280,109 +263,6 @@ export function compareRatio(previousValue, currentValue, decimalPlaces = 2) {
     trend, // 趋势：'up' | 'down' | 'same'
   }
 }
-// 根据阿拉伯数字 获取英文
-
-export function numberToEnglish(num) {
-  console.log('$locale :>> ', $locale)
-  if ($locale.value == 'zh-cn') {
-    return num
-  }
-  // 处理输入为0的情况
-  if (num === 0) {
-    return 'zero'
-  }
-
-  // 定义基础数字词汇
-  const ones = [
-    '',
-    'one',
-    'two',
-    'three',
-    'four',
-    'five',
-    'six',
-    'seven',
-    'eight',
-    'nine',
-    'ten',
-    'eleven',
-    'twelve',
-    'thirteen',
-    'fourteen',
-    'fifteen',
-    'sixteen',
-    'seventeen',
-    'eighteen',
-    'nineteen',
-  ]
-
-  const tens = [
-    '',
-    '',
-    'twenty',
-    'thirty',
-    'forty',
-    'fifty',
-    'sixty',
-    'seventy',
-    'eighty',
-    'ninety',
-  ]
-
-  // 处理小于100的数字
-  function convertLessThanOneHundred(n) {
-    if (n === 0) {
-      return ''
-    }
-    if (n < 20) {
-      return ones[n]
-    }
-    const ten = Math.floor(n / 10)
-    const one = n % 10
-    return tens[ten] + (one !== 0 ? `-${ones[one]}` : '')
-  }
-
-  // 处理小于1000的数字
-  function convertLessThanOneThousand(n) {
-    const hundred = Math.floor(n / 100)
-    const remainder = n % 100
-    let res = ''
-
-    if (hundred > 0) {
-      res += `${ones[hundred]} hundred`
-    }
-
-    const remainderStr = convertLessThanOneHundred(remainder)
-    if (remainderStr) {
-      res += (res ? ' ' : '') + remainderStr
-    }
-
-    return res
-  }
-
-  // 确保输入是整数且在有效范围内
-  num = Math.floor(num)
-  if (num < 0 || num > 999999) {
-    return '请输入0到999999之间的数字'
-  }
-
-  const thousands = Math.floor(num / 1000)
-  const hundreds = num % 1000
-
-  let result = ''
-
-  if (thousands > 0) {
-    result += `${convertLessThanOneThousand(thousands)} thousand`
-  }
-
-  if (hundreds > 0) {
-    result += (result ? ' ' : '') + convertLessThanOneThousand(hundreds)
-  }
-
-  // 转换为首字母大写的格式
-  return result.charAt(0).toUpperCase() + result.slice(1)
-}
-
 export function handleToUrl(
   url: string,
 ) {
