@@ -42,12 +42,12 @@ const navList = ref([
   {
     icon: 'yq',
     title: '邀请好友',
-    url: '/pages/user/index',
+    url: '/pages/invitation/index',
   },
   {
     icon: 'zj',
     title: '资金管理',
-    url: '/pages/user/index',
+    url: '/pages/funds/index',
   },
   {
     icon: 'sz',

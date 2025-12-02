@@ -154,31 +154,31 @@ definePage({
         费用规则
       </view>
       <view class="flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           未提取的资金：费用费率每天自动降低 30%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           费用费率最低可降至 5%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           提取后，费用计算将从初始费率重新开始
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           VIP 等级越高，初始费率越低
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           当前获得的费用折扣：0%
         </view>

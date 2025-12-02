@@ -58,19 +58,28 @@ export function getImageSize(url: string) {
   img.src = url
   return img
 }
-export function handleCopy(value: string, needToash: boolean = true, msg: string = $t('fu-zhi-cheng-gong')) {
-  const text = document.createElement('textarea')
-  text.value = value
-  document.body.appendChild(text)
-  text.select() // 选择对象
-  if (document.execCommand('copy')) {
-    document.execCommand('copy')
-    if (needToash) {
-      showToast(msg)
-    }
-  }
-  // 执行浏览器复制命令
-  document.body.removeChild(text)
+export function handleCopy(value: string) {
+  // 调用复制 API
+  uni.setClipboardData({
+    data: value, // 要复制的内容
+    success: () => {
+      // 复制成功提示（UniApp 原生提示）
+      uni.showToast({
+        title: '复制成功',
+        icon: 'success',
+        duration: 1500,
+      })
+    },
+    fail: (err) => {
+      // 复制失败处理
+      uni.showToast({
+        title: '复制失败',
+        icon: 'none',
+        duration: 1500,
+      })
+      console.error('复制失败：', err)
+    },
+  })
 }
 
 export function formatAmount(amount: any, fixed = 2) {

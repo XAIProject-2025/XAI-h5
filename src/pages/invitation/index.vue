@@ -1,0 +1,102 @@
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/store'
+import { handleCopy } from '@/utils/util'
+
+const userStore = useUserStore()
+// 使用storeToRefs解构userInfo
+const { userInfo } = storeToRefs(userStore)
+definePage({
+  style: {
+    navigationStyle: 'custom',
+    navigationBarTitleText: '',
+  },
+})
+</script>
+
+<template>
+  <view class="">
+    <div class="bg1 box-border h-[170px] w-[100vw] px-[30px] py-[15px]">
+      <div class="text-[#fff]">
+        邀请好友
+      </div>
+      <div class="mt-[10px] text-[12px] text-[#94999A]">
+        邀请好友加入成为 AI 训练者，双方都能获得奖励
+      </div>
+    </div>
+    <div class="bg2 mx-[15px] mt-[-80px] h-[280px] pt-[20px]">
+      <div class="text-center text-[15px] font-bold">
+        我的邀请码
+      </div>
+      <div
+        class="bg3 mx-auto mt-[20px] w-[200px] flex items-center justify-between rounded-[20px] px-[20px] py-[10px] text-center text-[14px] font-bold"
+      >
+        <div class="uppercase">
+          {{ userInfo.inviteCode }}
+        </div>
+        <div class="ml-[10px] text-[13px] text-[#19A71D]" @click="handleCopy(userInfo.inviteCode)">
+          复制
+        </div>
+      </div>
+      <div class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]">
+        复制邀请码以邀请好友
+      </div>
+      <div class="mx-[20px] mt-[20px] text-center text-[12px] text-[#94999A]">
+        当你的好友使用你的邀请码注册并完成新手任务后，双方都可获得 5 个算力币作为奖励
+      </div>
+    </div>
+    <div class="mt-[15px] box-border w-full flex items-center justify-between px-[15px]">
+      <div class="btn-block h-[35px] w-[40%]">
+        <u-image src="@/static/invitation/icon_5.png" width="14px" height="14px" class="mr-[5px]" />
+        分享二维码
+      </div>
+      <div class="btn-block--white h-[35px] w-[40%]">
+        <u-image src="@/static/invitation/icon_4.png" width="16" height="16" />
+        复制链接
+      </div>
+    </div>
+    <!-- 详细规则 -->
+    <view class="bg-desc mx-[20px] mt-[20px] rounded-[10px] px-[15px] py-[20px]">
+      <view class="mb-[20px] text-[16px] font-bold">
+        邀请奖励
+      </view>
+      <view class="flex items-center text-[14px]">
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
+        <view class="ml-[10px]">
+          完成人脸认证并完成一项 AI 训练任务的用户，即为有效用户。
+        </view>
+      </view>
+      <view class="mt-[10px] flex items-center text-[14px]">
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
+        <view class="ml-[10px]">
+          邀请 1 位有效用户，将获得 1 个算力值 + 3 个幸运点数。
+        </view>
+      </view>
+      <view class="mt-[10px] flex items-center text-[14px]">
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
+        <view class="ml-[10px]">
+          幸运点数越高，赢得奖品的概率就越大。
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="scss" scoped>
+//
+.bg1 {
+  background: url('@/static/invitation/top_bg.png');
+  background-size: 100% 100%;
+}
+
+.bg2 {
+  background: url('@/static/invitation/bottom_bg.png');
+  background-size: 100% 100%;
+}
+
+.bg3 {
+  background: #fff;
+  border: 1px solid rgba(226, 226, 226, 1);
+  box-shadow: 0 3px 6px 1px rgba(148, 153, 154, 0.16);
+}
+</style>

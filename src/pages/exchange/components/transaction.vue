@@ -158,7 +158,7 @@ function change(e) {
           {{ formatAmount(10000) }}
         </view>
       </view>
-      <view class="btn-block mt-[20px]">
+      <view class="btn-block mt-[20px] h-[40px]">
         <span v-if="typeRange.current === 1">买入算力币</span>
         <span v-else>卖出算力币</span>
       </view>

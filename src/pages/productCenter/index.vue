@@ -34,7 +34,7 @@ const serverList = ref([
         <view class="mb-[5px] font-bold">
           算力服务器
         </view>
-        <view class="text-[12px] text-[#999]">
+        <view class="text-[12px] text-[#94999A]">
           管理你的算力服务器，查看状态与收益
         </view>
       </view>
@@ -155,24 +155,24 @@ const serverList = ref([
 
     <!-- 注意事项 -->
     <!-- 详细规则 -->
-    <view class="mt-[20px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#e7f0ee] px-[20px] py-[20px]">
+    <view class="bg-desc mt-[20px] rounded-[10px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
         费用规则
       </view>
       <view class="flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           租赁计算力服务器需支付相应的基础费用，该费用会在租赁期结束后全额退还。
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           完成每日聊天任务会消耗 1 个算力值；当算力值耗尽时，需重新租赁。
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
-        <up-icon name="checkmark-circle" size="18px" color="#3f808a" />
+        <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           训练师等级决定了可同时运行的服务器数量 —— 等级越高，支持同时运行的服务器数量越多。
         </view>
@@ -185,6 +185,12 @@ const serverList = ref([
 .bg {
   background: url('/static/server/card_top_bg.png');
   background-size: 100% 100%;
+}
+
+.bg3 {
+  background: url('/static/training/bg1.png');
+  background-size: 100% 100%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
 }
 
 .bg1 {
