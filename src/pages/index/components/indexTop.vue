@@ -3,7 +3,7 @@ import { formatAmount } from '@/utils/util'
 
 const { UNI_PLATFORM } = process.env
 const systemInfo = uni.getSystemInfoSync()
-
+console.log('systemInfo :>> ', systemInfo)
 const swiperList = ref([
   'https://wot-ui.cn/assets/redpanda.jpg',
   'https://wot-ui.cn/assets/capybara.jpg',
@@ -18,7 +18,7 @@ function onChange(e) {
 </script>
 
 <template>
-  <view class="p-[15px] pt-[100px]" :class="UNI_PLATFORM === 'h5' ? 'pt-[60px]' : 'pt-[100px]'">
+  <view class="p-[15px] pt-[100px]" :class="systemInfo.uniPlatform === 'web' ? 'pt-[60px]' : 'pt-[100px]'">
     <view>
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">
@@ -95,6 +95,7 @@ function onChange(e) {
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
         <view>AI对话 3/5</view>
+        {{ UNI_PLATFORM }}
         <view>奖励{{ formatAmount(100) }}KDK</view>
       </view>
       <up-line-progress height="16px" :percentage="30" active-color="#000" />
