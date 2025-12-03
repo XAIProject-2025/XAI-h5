@@ -48,37 +48,35 @@ function handleLogout() {
     <view class="mb-[10px] mt-[5px] text-[14px] text-[#94999A]">
       管理你的账户信息与偏好
     </view>
-    <div class="bg-default flex items-center">
+    <div class="bg mb-[30px] flex items-center p-[20px]">
       <u-image src="/static/images/avatar_my.png" width="50" height="50" class="rounded-full" />
-      <div class="ml-[10px] flex items-center text-[16px] font-bold">
-        <div class="mr-[10px]">
+      <div class="ml-[10px] flex flex-col items-center text-[16px] font-bold">
+        <div class="mb-[5px] mr-[10px] text-[#fff]">
           {{ userInfo?.name }}
         </div>
         <level />
       </div>
     </div>
-    <div class="bg-desc mt-[30px] rounded-[10px]">
-      <div class="flex items-center justify-between px-[10px] py-[10px]">
-        <div class="flex items-center text-[14px]">
-          <up-icon name="lock-open" size="20" />
-          <div class="ml-[10px]">
-            修改密码
-          </div>
+    <div class="bg-default mb-[10px] flex items-center justify-between rounded-[20px] px-[10px] py-[10px]">
+      <div class="flex items-center text-[14px]">
+        <up-icon name="lock-open" size="20" />
+        <div class="ml-[10px]">
+          修改密码
         </div>
-        <up-icon name="arrow-right" />
       </div>
-      <div class="flex items-center justify-between px-[10px] py-[10px]">
-        <div class="flex items-center text-[14px]">
-          <up-icon name="google" size="20" />
-          <div class="ml-[10px]">
-            关于我们
-          </div>
+      <up-icon name="arrow-right" />
+    </div>
+    <div class="bg-default flex items-center justify-between rounded-[20px] px-[10px] py-[10px]">
+      <div class="flex items-center text-[14px]">
+        <up-icon name="google" size="20" />
+        <div class="ml-[10px]">
+          关于我们
         </div>
-        <up-icon name="arrow-right" />
       </div>
+      <up-icon name="arrow-right" />
     </div>
     <div
-      class="mt-[30px] rounded-[10px] bg-[#fbe5e0] px-[10px] py-[10px] text-center text-[14px] text-[#FF6644]"
+      class="mt-[30px] border border-[#000] rounded-[20px] border-solid bg-[#fff] px-[10px] py-[10px] text-center text-[14px] text-[#000]"
       @click="handleLogout"
     >
       退出登录
@@ -88,4 +86,8 @@ function handleLogout() {
 
 <style lang="scss" scoped>
 //
+.bg {
+  background: url('/static/setting/card_bg.png');
+  background-size: 100% 100%;
+}
 </style>
