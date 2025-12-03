@@ -97,7 +97,7 @@ const tabData = reactive({
       <div class="text-[14px] font-bold">
         余额变动记录
       </div>
-      <div class="my-[10px] flex items-center">
+      <div class="m-[10px] flex items-center">
         <div
           v-for="item in tabData.tabs" :key="item.index"
           class="mr-[15px] border border-[#000] rounded-[10px] border-solid bg-[#fff] px-[10px] py-[5px] text-[12px] text-[#000]"

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { formatAmount } from '@/utils/util'
 
+const { UNI_PLATFORM } = process.env
+const systemInfo = uni.getSystemInfoSync()
+
 const swiperList = ref([
   'https://wot-ui.cn/assets/redpanda.jpg',
   'https://wot-ui.cn/assets/capybara.jpg',
@@ -15,7 +18,7 @@ function onChange(e) {
 </script>
 
 <template>
-  <view class="mt-[50px] p-[15px]">
+  <view class="p-[15px] pt-[100px]" :class="UNI_PLATFORM === 'h5' ? 'pt-[60px]' : 'pt-[100px]'">
     <view>
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">

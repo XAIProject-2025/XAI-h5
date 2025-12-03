@@ -52,7 +52,7 @@ const navList = ref([
   {
     icon: 'sz',
     title: '设置中心',
-    url: '/pages/user/index',
+    url: '/pages/setting/index',
   },
 ])
 </script>

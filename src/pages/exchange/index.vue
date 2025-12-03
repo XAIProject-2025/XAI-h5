@@ -21,7 +21,7 @@ const tabCurrent = ref(0)
       实时计算能力币市场 & 闪电兑换中心
     </view>
     <view
-      class="my-[20px] flex items-center justify-between border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] py-[20px]"
+      class="bg-default my-[20px] flex items-center justify-between py-[20px]"
     >
       <view class="w-1/2 flex flex-col items-center justify-center">
         <view class="text-[18px] font-bold">

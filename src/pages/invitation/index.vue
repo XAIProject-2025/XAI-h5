@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
-import { handleCopy } from '@/utils/util'
+import { formatAmount, handleCopy } from '@/utils/util'
+import record from './components/record.vue'
 
 const userStore = useUserStore()
 // 使用storeToRefs解构userInfo
@@ -12,6 +13,8 @@ definePage({
     navigationBarTitleText: '',
   },
 })
+const recordList = ref([
+])
 </script>
 
 <template>
@@ -79,6 +82,57 @@ definePage({
         </view>
       </view>
     </view>
+    <div class="mt-[20px] text-center text-[14px] font-bold">
+      无限分销
+    </div>
+    <view class="bg-default mx-[20px] mb-[50px] mt-[20px] rounded-[10px] px-[20px] py-[20px]">
+      <div class="w-full flex items-center justify-center">
+        <div class="w-1/2 flex flex-col items-center justify-center">
+          <div class="text-[12px] text-[#94999A]">
+            今日佣金收益
+          </div>
+          <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
+            {{ formatAmount(1000) }}
+          </div>
+        </div>
+        <div class="w-1/2 flex flex-col items-center justify-center">
+          <div class="text-[12px] text-[#94999A]">
+            佣金总收益
+          </div>
+          <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
+            {{ formatAmount(1000) }}
+          </div>
+        </div>
+      </div>
+      <div class="mt-[20px] flex items-center justify-between text-[14px] font-bold">
+        <div class="w-1/3 text-center">
+          昵称
+        </div>
+        <div class="w-1/3 text-center">
+          关系类型
+        </div>
+        <div class="w-1/3 text-center">
+          我的下线
+        </div>
+      </div>
+      <div
+        v-if="recordList.length > 0"
+        class="mt-[10px] flex items-center justify-between text-[14px] text-[#94999A] font-bold"
+      >
+        <div class="w-1/3 text-center">
+          昵称
+        </div>
+        <div class="w-1/3 text-center">
+          关系类型
+        </div>
+        <div class="w-1/3 text-center">
+          我的下线
+        </div>
+      </div>
+      <up-empty v-else mode="list" margin-top="40" />
+      <!-- <record /> -->
+    </view>
+    <div class="h-[50px] w-full" />
   </view>
 </template>
 
