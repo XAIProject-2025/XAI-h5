@@ -1,8 +1,14 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { getBalanceRate } from '@/api/funds'
+import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 import transaction from './components/transaction.vue'
 import transactionRecord from './components/transactionRecord.vue'
 
+const userStore = useUserStore()
+
+const { userInfo } = storeToRefs(userStore)
 definePage({
   style: {
     navigationStyle: 'custom',
@@ -10,6 +16,17 @@ definePage({
   },
 })
 const tabCurrent = ref(0)
+const tokenPrice = ref(0)
+onMounted(async () => {
+  uni.showLoading({
+    title: '加载中...',
+  })
+  const getBalanceRateRes = await getBalanceRate({
+    currencyName: '1',
+  })
+  tokenPrice.value = getBalanceRateRes?.toUsdt || 0
+  uni.hideLoading()
+})
 </script>
 
 <template>
@@ -20,12 +37,10 @@ const tabCurrent = ref(0)
     <view class="mb-[10px] mt-[5px] text-[14px] text-[#94999A]">
       实时计算能力币市场 & 闪电兑换中心
     </view>
-    <view
-      class="bg-default my-[20px] flex items-center justify-between py-[20px]"
-    >
+    <view class="bg-default my-[20px] flex items-center justify-between py-[20px]">
       <view class="w-1/2 flex flex-col items-center justify-center">
         <view class="text-[18px] font-bold">
-          {{ formatAmount(10000) }}
+          {{ formatAmount(userInfo.kdkBalance) }}
         </view>
         <view class="mt-[5px] text-[14px] text-[#999]">
           KDK
@@ -33,7 +48,7 @@ const tabCurrent = ref(0)
       </view>
       <view class="w-1/2 flex flex-col items-center justify-center">
         <view class="text-[18px] font-bold">
-          {{ formatAmount(10000) }}
+          {{ formatAmount(userInfo.usdtBalance) }}
         </view>
         <view class="mt-[5px] text-[14px] text-[#999]">
           USDT
@@ -49,7 +64,7 @@ const tabCurrent = ref(0)
       </div>
     </view>
     <view v-if="tabCurrent === 0" class="mt-[20px]">
-      <transaction />
+      <transaction :token-price="tokenPrice" />
     </view>
     <view v-else class="mt-[20px]">
       <transactionRecord />

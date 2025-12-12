@@ -54,6 +54,11 @@ const navList = ref([
     title: '设置中心',
     url: '/pages/setting/index',
   },
+  {
+    icon: 'sz',
+    title: '人脸测试',
+    url: '/pages/textface/index',
+  },
 ])
 </script>
 

@@ -1,6 +1,19 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { exchange } from '@/api/exchange'
+import { getBalanceRate } from '@/api/funds'
+import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 
+const props = defineProps({
+  tokenPrice: {
+    type: Number,
+    default: 0,
+  },
+})
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const dateRange = ref(
   {
     current: 1,
@@ -60,10 +73,68 @@ const straightOption = ref({
 })
 const form = reactive({
   amount: '',
+  amountPay: null,
 })
 function change(e) {
-  form.amount = e.detail.value
+  if (typeRange.value.current == 1) {
+    form.amountPay = Number(e) * props.tokenPrice
+  }
+  else {
+    form.amountPay = Number(e) * props.tokenPrice
+  }
 }
+async function handleBuy(type) {
+  console.log('userInfo :>> ', userInfo)
+  if (type == 1) {
+    if (Number(form.amount) > Number(userInfo.value.usdtBalance)) {
+      uni.showToast({
+        title: 'USDT余额不足',
+        icon: 'none',
+      })
+      return
+    }
+  }
+  if (type == 2) {
+    if (Number(form.amount) > Number(userInfo.value.kdkBalance)) {
+      uni.showToast({
+        title: 'KDK余额不足',
+        icon: 'none',
+      })
+      return
+    }
+  }
+  if (!form.amount) {
+    uni.showToast({
+      title: '请输入金额',
+      icon: 'none',
+    })
+    return
+  }
+  const { confirm } = await uni.showModal({
+    title: '提示',
+    content: '确认兑换吗?',
+    confirmColor: '#000',
+  })
+  if (!confirm) {
+    return
+  }
+  uni.showLoading()
+  const exchangeRes = await exchange({
+    exchangeType: type,
+    amount: type == 1 ? form.amountPay : form.amount,
+  })
+
+  form.amount = ''
+  form.amountPay = null
+  await userStore.fetchUserInfo()
+  uni.showToast({
+    title: '兑换成功',
+    icon: 'none',
+  })
+}
+onMounted(async () => {
+
+})
 </script>
 
 <template>
@@ -89,7 +160,7 @@ function change(e) {
       <view class="mt-[20px] flex items-center justify-between">
         <view class="w-1/4 flex flex-col items-center justify-center">
           <view class="text-[18px] font-bold">
-            {{ formatAmount(10000) }}
+            {{ formatAmount(tokenPrice) }}
           </view>
           <view class="mt-[5px] text-[14px] text-[#999]">
             当前价格
@@ -138,7 +209,7 @@ function change(e) {
           价格
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
-          {{ formatAmount(10000) }}
+          {{ formatAmount(tokenPrice) }}
         </view>
       </view>
       <view class="mt-[15px]">
@@ -155,12 +226,12 @@ function change(e) {
           <span v-else>接收金额(USDT)</span>
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
-          {{ formatAmount(10000) }}
+          {{ formatAmount(form.amountPay) }}
         </view>
       </view>
       <view class="btn-block mt-[20px] h-[40px]">
-        <span v-if="typeRange.current === 1">买入算力币</span>
-        <span v-else>卖出算力币</span>
+        <span v-if="typeRange.current === 1" @click="handleBuy(1)">买入算力币</span>
+        <span v-else @click="handleBuy(2)">卖出算力币</span>
       </view>
     </view>
   </view>

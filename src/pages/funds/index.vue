@@ -1,7 +1,16 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/store'
+import { useCommonStore } from '@/store/common'
 import { formatAmount, handleToUrl } from '@/utils/util'
 import Record from './components/record.vue'
 
+const commonStore = useCommonStore()
+
+const userStore = useUserStore()
+// 使用storeToRefs解构userInfo
+const { userInfo } = storeToRefs(userStore)
+const { tokenPrice } = storeToRefs(commonStore)
 definePage({
   style: {
     navigationStyle: 'custom',
@@ -12,19 +21,27 @@ const tabData = reactive({
   tabs: [
     {
       title: '全部',
-      index: 0,
+      index: -1,
     },
     {
       title: '算力币',
-      index: 1,
+      index: 0,
     },
     {
       title: 'USDT',
-      index: 2,
+      index: 1,
     },
   ],
-  currentTab: 0,
+  currentTab: -1,
 })
+onMounted(() => {
+  commonStore.fetchTokenPrice()
+})
+const recordRef = ref(null)
+function handleTabClick(item) {
+  tabData.currentTab = item.index
+  recordRef.value.reload()
+}
 </script>
 
 <template>
@@ -43,12 +60,12 @@ const tabData = reactive({
             算力币余额
           </div>
           <div class="text-[10px] text-[#94999A]">
-            算力 (单位：算力币)
+            算力 (单位：KDK)
           </div>
         </div>
       </div>
       <div class="my-[15px] text-[22px] text-[#FFEE00] font-600">
-        {{ formatAmount(19999) }}
+        {{ formatAmount(userInfo?.kdkBalance || 0) }}
       </div>
       <div class="flex items-center justify-between">
         <div class="">
@@ -56,7 +73,7 @@ const tabData = reactive({
             约等于
           </div>
           <div class="mt-[5px] text-[10px] text-[#94999A]">
-            {{ formatAmount(10000) }} USDT
+            {{ formatAmount(userInfo?.kdkBalance * tokenPrice) }} USDT
           </div>
         </div>
         <div class="btn-block h-[30px] w-[100px]" @click="handleToUrl('/pages/exchange/index')">
@@ -79,7 +96,7 @@ const tabData = reactive({
         </div>
       </div>
       <div class="my-[15px] text-[22px] text-[#FFEE00] font-600">
-        {{ formatAmount(10000) }} USDT
+        {{ formatAmount(userInfo?.usdtBalance || 0) }}
       </div>
       <div class="flex items-center justify-between">
         <div class="btn-block h-[30px] w-[40%]">
@@ -101,13 +118,13 @@ const tabData = reactive({
         <div
           v-for="item in tabData.tabs" :key="item.index"
           class="mr-[15px] border border-[#000] rounded-[10px] border-solid bg-[#fff] px-[10px] py-[5px] text-[12px] text-[#000]"
-          :class="{ '!bg-[#000] !text-[#fff]': item.index === tabData.currentTab }"
-          @click="tabData.currentTab = item.index"
+          :class="{ '!bg-[#000] !text-[#fff]': item.index === tabData.currentTab }" @click="handleTabClick(item)"
         >
           {{ item.title }}
+          <!-- reload -->
         </div>
       </div>
-      <record :tab="tabData.currentTab" />
+      <record ref="recordRef" :tab="tabData.currentTab" :token-price="tokenPrice" />
     </view>
   </view>
 </template>

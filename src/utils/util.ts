@@ -277,3 +277,28 @@ export function handleToUrl(
 ) {
   uni.navigateTo({ url })
 };
+
+export function getRecordType(type: number) {
+  console.log('type :>> ', type)
+  const obj = {
+    name: '',
+    img: '',
+    color: '',
+  }
+  if (type == 1) {
+    obj.name = '充值'
+  }
+  if (type == 2) {
+    obj.name = '购买算力服务器'
+  }
+  if (type == 3) {
+    obj.name = '奖励'
+  }
+  if (type == 4) {
+    obj.name = '兑换'
+  }
+  if (type == 5) {
+    obj.name = '任务奖励'
+  }
+  return obj
+}

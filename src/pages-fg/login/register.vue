@@ -16,6 +16,7 @@ const userInfo = reactive({
   isFaceAuth: true,
 })
 const tokenStore = useTokenStore()
+
 async function doLogin() {
   if (!userInfo.name || !userInfo.password || !userInfo.inviteCode) {
     uni.showToast({
@@ -123,7 +124,7 @@ async function doLogin() {
         </view>
       </view>
     </view>
-    <view class="btn-block absolute bottom-[100px] left-[50%] w-[90%] translate-x-[-50%]" @click="doLogin">
+    <view class="btn-block absolute bottom-[100px] left-[50%] h-[40px] w-[90%] translate-x-[-50%]" @click="doLogin">
       注册
     </view>
   </view>

@@ -8,6 +8,13 @@ import store from './store'
 import '@/style/index.scss'
 import 'virtual:uno.css'
 
+// main.js
+uni.$zp = {
+  config: {
+    // 配置分页默认pageSize为15
+    'default-page-no': 0,
+  },
+}
 export function createApp() {
   const app = createSSRApp(App)
   app.use(store)

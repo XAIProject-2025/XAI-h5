@@ -184,6 +184,9 @@ importers:
       '@unocss/preset-legacy-compat':
         specifier: 66.0.0
         version: 66.0.0
+      '@vitejs/plugin-basic-ssl':
+        specifier: ^2.1.0
+        version: 2.1.0(vite@5.2.8(@types/node@20.19.11)(sass@1.77.8)(terser@5.43.1))
       '@vue/runtime-core':
         specifier: ^3.4.21
         version: 3.4.21
@@ -2393,6 +2396,12 @@ packages:
     resolution: {integrity: sha512-IVcPX8xL+2edyXKt4tp9yu5A6gcbPVCsspfcL0XgziCr01kS+4qSoZ90F3IUs3hXc/AyO5eCpRtGFMPLpOjXQg==}
     peerDependencies:
       vite: ^2.9.0 || ^3.0.0-0 || ^4.0.0 || ^5.0.0-0 || ^6.0.0-0
+
+  '@vitejs/plugin-basic-ssl@2.1.0':
+    resolution: {integrity: sha512-dOxxrhgyDIEUADhb/8OlV9JIqYLgos03YorAueTIeOUskLJSEsfwCByjbu98ctXitUN3znXKp0bYD/WHSudCeA==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    peerDependencies:
+      vite: ^6.0.0 || ^7.0.0
 
   '@vitejs/plugin-legacy@5.3.2':
     resolution: {integrity: sha512-8moCOrIMaZ/Rjln0Q6GsH6s8fAt1JOI3k8nmfX4tXUxE5KAExVctSyOBk+A25GClsdSWqIk2yaUthH3KJ2X4tg==}
@@ -9654,6 +9663,10 @@ snapshots:
       vite: 5.2.8(@types/node@20.19.11)(sass@1.77.8)(terser@5.43.1)
     transitivePeerDependencies:
       - vue
+
+  '@vitejs/plugin-basic-ssl@2.1.0(vite@5.2.8(@types/node@20.19.11)(sass@1.77.8)(terser@5.43.1))':
+    dependencies:
+      vite: 5.2.8(@types/node@20.19.11)(sass@1.77.8)(terser@5.43.1)
 
   '@vitejs/plugin-legacy@5.3.2(terser@5.43.1)(vite@5.2.8(@types/node@20.19.11)(sass@1.77.8)(terser@5.43.1))':
     dependencies:

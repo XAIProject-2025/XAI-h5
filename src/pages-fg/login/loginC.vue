@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
+import Textface from '@/pages/textface/index.vue'
 import { REGISTER_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
@@ -81,6 +82,7 @@ async function doLogin() {
     <view class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]" @click="doLogin">
       登录
     </view>
+    <!-- <textface /> -->
   </view>
 </template>
 
