@@ -105,7 +105,7 @@ export const useTokenStore = defineStore(
           icon: 'none',
           title: '用户名已存在',
         })
-        return
+        return false
       }
       const checkInviteCodeRes = await checkInviteCode(registerForm.inviteCode)
       if (!checkInviteCodeRes) {
@@ -113,7 +113,7 @@ export const useTokenStore = defineStore(
           icon: 'none',
           title: '邀请码不存在',
         })
-        return
+        return false
       }
       const res = await _register(registerForm)
       await _postLogin(res)

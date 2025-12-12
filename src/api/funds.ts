@@ -8,3 +8,8 @@ export function getBalanceLogs(params) {
 export function getBalanceRate(params) {
   return http.get('/api/v1/user/balance/rate', params)
 }
+
+// 查询下级
+export function getSubordinateList() {
+  return http.get('/api/v1/commission/records/all')
+}

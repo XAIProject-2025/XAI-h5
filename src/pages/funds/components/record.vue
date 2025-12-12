@@ -10,7 +10,7 @@
             <view class="text-[14px] font-bold">
               {{ formatAmount(item.amount) }} {{ item.currencyType === 0 ? 'KDK' : 'USDT' }}
               <span v-if="item.currencyType === 0" class="mt-[5px] text-[12px] text-[#94999A]">
-                ≈ {{ formatAmount(item.usdtAmount) }} USDT
+                ≈ {{ formatAmount(item.amountUsdt) }} USDT
               </span>
             </view>
             <view class="mt-[8px] text-[12px] text-[#94999A]">

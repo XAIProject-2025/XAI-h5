@@ -95,7 +95,6 @@ function onChange(e) {
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
         <view>AI对话 3/5</view>
-        {{ UNI_PLATFORM }}
         <view>奖励{{ formatAmount(100) }}KDK</view>
       </view>
       <up-line-progress height="16px" :percentage="30" active-color="#000" />

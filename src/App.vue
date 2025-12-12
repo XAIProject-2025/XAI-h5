@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { navigateToInterceptor } from '@/router/interceptor'
+import { useCommonStore } from '@/store/common'
 
 onLaunch((options) => {
-  console.log('App.vue onLaunch', options)
+  if (options?.query?.inviteCode) {
+    useCommonStore().setInviteCode(options.query.inviteCode)
+  }
 })
 onShow((options) => {
   console.log('App.vue onShow', options)
@@ -21,6 +24,4 @@ onHide(() => {
 })
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

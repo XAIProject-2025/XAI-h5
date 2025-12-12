@@ -8,6 +8,7 @@ interface IBalanceRateRes {
 
 export const useCommonStore = defineStore('common', () => {
   const tokenPrice = ref<number>(0)
+  const inviteCode = ref<string | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -26,6 +27,11 @@ export const useCommonStore = defineStore('common', () => {
       loading.value = false
     }
   }
+  const setInviteCode = (code: string | null) => {
+    inviteCode.value = code
+  }
 
-  return { tokenPrice, loading, error, fetchTokenPrice }
+  return { tokenPrice, loading, error, fetchTokenPrice, setInviteCode, inviteCode }
+}, {
+  persist: true,
 })

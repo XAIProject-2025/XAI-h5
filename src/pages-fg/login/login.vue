@@ -8,8 +8,6 @@ definePage({
     navigationStyle: 'custom',
   },
 })
-
-const tokenStore = useTokenStore()
 </script>
 
 <template>

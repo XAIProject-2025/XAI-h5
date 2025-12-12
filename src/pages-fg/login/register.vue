@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
 import { REGISTER_PAGE } from '@/router/config'
+import { useCommonStore } from '@/store/common'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
 
@@ -16,7 +17,11 @@ const userInfo = reactive({
   isFaceAuth: true,
 })
 const tokenStore = useTokenStore()
-
+onMounted(() => {
+  if (useCommonStore().inviteCode) {
+    userInfo.inviteCode = useCommonStore().inviteCode || ''
+  }
+})
 async function doLogin() {
   if (!userInfo.name || !userInfo.password || !userInfo.inviteCode) {
     uni.showToast({
@@ -26,11 +31,14 @@ async function doLogin() {
     return
   }
   try {
-    await tokenStore.register({
+    const res = await tokenStore.register({
       name: userInfo.name,
       password: md5(userInfo.password),
       inviteCode: userInfo.inviteCode,
     })
+    if (!res) {
+      return
+    }
     uni.showToast({
       title: '注册成功',
       icon: 'none',

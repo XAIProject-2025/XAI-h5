@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { getSubordinateList } from '@/api/funds'
 import { useUserStore } from '@/store'
 import { formatAmount, handleCopy } from '@/utils/util'
+
 import record from './components/record.vue'
+
+const { UNI_PLATFORM } = process.env
 
 const userStore = useUserStore()
 // 使用storeToRefs解构userInfo
@@ -13,8 +17,22 @@ definePage({
     navigationBarTitleText: '',
   },
 })
-const recordList = ref([
-])
+const recordList = ref([])
+const inviteCodeLink = ref('')
+onMounted(() => {
+  uni.showLoading({
+    title: '加载中...',
+  })
+  const getSubordinateListRes = getSubordinateList()
+  recordList.value = getSubordinateListRes || []
+  uni.hideLoading()
+  if (UNI_PLATFORM === 'h5') {
+    inviteCodeLink.value = `${window.location.origin}/#/pages-fg/login/login?inviteCode=${userInfo.value.inviteCode}`
+  }
+  else {
+    inviteCodeLink.value = userInfo.value.inviteCode
+  }
+})
 </script>
 
 <template>
