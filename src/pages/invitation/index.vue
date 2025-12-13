@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { getSubordinateList } from '@/api/funds'
+import { getStatistics, getSubordinateList } from '@/api/funds'
 import { useUserStore } from '@/store'
 import { formatAmount, handleCopy } from '@/utils/util'
 
@@ -18,13 +18,16 @@ definePage({
   },
 })
 const recordList = ref([])
+const statistics = ref({})
 const inviteCodeLink = ref('')
-onMounted(() => {
+onMounted(async () => {
   uni.showLoading({
     title: '加载中...',
   })
-  const getSubordinateListRes = getSubordinateList()
+  const getSubordinateListRes = await getSubordinateList()
+  const getStatisticsRes = await getStatistics()
   recordList.value = getSubordinateListRes || []
+  statistics.value = getStatisticsRes || {}
   uni.hideLoading()
   if (UNI_PLATFORM === 'h5') {
     inviteCodeLink.value = `${window.location.origin}/#/pages-fg/login/login?inviteCode=${userInfo.value.inviteCode}`
@@ -71,7 +74,7 @@ onMounted(() => {
         <u-image src="@/static/invitation/icon_5.png" width="14px" height="14px" class="mr-[5px]" />
         分享二维码
       </div>
-      <div class="btn-block--white h-[35px] w-[40%]">
+      <div class="btn-block--white h-[35px] w-[40%]" @click="handleCopy(inviteCodeLink)">
         <u-image src="@/static/invitation/icon_4.png" width="16" height="16" />
         复制链接
       </div>
@@ -100,9 +103,9 @@ onMounted(() => {
         </view>
       </view>
     </view>
-    <div class="mt-[20px] text-center text-[14px] font-bold">
+    <!-- <div class="mt-[20px] text-center text-[14px] font-bold">
       无限分销
-    </div>
+    </div> -->
     <view class="bg-default mx-[20px] mb-[50px] mt-[20px] rounded-[10px] px-[20px] py-[20px]">
       <div class="w-full flex items-center justify-center">
         <div class="w-1/2 flex flex-col items-center justify-center">
@@ -110,7 +113,7 @@ onMounted(() => {
             今日佣金收益
           </div>
           <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
-            {{ formatAmount(1000) }}
+            {{ formatAmount(statistics.todayCommission) }}
           </div>
         </div>
         <div class="w-1/2 flex flex-col items-center justify-center">
@@ -118,7 +121,7 @@ onMounted(() => {
             佣金总收益
           </div>
           <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
-            {{ formatAmount(1000) }}
+            {{ formatAmount(statistics.totalCommission) }}
           </div>
         </div>
       </div>
@@ -130,23 +133,27 @@ onMounted(() => {
           关系类型
         </div>
         <div class="w-1/3 text-center">
-          我的下线
+          注册时间
         </div>
       </div>
-      <div
-        v-if="recordList.length > 0"
-        class="mt-[10px] flex items-center justify-between text-[14px] text-[#94999A] font-bold"
-      >
-        <div class="w-1/3 text-center">
-          昵称
+      <template v-if="recordList.length > 0">
+        <div
+          v-for="(item, index) in recordList" :key="index"
+          class="mt-[10px] flex items-center justify-between text-[14px] text-[#94999A] font-bold"
+        >
+          <div class="w-1/3 text-center">
+            {{ item.name }}
+          </div>
+          <div class="w-1/3 text-center">
+            <span v-if="item.level == 1"> 一级</span>
+            <span v-else-if="item.level == 2"> 二级</span>
+            <span v-else> 三级</span>
+          </div>
+          <div class="w-1/3 text-center">
+            {{ item.registerTime }}
+          </div>
         </div>
-        <div class="w-1/3 text-center">
-          关系类型
-        </div>
-        <div class="w-1/3 text-center">
-          我的下线
-        </div>
-      </div>
+      </template>
       <up-empty v-else mode="list" margin-top="40" />
       <!-- <record /> -->
     </view>

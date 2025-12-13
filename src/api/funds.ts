@@ -11,5 +11,9 @@ export function getBalanceRate(params) {
 
 // 查询下级
 export function getSubordinateList() {
-  return http.get('/api/v1/commission/records/all')
+  return http.get('/api/v1/commission/subordinates')
+}
+// 查询佣金
+export function getStatistics() {
+  return http.get('/api/v1/commission/statistics')
 }
