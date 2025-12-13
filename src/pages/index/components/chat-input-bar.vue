@@ -8,34 +8,19 @@
           placeholder="请输入内容" @confirm="sendClick"
         >
       </view>
-
-      <!-- 表情图标（可选） -->
-      <!-- <view class="emoji-container">
-        <image class="emoji-img" :src="`/static/${emojiType || 'emoji'}.png`" @click="emojiChange" />
-      </view> -->
-
       <!-- 发送按钮 -->
       <div @click="sendClick">
         <!-- <text class="chat-input-send-text">发送</text> -->
         <up-image src="/static/index/tg.png" width="50" height="50" class="ml-[5px]" alt="" />
       </div>
     </view>
-
-    <!-- 表情面板 -->
-    <!-- <view class="emoji-panel-container" :style="[{ height: emojiType === 'keyboard' ? '400rpx' : '0px' }]">
-      <scroll-view scroll-y style="height: 100%; flex: 1;">
-        <view class="emoji-panel">
-          <text v-for="(item, index) in emojisArr" :key="index" class="emoji-panel-text" @click="emojiClick(item)">
-            {{ item }}
-          </text>
-        </view>
-      </scroll-view>
-    </view> -->
   </view>
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
+import { useUserStore } from '@/store'
 
 /**
  * Props
@@ -46,66 +31,18 @@ const props = defineProps({
     default: false,
   },
 })
-
 /**
  * Emits
  */
 const emit = defineEmits(['send', 'emojiTypeChange'])
-
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 /**
  * State
  */
 const msg = ref('')
 const focus = ref(false)
 const emojiType = ref('') // "" | "emoji" | "keyboard"
-
-// Emojis
-const emojisArr = ref([
-  '😊',
-  '😁',
-  '😀',
-  '😃',
-  '😣',
-  '😞',
-  '😩',
-  '😫',
-  '😲',
-  '😟',
-  '😦',
-  '😜',
-  '😳',
-  '😋',
-  '😥',
-  '😰',
-  '🤠',
-  '😎',
-  '😇',
-  '😉',
-  '😭',
-  '😈',
-  '😕',
-  '😏',
-  '😘',
-  '😤',
-  '😡',
-  '😅',
-  '😬',
-  '😺',
-  '😻',
-  '😽',
-  '😼',
-  '🙈',
-  '🙉',
-  '🙊',
-  '🔥',
-  '👍',
-  '👎',
-  '👌',
-  '✌️',
-  '🙏',
-  '💪',
-  '👻',
-])
 
 /**
  * Computed
@@ -130,29 +67,6 @@ function hidedKeyboard() {
   if (emojiType.value === 'keyboard') {
     emojiType.value = ''
   }
-}
-
-// 切换表情面板 / 键盘
-function emojiChange() {
-  emit('emojiTypeChange', emojiType.value)
-
-  if (emojiType.value === 'keyboard') {
-    focus.value = true
-  }
-  else {
-    focus.value = false
-    uni.hideKeyboard()
-  }
-
-  emojiType.value
-    = !emojiType.value || emojiType.value === 'emoji'
-      ? 'keyboard'
-      : 'emoji'
-}
-
-// 点击表情插入
-function emojiClick(text) {
-  msg.value += text
 }
 
 // 发送消息

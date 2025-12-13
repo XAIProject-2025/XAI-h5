@@ -13,6 +13,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  height: {
+    type: String,
+    default: '400px',
+  },
 })
 
 // 抛出事件，供外部关闭弹窗
@@ -30,14 +34,14 @@ function onClose() {
 </script>
 
 <template>
-  <up-popup :show="props.show" mode="center" close-on-click-overlay @close="onClose">
-    <view class="bg1">
+  <up-popup :show="props.show" mode="center" close-on-click-overlay :z-index="998" @close="onClose">
+    <view class="bg1" :style="{ height: props.height }">
       <slot />
       <div class="absolute bottom-[20px] w-full flex items-center justify-center">
-        <view class="btn-block--white h-[40px] w-[40%]" @click="onClose">
+        <!-- <view class="btn-block--white h-[40px] w-[40%]" @click="onClose">
           取消
-        </view>
-        <view class="btn-block ml-[5%] h-[40px] w-[40%]" @click="handleConfirm">
+        </view> -->
+        <view class="btn-block ml-[5%] h-[40px] w-[70%]" @click="handleConfirm">
           {{ props.buttonLoading ? '确认中' : '确认' }} <up-loading-icon
             v-if="props.buttonLoading" size="14"
             mode="semicircle"
@@ -56,7 +60,6 @@ function onClose() {
   background: url('/static/server/pupup_bg.png');
   background-size: 100% 100%;
   width: 80vw;
-  height: 400px;
   position: relative;
 }
 

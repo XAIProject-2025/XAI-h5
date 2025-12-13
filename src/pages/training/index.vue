@@ -1,13 +1,27 @@
 <script lang="ts" setup>
-import { formatAmount } from '@/utils/util'
+import { storeToRefs } from 'pinia'
+import { getVipInfo } from '@/api/index'
+import { useUserStore } from '@/store'
+import { formatAmount, handleToUrl } from '@/utils/util'
 import circleProgress from './components/circleProgress.vue'
 
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const modelVale = ref(50)
 definePage({
   style: {
     navigationStyle: 'custom',
     navigationBarTitleText: '',
   },
+})
+const vipInfoData = ref({})
+onMounted(async () => {
+  uni.showLoading({
+    title: '加载中...',
+  })
+  const vipInfoRes = await getVipInfo()
+  vipInfoData.value = vipInfoRes
+  uni.hideLoading()
 })
 </script>
 
@@ -19,12 +33,15 @@ definePage({
         <u-image src="/static/images/avatar.png" width="60" height="60" alt="" />
       </view>
       <view class="mt-[10px] text-center text-[16px] text-[#fff] font-bold">
-        用户名
+        {{ userInfo.name }}
       </view>
       <view class="mt-[10px] flex items-center justify-center">
         <level />
         <view class="btn-block--white ml-[10px] h-[20px] min-h-[20px] rounded-[12px] px-[15px] py-[4px]">
-          无限代理
+          <span v-if="userInfo.roleId == 4">无限代理</span>
+          <span v-if="userInfo.roleId == 3">普通代理</span>
+          <span v-if="userInfo.roleId == 2">激活用户</span>
+          <span v-if="userInfo.roleId == 1">未激活</span>
         </view>
       </view>
       <view class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]">
@@ -32,17 +49,17 @@ definePage({
         <view class="mx-[10px]">
           |
         </view>
-        <view><span class="mr-[4px]">算力币余额</span>2 KDK</view>
+        <view><span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.kdkBalance) }} KDK</view>
       </view>
       <view class="mt-[5px] flex items-center justify-center text-[12px] text-[#94999A]">
-        <view><span class="mr-[4px]">稳定币余额</span>2</view>
+        <view><span class="mr-[4px]">USDT余额</span>{{ formatAmount(userInfo.usdtBalance) }} </view>
         <view class="mx-[10px]">
           |
         </view>
         <view><span class="mr-[4px]">活跃度</span>2</view>
       </view>
       <view class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]">
-        <view class="btn-block h-[35px] w-1/2">
+        <view class="btn-block h-[35px] w-1/2" @click="handleToUrl('/pages/invitation/index')">
           <image src="/static/training/qr_code.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
           邀请
         </view>

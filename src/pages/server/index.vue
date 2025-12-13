@@ -46,8 +46,9 @@ async function buyServerCon(item) {
   catch (error) {
     console.log('error :>> ', error)
     uni.showToast({
-      title: error.message,
+      title: error.data.message || '购买失败',
       icon: 'none',
+
     })
   }
   finally {

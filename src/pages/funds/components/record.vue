@@ -10,14 +10,19 @@
             <view class="text-[14px] font-bold">
               {{ formatAmount(item.amount) }} {{ item.currencyType === 0 ? 'KDK' : 'USDT' }}
               <span v-if="item.currencyType === 0" class="mt-[5px] text-[12px] text-[#94999A]">
-                ≈ {{ formatAmount(item.amountUsdt) }} USDT
+                ≈ {{ formatAmount(Math.abs(item.amountUsdt)) }} USDT
               </span>
             </view>
             <view class="mt-[8px] text-[12px] text-[#94999A]">
               {{ item.createTime }}
             </view>
           </view>
-          <div class="bg2 absolute right-[0] top-[0] min-w-[120px] text-center text-[14px] text-[#fff]">
+          <div
+            :class="{
+              'status-green': item.amount > 0,
+              'status-red': item.amount < 0,
+            }" class="absolute right-[0] top-[0] min-w-[120px] text-center text-[12px] text-[#fff]"
+          >
             <!-- :class="item.type === 1 ? 'bg2' : 'bg1'" -->
 
             {{ getRecordType(item.type).name }}

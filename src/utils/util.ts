@@ -39,14 +39,20 @@ export function getImage(name) {
     return basePath
   }
 }
-export function openLink(link: string, type = '_blank') {
-  if (type == '_blank') {
-    window.open(link, '_blank')
-  }
-  else {
-    // _self
-    window.location.assign(link)
-  }
+export function openExternalUrl(url, options = {}) {
+  // H5 端
+  // #ifdef H5
+  window.open(url, options.target || '_blank')
+  // #endif
+  // App 端（需依赖 5+ API）
+  // #ifdef APP - PLUS
+  plus.runtime.openURL(url, (res) => {
+    uni.showToast({
+      title: '打开失败，请检查链接',
+      icon: 'none',
+    })
+  })
+  // #endif
 }
 // 获取剪切板
 export async function getClipboard() {
@@ -299,6 +305,9 @@ export function getRecordType(type: number) {
   }
   if (type == 5) {
     obj.name = '任务奖励'
+  }
+  if (type == 6) {
+    obj.name = '服务器赎回'
   }
   return obj
 }

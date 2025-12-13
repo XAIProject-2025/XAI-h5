@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getPowerOrders } from '@/api/funds'
+import { getPowerOrders, redeemPowerOrder } from '@/api/funds'
 import { formatAmount, handleToUrl } from '@/utils/util'
 
 definePage({
@@ -23,6 +23,14 @@ async function getList() {
   serverList.value.map((v) => {
     v.isExpired = false
   })
+}
+const confirmData = reactive({
+  show: false,
+  item: {},
+  loading: false,
+})
+function redemption(item) {
+  console.log('item :>> ', item)
 }
 </script>
 
@@ -134,7 +142,7 @@ async function getList() {
 
               <view class="bg1 mt-[15px] h-[80px] w-[48%]">
                 <view class="text-[24px] font-700">
-                  3.1%
+                  {{ item.redeemRate }}%
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
                   每日返还率
@@ -145,18 +153,31 @@ async function getList() {
             <view class="flex items-center gap-[10px]">
               <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
                 <view class="text-[24px] font-700">
-                  {{ formatAmount(100) }}
+                  {{ formatAmount(item.payPrice) }}
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
-                  过期后返还
+                  到期后返还
                 </view>
               </view>
 
-              <view class="w-[48%]">
-                <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
-                  提前赎回
+              <template v-if="item.status !== 2 && item.status !== 3">
+                <view
+                  v-if="item.usedPower !== item.power" class="w-[48%]"
+                  @click="confirmData.item = item; confirmData.show = true;"
+                >
+                  <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
+                    提前赎回
+                  </view>
                 </view>
-              </view>
+                <view
+                  v-if="item.usedPower === item.power" class="w-[48%]"
+                  @click="confirmData.item = item; confirmData.show = true;"
+                >
+                  <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
+                    赎回
+                  </view>
+                </view>
+              </template>
             </view>
           </view>
         </transition>
@@ -190,6 +211,23 @@ async function getList() {
         </view>
       </view>
     </view>
+    <confirm
+      :show="confirmData.show" :button-loading="confirmData.loading" height="200px"
+      @close="confirmData.show = false" @confirm="redemption(confirmData.item)"
+    >
+      <div class="flex flex-col items-center justify-center p-[20px]">
+        <div class="text-[18px] font-bold">
+          提示
+        </div>
+        <view class="mt-[10px] text-[12px]">
+          <span v-if="confirmData.item.usedPower !== confirmData.item.power"> 确定提前赎回算力服务器吗？</span>
+          <span v-else> 确定赎回算力服务器吗？</span>
+        </view>
+        <div class="mt-[5px] text-center text-[12px]">
+          注意：提前赎回算力服务器需要扣除手续费(本金20%)。
+        </div>
+      </div>
+    </confirm>
   </view>
 </template>
 

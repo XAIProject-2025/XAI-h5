@@ -24,6 +24,7 @@
 
 <script setup>
 import { nextTick, ref } from 'vue'
+import { getChatHistory, getChatLose } from '@/api/index'
 import chatInputBar from './components/chat-input-bar.vue'
 import chatItem from './components/chat-item.vue'
 import indexTop from './components/indexTop.vue'
@@ -41,11 +42,18 @@ definePage({
   },
 })
 
-const paging = ref(null)
-const inputBar = ref(null)
-
 // 聊天记录
 const dataList = ref([])
+onMounted(async () => {
+  uni.showLoading({
+    title: '加载中...',
+  })
+  const chatHistoryRes = await getChatHistory()
+  dataList.value = chatHistoryRes.content
+  uni.hideLoading()
+})
+const paging = ref(null)
+const inputBar = ref(null)
 
 // 当前用户发送的问题
 const askMsg = ref('')
@@ -73,7 +81,7 @@ function hidedKeyboard() {
 }
 
 // 发送消息
-function doSend(msg) {
+async function doSend(msg) {
   if (isAnswering.value)
     return
 
@@ -105,7 +113,11 @@ async function doAnswer() {
 
   // 模拟网络延迟
   await new Promise(resolve => setTimeout(resolve, 800))
-
+  const chatLose = await getChatLose({
+    message: askMsg.value,
+    chatId: '123',
+  })
+  console.log(chatLose)
   const totalAnswerStr = `你发送了：${askMsg.value}`
   let currentStr = ''
 

@@ -1,14 +1,17 @@
 <template>
   <div class="chat-item">
     <!-- 时间 -->
-    <text v-if="item.time && item.time.length" class="chat-time">
-      {{ item.time }}
-    </text>
+    <!-- <text v-if="item.createTime && item.createTime.length" class="chat-time">
+      {{ item.createTime }}
+    </text> -->
 
-    <div class="chat-container" :class="{ 'chat-location-me': item.isMe }">
+    <div class="chat-container" :class="{ 'chat-location-me': item.role == 'user' }">
       <!-- 头像 -->
       <div class="chat-icon-container">
-        <image v-if="!item.isMe" class="h-[40px] w-[40px]" src="/static/images/avatar.png" mode="scaleToFill" />
+        <image
+          v-if="item.role != 'user'" class="h-[40px] w-[40px]" src="/static/images/avatar.png"
+          mode="scaleToFill"
+        />
         <image v-else class="h-[40px] w-[40px]" src="/static/images/avatar_my.png" mode="scaleToFill" />
         <!-- <image class="chat-icon" :src="item.icon" mode="aspectFill" /> -->
       </div>
@@ -19,10 +22,13 @@
           {{ item.name }}
         </span> -->
 
-        <div class="chat-text-container-super" :style="[{ justifyContent: item.isMe ? 'flex-end' : 'flex-start' }]">
-          <div class="chat-text-container" :class="{ 'chat-text-container-me': item.isMe }">
-            <span class="chat-text" :class="{ 'chat-text-me': item.isMe }">
-              {{ item.content }}
+        <div
+          class="chat-text-container-super"
+          :style="[{ justifyContent: item.role == 'user' ? 'flex-end' : 'flex-start' }]"
+        >
+          <div class="chat-text-container" :class="{ 'chat-text-container-me': item.role == 'user' }">
+            <span class="chat-text" :class="{ 'chat-text-me': item.role == 'user' }">
+              {{ item.msg }}
             </span>
           </div>
         </div>
@@ -58,7 +64,7 @@ defineProps({
 
 .chat-time {
   padding: 4rpx 0rpx;
-  text-align: center;
+  text-align: left;
   font-size: 22rpx;
   color: #aaaaaa;
 }

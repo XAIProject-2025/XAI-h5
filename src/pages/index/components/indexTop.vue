@@ -1,6 +1,11 @@
 <script lang="ts" setup>
-import { formatAmount } from '@/utils/util'
+import { storeToRefs } from 'pinia'
+import { getChatTask } from '@/api'
+import { useUserStore } from '@/store'
+import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const { UNI_PLATFORM } = process.env
 const systemInfo = uni.getSystemInfoSync()
 console.log('systemInfo :>> ', systemInfo)
@@ -15,6 +20,11 @@ function handleClick(e) {
 }
 function onChange(e) {
 }
+const taskData = ref({})
+onMounted(async () => {
+  const getChatTaskRes = await getChatTask()
+  taskData.value = getChatTaskRes
+})
 </script>
 
 <template>
@@ -33,9 +43,27 @@ function onChange(e) {
           </view>
         </view>
         <view class="flex items-center">
-          <up-image :width="40" :height="50" class="mr-[10px]" src="/static/level/type_1.gif" />
+          <up-image
+            v-if="userInfo.roleId === 2" :width="40" :height="50" class="mr-[10px]"
+            src="/static/level/type_1.gif"
+          />
+          <up-image
+            v-if="userInfo.roleId === 1" :width="40" :height="50" class="mr-[10px]"
+            src="/static/level/type_2.gif"
+          />
+          <up-image
+            v-if="userInfo.roleId === 3" :width="40" :height="50" class="mr-[10px]"
+            src="/static/level/type_3.gif"
+          />
+          <up-image
+            v-if="userInfo.roleId === 4" :width="40" :height="50" class="mr-[10px]"
+            src="/static/level/type_4.gif"
+          />
           <!-- <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" /> -->
-          <up-image :width="50" :height="50" src="/static/index/tg.png" />
+          <up-image
+            :width="50" :height="50" src="/static/index/tg.png"
+            @click="openExternalUrl(userInfo.tgCustomerLink)"
+          />
         </view>
       </view>
       <!-- <view class="my-[15px] h-[1px] w-full bg-[transparent]" /> -->
@@ -45,7 +73,7 @@ function onChange(e) {
             <up-image :width="60" :height="60" round src="/static/images/avatar.png" />
             <view class="ml-[15px]">
               <view class="mb-[5px] text-[14px]">
-                用户名
+                {{ userInfo.name }}
               </view>
               <level />
             </view>
@@ -73,7 +101,10 @@ function onChange(e) {
         <view class="flex items-center justify-between px-[20px]">
           <view class="w-1/2 flex flex-col items-center justify-center">
             <view class="mt-[2px] flex text-[18px] font-bold">
-              <up-count-to bold :start-val="0" :decimals="2" :end-val="10000" :font-size="18" color="#fff" />
+              <up-count-to
+                bold :start-val="0" :decimals="2" :end-val="userInfo.kdkBalance" :font-size="18"
+                color="#fff"
+              />
               <view class="ml-[5px]">
                 KDK
               </view>
@@ -83,7 +114,7 @@ function onChange(e) {
             </view>
           </view>
           <view class="h-[50px] w-[1px] bg-[#374447]" />
-          <view class="w-1/2 flex flex-col items-center justify-center">
+          <view class="w-1/2 flex flex-col items-center justify-center" @click="handleToUrl('/pages/server/index')">
             <up-icon name="plus" size="20px" class="h-[25px]" color="#fff" />
             <view class="mt-[5px] text-[14px]">
               产品中心
@@ -94,10 +125,13 @@ function onChange(e) {
     </view>
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
-        <view>AI对话 3/5</view>
-        <view>奖励{{ formatAmount(100) }}KDK</view>
+        <view>AI对话 {{ taskData.todayChatCount }}/{{ taskData.taskTarget }}</view>
+        <view>奖励{{ formatAmount(taskData.rewardAmount) }}KDK</view>
       </view>
-      <up-line-progress height="16px" :percentage="30" active-color="#000" />
+      <up-line-progress
+        height="16px" :percentage="(taskData.todayChatCount / taskData.taskTarget * 100).toFixed(2)"
+        active-color="#000"
+      />
     </view>
   </view>
 </template>

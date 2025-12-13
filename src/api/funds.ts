@@ -18,6 +18,11 @@ export function getStatistics() {
   return http.get('/api/v1/commission/statistics')
 }
 // 查询我的算力服务器订单
-export function getPowerOrders(params) {
-  return http.get('/api/v1/power/orders', params)
+export function getPowerOrders() {
+  return http.get('/api/v1/power/orders')
+}
+
+// 提前赎回
+export function redeemPowerOrder(params) {
+  return http.post('/api/v1/power/redeem', params)
 }
