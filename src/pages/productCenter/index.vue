@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { getPowerOrders } from '@/api/funds'
 import { formatAmount, handleToUrl } from '@/utils/util'
 
 definePage({
@@ -8,21 +9,21 @@ definePage({
     navigationStyle: 'custom',
   },
 })
-
-const serverList = ref([
-  {
-    name: 'Free',
-    price: 0,
-    rentedDate: '2015-02-01',
-    isExpired: false,
-  },
-  {
-    name: 'Free',
-    price: 0,
-    rentedDate: '2015-02-01',
-    isExpired: false,
-  },
-])
+onMounted(async () => {
+  uni.showLoading({
+    title: '加载中...',
+  })
+  await getList()
+  uni.hideLoading()
+})
+const serverList = ref([])
+async function getList() {
+  const getPowerOrdersRes = await getPowerOrders()
+  serverList.value = getPowerOrdersRes.content || []
+  serverList.value.map((v) => {
+    v.isExpired = false
+  })
+}
 </script>
 
 <template>
@@ -45,113 +46,124 @@ const serverList = ref([
     </view>
 
     <!-- 列表 -->
-    <view
-      v-for="(item, index) in serverList" :key="index"
-      class="mt-[15px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] p-[15px]"
-    >
-      <view class="relative flex">
-        <view class="bg absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]">
-          到期
-        </view>
-        <view class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded bg-[#000]">
-          <u-image src="/static/productCenter/server.png" width="20" height="20" />
-        </view>
-
-        <view class="ml-[20px] flex-1">
-          <view class="font-bold">
-            {{ item.name }}
-          </view>
-
-          <view class="mt-[5px] flex items-center text-[12px] text-[#94999A]">
-            <view class="mr-[5px]">
-              租用日期
-            </view>
-            <view>{{ item.rentedDate }}</view>
-          </view>
-
-          <view class="mt-[5px] flex items-center text-[12px] text-[#94999A]">
-            <view class="mr-[5px]">
-              算力值
-            </view>
-            <view>10/50</view>
-          </view>
-
-          <!-- 展开按钮 -->
-          <view
-            class="w-full flex items-center justify-end text-[12px] text-[#94999A]"
-            @click="item.isExpired = !item.isExpired"
+    <template v-if="serverList.length > 0">
+      <view
+        v-for="(item, index) in serverList" :key="index"
+        class="mt-[15px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] p-[15px]"
+      >
+        <view class="relative flex">
+          <div
+            :class="{
+              'status-green': item.status === 0 || item.status === 2 || item.status === 3,
+              'status-org': item.status === 1,
+            }" class="absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]"
           >
-            {{ item.isExpired ? '收起' : '展开' }}
-            <u-icon
-              name="arrow-down" color="#94999A" size="12" class="transition-transform duration-200"
-              :class="item.isExpired ? 'rotate-180' : 'rotate-0'"
-            />
+            <span v-if="item.status === 0">正常</span>
+            <span v-if="item.status === 1">可赎回</span>
+            <span v-if="item.status === 2 || item.status === 3">完成</span>
+            <!-- <span v-if="item.status === 3">已赎回</span> -->
+          </div>
+          <view class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded bg-[#000]">
+            <u-image src="/static/productCenter/server.png" width="20" height="20" />
+          </view>
+          <view class="ml-[20px] flex-1">
+            <view class="font-bold">
+              {{ item.name }}
+            </view>
+
+            <view class="mt-[5px] flex items-center text-[10px] text-[#94999A]">
+              <view class="mr-[5px]">
+                租用日期
+              </view>
+              <view>{{ item.createTime }}</view>
+            </view>
+
+            <view class="mt-[5px] flex items-center text-[10px] text-[#94999A]">
+              <view class="mr-[5px]">
+                算力值
+              </view>
+              <view>{{ item.usedPower }}/{{ item.power }}</view>
+            </view>
+
+            <!-- 展开按钮 -->
+            <view
+              class="w-full flex items-center justify-end text-[12px] text-[#94999A]"
+              @click="item.isExpired = !item.isExpired"
+            >
+              {{ item.isExpired ? '收起' : '展开' }}
+              <u-icon
+                name="arrow-down" color="#94999A" size="12" class="transition-transform duration-200"
+                :class="item.isExpired ? 'rotate-180' : 'rotate-0'"
+              />
+            </view>
           </view>
         </view>
+
+        <!-- 展开动画容器 -->
+        <transition name="expand">
+          <view v-if="item.isExpired" class="expand-box">
+            <view class="flex items-end gap-[10px]">
+              <view class="bg1 box-border h-[100px] w-[48%]">
+                <view class="text-[24px] font-700">
+                  {{ item.power }}
+                </view>
+                <view class="mt-[10px] text-[#94999A]">
+                  总算力值
+                </view>
+              </view>
+
+              <view class="bg1 h-[80px] w-[48%]">
+                <view class="text-[24px] font-700">
+                  {{ item.power - item.usedPower }}
+                </view>
+                <view class="mt-[10px] text-[12px] text-[#94999A]">
+                  剩余算力值
+                </view>
+              </view>
+            </view>
+
+            <view class="flex items-end gap-[10px]">
+              <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
+                <view class="text-[24px] font-700">
+                  1
+                </view>
+                <view class="mt-[10px] text-[12px] text-[#94999A]">
+                  每任务消耗
+                </view>
+              </view>
+
+              <view class="bg1 mt-[15px] h-[80px] w-[48%]">
+                <view class="text-[24px] font-700">
+                  3.1%
+                </view>
+                <view class="mt-[10px] text-[12px] text-[#94999A]">
+                  每日返还率
+                </view>
+              </view>
+            </view>
+
+            <view class="flex items-center gap-[10px]">
+              <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
+                <view class="text-[24px] font-700">
+                  {{ formatAmount(100) }}
+                </view>
+                <view class="mt-[10px] text-[12px] text-[#94999A]">
+                  过期后返还
+                </view>
+              </view>
+
+              <view class="w-[48%]">
+                <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
+                  提前赎回
+                </view>
+              </view>
+            </view>
+          </view>
+        </transition>
       </view>
+    </template>
 
-      <!-- 展开动画容器 -->
-      <transition name="expand">
-        <view v-if="item.isExpired" class="expand-box">
-          <view class="flex items-end gap-[10px]">
-            <view class="bg1 box-border h-[100px] w-[48%]">
-              <view class="text-[24px] font-700">
-                30
-              </view>
-              <view class="mt-[10px] text-[#94999A]">
-                总算力值
-              </view>
-            </view>
-
-            <view class="bg1 h-[80px] w-[48%]">
-              <view class="text-[24px] font-700">
-                30
-              </view>
-              <view class="mt-[10px] text-[12px] text-[#94999A]">
-                剩余算力值
-              </view>
-            </view>
-          </view>
-
-          <view class="flex items-end gap-[10px]">
-            <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
-              <view class="text-[24px] font-700">
-                1
-              </view>
-              <view class="mt-[10px] text-[12px] text-[#94999A]">
-                每任务消耗
-              </view>
-            </view>
-
-            <view class="bg1 mt-[15px] h-[80px] w-[48%]">
-              <view class="text-[24px] font-700">
-                3.1%
-              </view>
-              <view class="mt-[10px] text-[12px] text-[#94999A]">
-                每日返还率
-              </view>
-            </view>
-          </view>
-
-          <view class="flex items-center gap-[10px]">
-            <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
-              <view class="text-[24px] font-700">
-                {{ formatAmount(100) }}
-              </view>
-              <view class="mt-[10px] text-[12px] text-[#94999A]">
-                过期后返还
-              </view>
-            </view>
-
-            <view class="w-[48%]">
-              <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
-                提前赎回
-              </view>
-            </view>
-          </view>
-        </view>
-      </transition>
-    </view>
+    <up-empty v-else mode="list" margin-top="40" />
 
     <!-- 注意事项 -->
     <!-- 详细规则 -->

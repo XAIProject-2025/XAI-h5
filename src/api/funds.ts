@@ -17,3 +17,7 @@ export function getSubordinateList() {
 export function getStatistics() {
   return http.get('/api/v1/commission/statistics')
 }
+// 查询我的算力服务器订单
+export function getPowerOrders(params) {
+  return http.get('/api/v1/power/orders', params)
+}

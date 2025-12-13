@@ -62,14 +62,14 @@ onMounted(async () => {
           复制
         </div>
       </div>
-      <div class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]">
-        复制邀请码以邀请好友
+      <div class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]" @click="handleCopy(inviteCodeLink)">
+        复制邀请链接以邀请好友
       </div>
-      <div class="mx-[20px] mt-[20px] text-center text-[12px] text-[#94999A]">
+      <!-- <div class="mx-[20px] mt-[20px] text-center text-[12px] text-[#94999A]">
         当你的好友使用你的邀请码注册并完成新手任务后，双方都可获得 5 个算力币作为奖励
-      </div>
+      </div> -->
     </div>
-    <div class="mt-[15px] box-border w-full flex items-center justify-between px-[15px]">
+    <!-- <div class="mt-[15px] box-border w-full flex items-center justify-between px-[15px]">
       <div class="btn-block h-[35px] w-[40%]">
         <u-image src="@/static/invitation/icon_5.png" width="14px" height="14px" class="mr-[5px]" />
         分享二维码
@@ -78,7 +78,7 @@ onMounted(async () => {
         <u-image src="@/static/invitation/icon_4.png" width="16" height="16" />
         复制链接
       </div>
-    </div>
+    </div> -->
     <!-- 详细规则 -->
     <view class="bg-desc mx-[20px] mt-[20px] rounded-[10px] px-[15px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
@@ -93,15 +93,16 @@ onMounted(async () => {
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          邀请 1 位有效用户，将获得 1 个算力值 + 3 个幸运点数。
+          邀请 1 位有效用户，将获得 1 个算力值
+          <!-- + 3 个幸运点数。 -->
         </view>
       </view>
-      <view class="mt-[10px] flex items-center text-[14px]">
+      <!-- <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           幸运点数越高，赢得奖品的概率就越大。
         </view>
-      </view>
+      </view> -->
     </view>
     <!-- <div class="mt-[20px] text-center text-[14px] font-bold">
       无限分销
@@ -139,7 +140,7 @@ onMounted(async () => {
       <template v-if="recordList.length > 0">
         <div
           v-for="(item, index) in recordList" :key="index"
-          class="mt-[10px] flex items-center justify-between text-[14px] text-[#94999A] font-bold"
+          class="mt-[10px] flex items-center justify-between text-[12px] text-[#94999A]"
         >
           <div class="w-1/3 text-center">
             {{ item.name }}
