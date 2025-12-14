@@ -6,7 +6,9 @@ export function getChatTask() {
 
 // 流失对话
 export function getChatLose(data: { message: string, chatId: string }) {
-  return http.post('/api/v1/chat/stream', data)
+  return http.post('/api/v1/chat/stream', data, {}, {
+    'Content-Type': 'application/json',
+  })
 }
 // 聊天记录
 export function getChatHistory(data) {

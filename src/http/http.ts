@@ -13,7 +13,6 @@ const taskQueue: (() => void)[] = [] // 刷新 token 请求队列
 export function http<T>(options: CustomRequestOptions) {
   // 1. 返回 Promise 对象
   return new Promise<T>((resolve, reject) => {
-    console.log('useTokenStore().validToken :>> ', useTokenStore().validToken)
     uni.request({
       ...options,
       dataType: 'json',

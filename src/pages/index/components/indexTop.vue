@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { getChatTask } from '@/api'
+import { getPowerOrders } from '@/api/funds'
 import { useUserStore } from '@/store'
+
 import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 
 const userStore = useUserStore()
@@ -21,9 +23,32 @@ function handleClick(e) {
 function onChange(e) {
 }
 const taskData = ref({})
+const powerOrdersData = ref([])
+const upCountToKdk = ref(null)
+const notifyTitle = ref('')
 onMounted(async () => {
+  await getTask()
+  const getPowerOrdersRes = await getPowerOrders({
+    status: 0,
+  })
+  powerOrdersData.value = getPowerOrdersRes.content
+  if (powerOrdersData.value.length === 0) {
+    notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
+  }
+})
+// 暴露方法
+async function getTask() {
   const getChatTaskRes = await getChatTask()
   taskData.value = getChatTaskRes
+}
+async function fetchCountToKdk() {
+  const userStore = useUserStore()
+  await userStore.fetchUserInfo()
+  upCountToKdk.value.reStart()
+  await getTask()
+}
+defineExpose({
+  fetchCountToKdk,
 })
 </script>
 
@@ -78,22 +103,27 @@ onMounted(async () => {
               <level />
             </view>
           </view>
-          <view class="w-1/2 flex items-center justify-center">
+          <view v-if="powerOrdersData.length > 0" class="w-1/2 flex items-center justify-center">
             <up-swiper
-              class="w-[150px] !h-[40px] !bg-[transparent]" :list="swiperList" @change="onChange"
+              class="w-[150px] !h-[40px] !bg-[transparent]" :list="powerOrdersData" @change="onChange"
               @click="handleClick"
             >
               <template #default="{ item, index }">
                 <view class="w-full flex flex-col items-center justify-center text-[14px]">
                   <view class="">
-                    {{ index }}
+                    {{ item.usedPower }}/{{ item.power }}
                   </view>
                   <view class="mt-[5px]">
-                    算力服务器
+                    {{ item.serverName }}
                   </view>
                 </view>
               </template>
             </up-swiper>
+          </view>
+          <view v-else class="w-1/2 flex items-center justify-center">
+            <view class="text-[14px] text-[#999]">
+              没有算力服务器
+            </view>
           </view>
         </view>
         <view class="mx-auto my-[12px] h-[1px] w-[90%] bg-[#374447]" />
@@ -102,8 +132,8 @@ onMounted(async () => {
           <view class="w-1/2 flex flex-col items-center justify-center">
             <view class="mt-[2px] flex text-[18px] font-bold">
               <up-count-to
-                bold :start-val="0" :decimals="2" :end-val="userInfo.kdkBalance" :font-size="18"
-                color="#fff"
+                ref="upCountToKdk" bold :start-val="0" :decimals="2" :end-val="userInfo.kdkBalance"
+                :font-size="18" color="#fff"
               />
               <view class="ml-[5px]">
                 KDK
@@ -125,7 +155,11 @@ onMounted(async () => {
     </view>
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
-        <view>AI对话 {{ taskData.todayChatCount }}/{{ taskData.taskTarget }}</view>
+        <view>
+          AI对话 {{ taskData.todayChatCount > taskData.taskTarget ? taskData.taskTarget : taskData.todayChatCount
+          }}/{{
+            taskData.taskTarget }}
+        </view>
         <view>奖励{{ formatAmount(taskData.rewardAmount) }}KDK</view>
       </view>
       <up-line-progress
@@ -133,6 +167,7 @@ onMounted(async () => {
         active-color="#000"
       />
     </view>
+    <up-alert v-if="notifyTitle" class="mt-[5px]" type="warning" :description="notifyTitle" font-size="12" closable />
   </view>
 </template>
 

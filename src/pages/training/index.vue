@@ -56,7 +56,7 @@ onMounted(async () => {
         <view class="mx-[10px]">
           |
         </view>
-        <view><span class="mr-[4px]">活跃度</span>2</view>
+        <view><span class="mr-[4px]">活跃度</span>{{ vipInfoData.currentActivity }}</view>
       </view>
       <view class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]">
         <view class="btn-block h-[35px] w-1/2" @click="handleToUrl('/pages/invitation/index')">
@@ -76,25 +76,31 @@ onMounted(async () => {
       </view>
       <view class="mt-[20px] flex items-center justify-center">
         <view class="flex flex-col items-center justify-center">
-          <u-image src="/static/level/level_0.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 1" src="/static/level/level_0.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 2" src="/static/level/level_1.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 3" src="/static/level/level_2.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 4" src="/static/level/level_3.png" width="60" height="60" alt="" />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
               当前等级
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
-              P2
+              P{{ vipInfoData.vipLevel }}
             </view>
           </view>
         </view>
         <u-image src="/static/training/arrow.png" width="72" height="20" class="mx-[30px]" alt="" />
         <view class="flex flex-col items-center justify-center">
-          <u-image src="/static/level/level_1.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 1" src="/static/level/level_0.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 2" src="/static/level/level_1.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 3" src="/static/level/level_2.png" width="60" height="60" alt="" />
+          <u-image v-if="vipInfoData.vipLevel == 4" src="/static/level/level_3.png" width="60" height="60" alt="" />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
               下一等级
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
-              P2
+              P{{ vipInfoData.nextVipLevel }}
             </view>
           </view>
         </view>
@@ -104,24 +110,24 @@ onMounted(async () => {
       </view>
       <view class="mt-[10px]">
         <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
-          <view>A邀请好友</view>
-          <view>176/999999</view>
+          <view>邀请好友</view>
+          <view>{{ vipInfoData.currentInviteUsers }}/{{ vipInfoData.nextRequiredInviteUsers }}</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#000" />
+        <up-line-progress height="12px" :percentage="vipInfoData.inviteUsersProgress" active-color="#000" />
       </view>
       <view class="mt-[10px]">
         <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
           <view>直接推荐充值</view>
-          <view>176/999999</view>
+          <view>{{ vipInfoData.currentRecharge }}/{{ vipInfoData.nextRequiredRecharge }}</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#000" />
+        <up-line-progress height="12px" :percentage="vipInfoData.rechargeProgress" active-color="#000" />
       </view>
       <view class="mt-[10px]">
         <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
-          <view>活动等级</view>
-          <view>176/999999</view>
+          <view>活动度</view>
+          <view>{{ vipInfoData.currentActivity }}/{{ vipInfoData.nextRequiredActivity }}</view>
         </view>
-        <up-line-progress height="12px" :percentage="30" active-color="#000" />
+        <up-line-progress height="12px" :percentage="vipInfoData.activityProgress" active-color="#000" />
       </view>
     </view>
     <!-- 手续费信息 -->
@@ -130,7 +136,7 @@ onMounted(async () => {
         费用信息
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        当前费率 <span class="text-[40px] text-[#FFEE00]">60</span> %
+        当前费率 <span class="text-[40px] text-[#FFEE00]">{{ vipInfoData.currentPremium * 100 }}</span> %
       </view>
       <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">
         <up-icon name="info-circle" color="#94999A" />
@@ -173,7 +179,7 @@ onMounted(async () => {
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          未提取的资金：费用费率每天自动降低 30%
+          未提取的资金：费用费率每天自动降低 1%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
@@ -201,6 +207,7 @@ onMounted(async () => {
         </view>
       </view>
     </view>
+    <!-- <up-alert title="升级提示" type="warning" description="升级后，您将获得更高的费用折扣" /> -->
   </view>
 </template>
 

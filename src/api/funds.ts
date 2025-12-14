@@ -18,8 +18,8 @@ export function getStatistics() {
   return http.get('/api/v1/commission/statistics')
 }
 // 查询我的算力服务器订单
-export function getPowerOrders() {
-  return http.get('/api/v1/power/orders')
+export function getPowerOrders(params) {
+  return http.get('/api/v1/power/orders', params)
 }
 
 // 提前赎回

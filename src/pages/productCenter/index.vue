@@ -78,7 +78,12 @@ function redemption(item) {
             <view class="font-bold">
               {{ item.name }}
             </view>
-
+            <view class="flex items-center text-[10px] text-[#94999A]">
+              <view class="mr-[5px]">
+                服务器名称:
+              </view>
+              <view>{{ item.serverName }}</view>
+            </view>
             <view class="mt-[5px] flex items-center text-[10px] text-[#94999A]">
               <view class="mr-[5px]">
                 租用日期
@@ -142,7 +147,7 @@ function redemption(item) {
 
               <view class="bg1 mt-[15px] h-[80px] w-[48%]">
                 <view class="text-[24px] font-700">
-                  {{ item.redeemRate }}%
+                  {{ item.priceRate }}%
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
                   每日返还率

@@ -1,7 +1,11 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { buyServer, getServerList } from '@/api/server'
+import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 definePage({
   style: {
     navigationStyle: 'custom',
@@ -25,9 +29,23 @@ async function getServerListData() {
 const currentItem = ref({})
 // 购买算力服务器
 async function buyServerCon(item) {
-  console.log('item :>> ', item)
-  console.log('uni :>> ', uni)
   if (buttonLoading.value) {
+    return
+  }
+  if (userInfo.value.kdkBalance < item.fixedPrice) {
+    uni.showToast({
+      title: '余额不足,请购买算力',
+      icon: 'none',
+      mask: true,
+    })
+    return
+  }
+  if (userInfo.value.roleId === 1) {
+    uni.showToast({
+      title: '当前用户未激活,请联系客服激活',
+      icon: 'none',
+      mask: true,
+    })
     return
   }
   try {
@@ -41,6 +59,7 @@ async function buyServerCon(item) {
       mask: true,
     })
     await getServerListData()
+    await userStore.fetchUserInfo()
     showDetail.value = false
   }
   catch (error) {
@@ -73,10 +92,10 @@ async function buyServerCon(item) {
           {{ item.serverName }}
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          每日 {{ item.dayEarnings }} (KDK)
+          每日 {{ formatAmount(item.fixedPrice * item.priceRate) }} (KDK)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          每月 {{ item.dayEarnings * 30 }} (KDK)
+          每月 {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (KDK)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
           算力值 {{ item.fixedPower }}
@@ -117,10 +136,10 @@ async function buyServerCon(item) {
             {{ currentItem.serverName }}
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
-            每日 {{ currentItem.dayEarnings }} (KDK)
+            每日 {{ formatAmount(currentItem.fixedPrice * currentItem.priceRate) }} (KDK)
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
-            每月 {{ currentItem.dayEarnings * 30 }} (KDK)
+            每月 {{ formatAmount(currentItem.fixedPrice * currentItem.priceRate * 30) }} (KDK)
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             算力值 {{ currentItem.fixedPower }}

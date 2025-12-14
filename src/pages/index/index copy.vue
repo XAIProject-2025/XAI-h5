@@ -6,152 +6,109 @@
       @hided-keyboard="hidedKeyboard"
     >
       <template #top>
-        <index-top ref="indexTopRef" />
+        <index-top />
       </template>
-      <!-- 聊天记录渲染 -->
-      <view v-for="(item, index) in dataList" :key="index" style="position: relative;">
-        <view style="transform: scaleY(-1);">
+
+      <!-- 聊天记录 -->
+      <view v-for="(item, index) in dataList" :key="index">
+        <view style="transform: scaleY(-1)">
           <chat-item :item="item" />
         </view>
       </view>
-      <!-- 底部输入框 -->
+
       <template #bottom>
         <chat-input-bar ref="inputBar" :disabled="isAnswering" @send="doSend" />
       </template>
     </z-paging>
-    <!-- <up-toast ref="uToastRef" /> -->
-    <up-notify ref="uNotifyRef" message="Hi uview-plus" />
   </view>
 </template>
 
 <script setup>
-import { nextTick, ref } from 'vue'
-import { getChatHistory, getChatLose } from '@/api/index'
+import { nextTick, onMounted, ref } from 'vue'
+import { getChatHistory } from '@/api/index'
 import { useTokenStore } from '@/store/token'
 import chatInputBar from './components/chat-input-bar.vue'
 import chatItem from './components/chat-item.vue'
 import indexTop from './components/indexTop.vue'
 
-defineOptions({
-  name: 'Home',
-})
-
-let abortController = null
-
-const STREAM_URL
-  = 'https://www.eladmin-test.click/app-api/api/v1/chat/stream'
+defineOptions({ name: 'Home' })
 
 definePage({
-  // 使用 type: "home" 属性设置首页，其他页面不需要设置，默认为page
   type: 'home',
   style: {
-    // 'custom' 表示开启自定义导航栏，默认 'default'
     navigationStyle: 'custom',
     navigationBarTitleText: '%tabbar.home%',
   },
 })
 
-// 聊天记录
+/* ================= 配置 ================= */
+
+const STREAM_URL
+  = 'https://www.eladmin-test.click/app-api/api/v1/chat/stream'
+
+/* ================= 状态 ================= */
+
 const dataList = ref([])
-const uNotifyRef = ref(null)
-onMounted(async () => {
-  uni.showLoading({
-    title: '加载中...',
-  })
-  const chatHistoryRes = await getChatHistory()
-  dataList.value = chatHistoryRes.content
-  uni.hideLoading()
-  // uNotifyRef.value.show({
-  //   top: 200,
-  //   type: 'error',
-  //   color: '#000',
-  //   bgColor: '#e8e8e8',
-  //   message: 'Hi uview-plus',
-  //   duration: 1000 * 3,
-  //   fontSize: 20,
-  //   safeAreaInsetTop: true,
-  // })
-})
 const paging = ref(null)
 const inputBar = ref(null)
-const indexTopRef = ref(null)
-// 当前用户发送的问题
-const askMsg = ref('')
-
-// 是否正在回答中
 const isAnswering = ref(false)
+let abortController = null
 
-// 分页加载（聊天记录翻页用）
-function queryList(pageNo, pageSize) {
-  // 示例：真实项目应该请求历史聊天记录
-  // paging.value.complete([])
+/* ================= 初始化 ================= */
 
-  // 示例先返回空
+onMounted(async () => {
+  uni.showLoading({ title: '加载中...' })
+  const res = await getChatHistory()
+  dataList.value = res?.content || []
+  uni.hideLoading()
+})
+
+/* ================= z-paging ================= */
+
+function queryList() {
   paging.value.complete([])
 }
 
-// 监听键盘高度改变
 function keyboardHeightChange(res) {
   inputBar.value?.updateKeyboardHeightChange(res)
 }
 
-// 隐藏键盘（如果有表情面板）
 function hidedKeyboard() {
   inputBar.value?.hidedKeyboard()
 }
 
-// 发送消息
-async function doSend(msg) {
+/* ================= 发送 ================= */
+
+function doSend(msg) {
   if (isAnswering.value)
     return
 
-  askMsg.value = msg
-
+  // 用户消息
   paging.value.addChatRecordData({
-    time: '',
     icon: '/static/daxiong.jpg',
     name: '大雄',
-    msg,
-    role: 'user',
-
+    content: msg,
+    isMe: true,
   })
 
-  doAnswer()
-}
-
-// 回复消息（流式）
-async function doAnswer() {
-  isAnswering.value = true
-
-  // 添加“思考中...”
+  // AI 占位消息
   paging.value.addChatRecordData({
-    time: '',
     icon: '/static/duola.jpg',
     name: '哆啦A梦',
-    msg: '思考中...',
-    role: 'assistant',
-    _streamStarted: false, // 👈 关键
-
+    content: '',
+    isMe: false,
   })
 
-  // 模拟网络延迟
-  await new Promise(resolve => setTimeout(resolve, 800))
-
-  const totalAnswerStr = `${askMsg.value}`
-
-  // 最后一条记录就是“思考中”的那条
-  const lastItem = dataList.value[0]
-  startStream(lastItem, totalAnswerStr)
-  // streamTextAsync(totalAnswerStr, (char) => {
-  //   console.log('lastItem :>> ', lastItem)
-  //   currentStr += char
-  //   lastItem.msg = currentStr
-
-  //   if (currentStr.length === totalAnswerStr.length) {
-  //     isAnswering.value = false
-  //   }
-  // })
+  nextTick(() => {
+    const aiItem = dataList.value.find(
+      i => i.isMe === false && i.content === '',
+    )
+    if (aiItem)
+      startStream(aiItem, msg)
+  })
 }
+
+/* ================= POST 流式 ================= */
 
 async function startStream(aiItem, message) {
   isAnswering.value = true
@@ -182,7 +139,6 @@ async function startStream(aiItem, message) {
           decoder.decode(value, { stream: true }),
           aiItem,
         )
-        indexTopRef.value.fetchCountToKdk()
       }
     }
     catch (err) {
@@ -201,12 +157,14 @@ async function startStream(aiItem, message) {
       return
     }
     console.error('流式异常', err)
-    aiItem.msg += '\n【生成失败】'
+    aiItem.content += '\n【生成失败】'
   }
   finally {
     stopStream()
   }
 }
+
+/* ================= 解析 SSE ================= */
 
 function handleStreamChunk(text, aiItem) {
   if (!text)
@@ -220,13 +178,10 @@ function handleStreamChunk(text, aiItem) {
     if (!data || data === '[DONE]')
       return
 
-    // ✅ 第一次真正收到 AI 内容
-    if (!aiItem._streamStarted) {
-      aiItem._streamStarted = true
-      aiItem.msg = '' // 🔥 清空“思考中...”
-    }
-
-    aiItem.msg += data
+    // 1️⃣ 修改内容
+    aiItem.content += data
+    console.log('aiItem :>> ', aiItem)
+    // 2️⃣ 强制通知 z-paging 更新聊天项（关键）
   })
 }
 
@@ -236,8 +191,11 @@ function stopStream() {
   abortController = null
   isAnswering.value = false
 }
+function abortByUser() {
+  abortController?.abort()
+}
+/* ================= 触底 ================= */
 
-// 触底加载更多（微信/APP）
 onReachBottom(() => {
   paging.value?.doLoadMore()
 })
