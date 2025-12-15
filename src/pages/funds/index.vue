@@ -76,8 +76,17 @@ function handleTabClick(item) {
             {{ formatAmount(userInfo?.kdkBalance * tokenPrice) }} USDT
           </div>
         </div>
-        <div class="btn-block h-[30px] w-[100px]" @click="handleToUrl('/pages/exchange/index')">
-          <u-image src="/static/invitation/icon_1.png" class="mr-[5px]" width="16" height="16" alt="" />
+        <div
+          class="btn-block h-[30px] w-[100px]"
+          @click="handleToUrl('/pages/exchange/index')"
+        >
+          <u-image
+            src="/static/invitation/icon_1.png"
+            class="mr-[5px]"
+            width="16"
+            height="16"
+            alt=""
+          />
           兑换
         </div>
       </div>
@@ -99,12 +108,30 @@ function handleTabClick(item) {
         {{ formatAmount(userInfo?.usdtBalance || 0) }}
       </div>
       <div class="flex items-center justify-between">
-        <div class="btn-block h-[30px] w-[40%]">
-          <u-image src="/static/invitation/icon_3.png" class="mr-[5px]" width="16" height="16" alt="" />
+        <div
+          class="btn-block h-[30px] w-[40%]"
+          @click="handleToUrl('/pages/withdraw/index')"
+        >
+          <u-image
+            src="/static/invitation/icon_3.png"
+            class="mr-[5px]"
+            width="16"
+            height="16"
+            alt=""
+          />
           提现
         </div>
-        <div class="btn-block--white h-[30px] w-[40%]">
-          <u-image src="/static/invitation/icon_2.png" class="mr-[5px]" width="16" height="16" alt="" />
+        <div
+          class="btn-block--white h-[30px] w-[40%]"
+          @click="handleToUrl('/pages/topUp/index')"
+        >
+          <u-image
+            src="/static/invitation/icon_2.png"
+            class="mr-[5px]"
+            width="16"
+            height="16"
+            alt=""
+          />
           充值
         </div>
       </div>
@@ -116,15 +143,23 @@ function handleTabClick(item) {
       </div>
       <div class="m-[10px] flex items-center">
         <div
-          v-for="item in tabData.tabs" :key="item.index"
+          v-for="item in tabData.tabs"
+          :key="item.index"
           class="mr-[15px] border border-[#000] rounded-[10px] border-solid bg-[#fff] px-[10px] py-[5px] text-[12px] text-[#000]"
-          :class="{ '!bg-[#000] !text-[#fff]': item.index === tabData.currentTab }" @click="handleTabClick(item)"
+          :class="{
+            '!bg-[#000] !text-[#fff]': item.index === tabData.currentTab,
+          }"
+          @click="handleTabClick(item)"
         >
           {{ item.title }}
           <!-- reload -->
         </div>
       </div>
-      <record ref="recordRef" :tab="tabData.currentTab" :token-price="tokenPrice" />
+      <record
+        ref="recordRef"
+        :tab="tabData.currentTab"
+        :token-price="tokenPrice"
+      />
     </view>
   </view>
 </template>
