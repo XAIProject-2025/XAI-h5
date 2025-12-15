@@ -45,7 +45,7 @@ export function openExternalUrl(url, options = {}) {
   window.open(url, options.target || '_blank')
   // #endif
   // App 端（需依赖 5+ API）
-  // #ifdef APP - PLUS
+  // #ifdef APP-PLUS
   plus.runtime.openURL(url, (res) => {
     uni.showToast({
       title: '打开失败，请检查链接',

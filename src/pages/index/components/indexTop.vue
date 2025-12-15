@@ -29,11 +29,8 @@ const notifyTitle = ref('')
 const conuntToKdk = ref(0)
 onMounted(async () => {
   await getTask()
-  const getPowerOrdersRes = await getPowerOrders({
-    status: 0,
-  })
+  await getPowerOrdersData()
   conuntToKdk.value = userInfo.value.kdkBalance
-  powerOrdersData.value = getPowerOrdersRes.content
   if (powerOrdersData.value.length === 0) {
     notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
   }
@@ -43,11 +40,18 @@ async function getTask() {
   const getChatTaskRes = await getChatTask()
   taskData.value = getChatTaskRes
 }
+async function getPowerOrdersData() {
+  const getPowerOrdersRes = await getPowerOrders({
+    status: 0,
+  })
+  powerOrdersData.value = getPowerOrdersRes.content
+}
 async function fetchCountToKdk() {
   const userStore = useUserStore()
   await userStore.fetchUserInfo()
   conuntToKdk.value = userInfo.value.kdkBalance
   upCountToKdk.value.reStart()
+  await getPowerOrdersData()
   await getTask()
   if (taskData.value.usedPower > 0) {
     notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
@@ -154,7 +158,7 @@ defineExpose({
                     {{ item.usedPower }}/{{ item.power }}
                   </view>
                   <view class="mt-[5px]">
-                    {{ item.serverName }}
+                    {{ item.serverInfo.serverName }}
                   </view>
                 </view>
               </template>

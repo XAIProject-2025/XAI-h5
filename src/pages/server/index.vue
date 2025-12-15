@@ -226,12 +226,8 @@ function changeDynamicIncome(e) {
         </view>
 
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          算力值 {{ item.dynamicMax * item.powerRate }}
-          <span class="text-[#f7ca54]">({{ item.dynamicMax }} KDK)</span>
+          算力值 {{ item.fixedPower }}
         </view>
-        <!-- <view class="mt-[5px] text-[12px] text-[#94999A]">
-          收利率 {{ item.priceRate * 100 }}%
-        </view> -->
         <view class="mt-[5px]">
           <view class="mr-[8px] text-[12px] text-[#D73A3C] font-bold">
             <div class="">
@@ -320,7 +316,7 @@ function changeDynamicIncome(e) {
             {{ currentItem.serverName }}
           </view>
           <div class="mt-[10px] flex items-center justify-center">
-            <view class="mr-[10px] mt-[5px] w-1/2 text-[12px] text-[#94999A]">
+            <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
               购买下限 {{ currentItem.dynamicMin }} (KDK)
             </view>
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
@@ -328,7 +324,7 @@ function changeDynamicIncome(e) {
             </view>
           </div>
           <div class="mt-[5px] flex items-center justify-center">
-            <view class="mr-[10px] mt-[5px] w-1/2 text-[12px] text-[#94999A]">
+            <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
               算力值 {{ currentItem.fixedPower }}
             </view>
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
@@ -363,10 +359,7 @@ function changeDynamicIncome(e) {
               </template>
             </up-input>
           </div>
-          <div class="mt-[5px]">
-            <div class="mt-[5px] text-[12px] text-[#94999A]">
-              预估算力: {{ dynamicData.power || 0 }}
-            </div>
+          <div class="mt-[20px]">
             <div class="mt-[5px] text-[12px] text-[#94999A]">
               预估收益: {{ dynamicData.income || 0 }} KDK
             </div>

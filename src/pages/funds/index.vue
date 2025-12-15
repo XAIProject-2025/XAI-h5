@@ -36,6 +36,7 @@ const tabData = reactive({
 })
 onMounted(() => {
   commonStore.fetchTokenPrice()
+  userStore.fetchUserInfo()
 })
 const recordRef = ref(null)
 function handleTabClick(item) {

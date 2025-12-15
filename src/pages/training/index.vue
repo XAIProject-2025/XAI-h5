@@ -157,28 +157,28 @@ onMounted(async () => {
         />
         <view class="flex flex-col items-center justify-center">
           <u-image
-            v-if="vipInfoData.vipLevel == 1"
+            v-if="vipInfoData.nextVipLevel == 1"
             src="/static/level/level_0.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 2"
+            v-if="vipInfoData.nextVipLevel == 2"
             src="/static/level/level_1.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 3"
+            v-if="vipInfoData.nextVipLevel == 3"
             src="/static/level/level_2.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 4"
+            v-if="vipInfoData.nextVipLevel == 4"
             src="/static/level/level_3.png"
             width="60"
             height="60"
@@ -257,7 +257,7 @@ onMounted(async () => {
       <view class="mt-[20px] text-[16px] font-bold">
         当前费率
         <span class="text-[40px] text-[#FFEE00]">{{
-          vipInfoData.currentPremium * 100
+          (vipInfoData.currentPremium - vipInfoData.decayedNum) * 100
         }}</span>
         %
       </view>
@@ -283,7 +283,7 @@ onMounted(async () => {
           trail-color="#ebedf0"
           :percent="modelVale"
         >
-          <text>{{ modelVale }}天</text>
+          <text>{{ vipInfoData.needDays }}天</text>
         </l-circle>
         <!-- <lime-circle v-model:current="modelVale" :percent="100">
           <text>{{ modelVale }}%</text>
