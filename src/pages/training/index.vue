@@ -18,6 +18,7 @@ const vipInfoData = ref({})
 onMounted(async () => {
   uni.showLoading({
     title: '加载中...',
+    mask: true,
   })
   const vipInfoRes = await getVipInfo()
   vipInfoData.value = vipInfoRes
@@ -30,41 +31,75 @@ onMounted(async () => {
     <!-- 顶部区域个人信息 -->
     <view class="bg1 py-[20px] pb-[30px]">
       <view class="flex items-center justify-center">
-        <u-image src="/static/images/avatar.png" width="60" height="60" alt="" />
+        <u-image
+          src="/static/images/avatar.png"
+          width="60"
+          height="60"
+          alt=""
+        />
       </view>
       <view class="mt-[10px] text-center text-[16px] text-[#fff] font-bold">
         {{ userInfo.name }}
       </view>
       <view class="mt-[10px] flex items-center justify-center">
         <level />
-        <view class="btn-block--white ml-[10px] h-[20px] min-h-[20px] rounded-[12px] px-[15px] py-[4px]">
+        <view
+          class="btn-block--white ml-[10px] h-[20px] min-h-[20px] rounded-[12px] px-[15px] py-[4px]"
+        >
           <span v-if="userInfo.roleId == 4">无限代理</span>
           <span v-if="userInfo.roleId == 3">普通代理</span>
           <span v-if="userInfo.roleId == 2">激活用户</span>
           <span v-if="userInfo.roleId == 1">未激活</span>
         </view>
       </view>
-      <view class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]">
-        <view><span class="mr-[4px]">算力服务器</span>2</view>
+      <view
+        class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]"
+      >
+        <view>
+          <span class="mr-[4px]">算力服务器</span>{{ vipInfoData.currentServerLimit }}
+        </view>
         <view class="mx-[10px]">
           |
         </view>
-        <view><span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.kdkBalance) }} KDK</view>
+        <view>
+          <span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.kdkBalance) }} KDK
+        </view>
       </view>
-      <view class="mt-[5px] flex items-center justify-center text-[12px] text-[#94999A]">
-        <view><span class="mr-[4px]">USDT余额</span>{{ formatAmount(userInfo.usdtBalance) }} </view>
+      <view
+        class="mt-[5px] flex items-center justify-center text-[12px] text-[#94999A]"
+      >
+        <view>
+          <span class="mr-[4px]">USDT余额</span>{{ formatAmount(userInfo.usdtBalance) }}
+        </view>
         <view class="mx-[10px]">
           |
         </view>
-        <view><span class="mr-[4px]">活跃度</span>{{ vipInfoData.currentActivity }}</view>
+        <view>
+          <span class="mr-[4px]">活跃度</span>{{ vipInfoData.currentActivity }}
+        </view>
       </view>
-      <view class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]">
-        <view class="btn-block h-[35px] w-1/2" @click="handleToUrl('/pages/invitation/index')">
-          <image src="/static/training/qr_code.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
+      <view
+        class="mt-[15px] flex items-center justify-between gap-[20px] px-[20px]"
+      >
+        <view
+          class="btn-block h-[35px] w-1/2"
+          @click="handleToUrl('/pages/invitation/index')"
+        >
+          <image
+            src="/static/training/qr_code.png"
+            class="mr-[5px] h-[20px] w-[20px]"
+            mode="scaleToFill"
+            alt=""
+          />
           邀请
         </view>
         <view class="btn-block--white h-[35px] w-1/2">
-          <image src="/static/training/withdraw.png" class="mr-[5px] h-[20px] w-[20px]" mode="scaleToFill" alt="" />
+          <image
+            src="/static/training/withdraw.png"
+            class="mr-[5px] h-[20px] w-[20px]"
+            mode="scaleToFill"
+            alt=""
+          />
           提现
         </view>
       </view>
@@ -76,10 +111,34 @@ onMounted(async () => {
       </view>
       <view class="mt-[20px] flex items-center justify-center">
         <view class="flex flex-col items-center justify-center">
-          <u-image v-if="vipInfoData.vipLevel == 1" src="/static/level/level_0.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 2" src="/static/level/level_1.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 3" src="/static/level/level_2.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 4" src="/static/level/level_3.png" width="60" height="60" alt="" />
+          <u-image
+            v-if="vipInfoData.vipLevel == 1"
+            src="/static/level/level_0.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 2"
+            src="/static/level/level_1.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 3"
+            src="/static/level/level_2.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 4"
+            src="/static/level/level_3.png"
+            width="60"
+            height="60"
+            alt=""
+          />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
               当前等级
@@ -89,12 +148,42 @@ onMounted(async () => {
             </view>
           </view>
         </view>
-        <u-image src="/static/training/arrow.png" width="72" height="20" class="mx-[30px]" alt="" />
+        <u-image
+          src="/static/training/arrow.png"
+          width="72"
+          height="20"
+          class="mx-[30px]"
+          alt=""
+        />
         <view class="flex flex-col items-center justify-center">
-          <u-image v-if="vipInfoData.vipLevel == 1" src="/static/level/level_0.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 2" src="/static/level/level_1.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 3" src="/static/level/level_2.png" width="60" height="60" alt="" />
-          <u-image v-if="vipInfoData.vipLevel == 4" src="/static/level/level_3.png" width="60" height="60" alt="" />
+          <u-image
+            v-if="vipInfoData.vipLevel == 1"
+            src="/static/level/level_0.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 2"
+            src="/static/level/level_1.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 3"
+            src="/static/level/level_2.png"
+            width="60"
+            height="60"
+            alt=""
+          />
+          <u-image
+            v-if="vipInfoData.vipLevel == 4"
+            src="/static/level/level_3.png"
+            width="60"
+            height="60"
+            alt=""
+          />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
               下一等级
@@ -109,25 +198,55 @@ onMounted(async () => {
         升级条件
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
+        <view
+          class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
+        >
           <view>邀请好友</view>
-          <view>{{ vipInfoData.currentInviteUsers }}/{{ vipInfoData.nextRequiredInviteUsers }}</view>
+          <view>
+            {{ vipInfoData.currentInviteUsers }}/{{
+              vipInfoData.nextRequiredInviteUsers
+            }}
+          </view>
         </view>
-        <up-line-progress height="12px" :percentage="vipInfoData.inviteUsersProgress" active-color="#000" />
+        <up-line-progress
+          height="12px"
+          :percentage="vipInfoData.inviteUsersProgress"
+          active-color="#000"
+        />
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
+        <view
+          class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
+        >
           <view>直接推荐充值</view>
-          <view>{{ vipInfoData.currentRecharge }}/{{ vipInfoData.nextRequiredRecharge }}</view>
+          <view>
+            {{ vipInfoData.currentRecharge }}/{{
+              vipInfoData.nextRequiredRecharge
+            }}
+          </view>
         </view>
-        <up-line-progress height="12px" :percentage="vipInfoData.rechargeProgress" active-color="#000" />
+        <up-line-progress
+          height="12px"
+          :percentage="vipInfoData.rechargeProgress"
+          active-color="#000"
+        />
       </view>
       <view class="mt-[10px]">
-        <view class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]">
+        <view
+          class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
+        >
           <view>活动度</view>
-          <view>{{ vipInfoData.currentActivity }}/{{ vipInfoData.nextRequiredActivity }}</view>
+          <view>
+            {{ vipInfoData.currentActivity }}/{{
+              vipInfoData.nextRequiredActivity
+            }}
+          </view>
         </view>
-        <up-line-progress height="12px" :percentage="vipInfoData.activityProgress" active-color="#000" />
+        <up-line-progress
+          height="12px"
+          :percentage="vipInfoData.activityProgress"
+          active-color="#000"
+        />
       </view>
     </view>
     <!-- 手续费信息 -->
@@ -136,7 +255,11 @@ onMounted(async () => {
         费用信息
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        当前费率 <span class="text-[40px] text-[#FFEE00]">{{ vipInfoData.currentPremium * 100 }}</span> %
+        当前费率
+        <span class="text-[40px] text-[#FFEE00]">{{
+          vipInfoData.currentPremium * 100
+        }}</span>
+        %
       </view>
       <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">
         <up-icon name="info-circle" color="#94999A" />
@@ -153,7 +276,11 @@ onMounted(async () => {
       <view class="flex items-center justify-center">
         <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
         <l-circle
-          :stroke-width="10" size="150px" :trail-width="10" stroke-color="#000" trail-color="#ebedf0"
+          :stroke-width="10"
+          size="150px"
+          :trail-width="10"
+          stroke-color="#000"
+          trail-color="#ebedf0"
           :percent="modelVale"
         >
           <text>{{ modelVale }}天</text>
@@ -200,12 +327,12 @@ onMounted(async () => {
           VIP 等级越高，初始费率越低
         </view>
       </view>
-      <view class="mt-[10px] flex items-center text-[14px]">
+      <!-- <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
           当前获得的费用折扣：0%
         </view>
-      </view>
+      </view> -->
     </view>
     <!-- <up-alert title="升级提示" type="warning" description="升级后，您将获得更高的费用折扣" /> -->
   </view>

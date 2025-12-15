@@ -10,27 +10,45 @@ definePage({
   },
 })
 onMounted(async () => {
-  uni.showLoading({
-    title: '加载中...',
-  })
   await getList()
-  uni.hideLoading()
 })
 const serverList = ref([])
 async function getList() {
+  uni.showLoading({
+    title: '加载中...',
+  })
   const getPowerOrdersRes = await getPowerOrders()
   serverList.value = getPowerOrdersRes.content || []
   serverList.value.map((v) => {
     v.isExpired = false
   })
+  uni.hideLoading()
 }
 const confirmData = reactive({
   show: false,
   item: {},
   loading: false,
 })
-function redemption(item) {
+async function redemption(item) {
   console.log('item :>> ', item)
+  confirmData.loading = true
+  try {
+    await redeemPowerOrder({ orderId: item.id })
+    uni.showToast({
+      title: '赎回成功',
+    })
+    await getList()
+    confirmData.show = false
+  }
+  catch (error) {
+    uni.showToast({
+      title: error.data.message || '赎回失败,请重试',
+      icon: 'none',
+    })
+  }
+  finally {
+    confirmData.loading = false
+  }
 }
 </script>
 
@@ -48,7 +66,10 @@ function redemption(item) {
         </view>
       </view>
 
-      <view class="btn-block h-[30px] min-h-[30px] w-[100px]" @click="handleToUrl('/pages/server/index')">
+      <view
+        class="btn-block h-[30px] min-h-[30px] w-[100px]"
+        @click="handleToUrl('/pages/server/index')"
+      >
         产品中心
       </view>
     </view>
@@ -56,23 +77,32 @@ function redemption(item) {
     <!-- 列表 -->
     <template v-if="serverList.length > 0">
       <view
-        v-for="(item, index) in serverList" :key="index"
+        v-for="(item, index) in serverList"
+        :key="index"
         class="mt-[15px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] p-[15px]"
       >
         <view class="relative flex">
           <div
             :class="{
-              'status-green': item.status === 0 || item.status === 2 || item.status === 3,
+              'status-green':
+                item.status === 0 || item.status === 2 || item.status === 3,
               'status-org': item.status === 1,
-            }" class="absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]"
+            }"
+            class="absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]"
           >
             <span v-if="item.status === 0">正常</span>
             <span v-if="item.status === 1">可赎回</span>
             <span v-if="item.status === 2 || item.status === 3">完成</span>
             <!-- <span v-if="item.status === 3">已赎回</span> -->
           </div>
-          <view class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded bg-[#000]">
-            <u-image src="/static/productCenter/server.png" width="20" height="20" />
+          <view
+            class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded bg-[#000]"
+          >
+            <u-image
+              src="/static/productCenter/server.png"
+              width="20"
+              height="20"
+            />
           </view>
           <view class="ml-[20px] flex-1">
             <view class="font-bold">
@@ -103,9 +133,12 @@ function redemption(item) {
               class="w-full flex items-center justify-end text-[12px] text-[#94999A]"
               @click="item.isExpired = !item.isExpired"
             >
-              {{ item.isExpired ? '收起' : '展开' }}
+              {{ item.isExpired ? "收起" : "展开" }}
               <u-icon
-                name="arrow-down" color="#94999A" size="12" class="transition-transform duration-200"
+                name="arrow-down"
+                color="#94999A"
+                size="12"
+                class="transition-transform duration-200"
                 :class="item.isExpired ? 'rotate-180' : 'rotate-0'"
               />
             </view>
@@ -167,16 +200,24 @@ function redemption(item) {
 
               <template v-if="item.status !== 2 && item.status !== 3">
                 <view
-                  v-if="item.usedPower !== item.power" class="w-[48%]"
-                  @click="confirmData.item = item; confirmData.show = true;"
+                  v-if="item.usedPower !== item.power"
+                  class="w-[48%]"
+                  @click="
+                    confirmData.item = item;
+                    confirmData.show = true;
+                  "
                 >
                   <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
                     提前赎回
                   </view>
                 </view>
                 <view
-                  v-if="item.usedPower === item.power" class="w-[48%]"
-                  @click="confirmData.item = item; confirmData.show = true;"
+                  v-if="item.usedPower === item.power"
+                  class="w-[48%]"
+                  @click="
+                    confirmData.item = item;
+                    confirmData.show = true;
+                  "
                 >
                   <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
                     赎回
@@ -212,24 +253,31 @@ function redemption(item) {
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          训练师等级决定了可同时运行的服务器数量 —— 等级越高，支持同时运行的服务器数量越多。
+          训练师等级决定了可同时运行的服务器数量 ——
+          等级越高，支持同时运行的服务器数量越多。
         </view>
       </view>
     </view>
     <confirm
-      :show="confirmData.show" :button-loading="confirmData.loading" height="200px"
-      @close="confirmData.show = false" @confirm="redemption(confirmData.item)"
+      :show="confirmData.show"
+      :button-loading="confirmData.loading"
+      height="200px"
+      @close="confirmData.show = false"
+      @confirm="redemption(confirmData.item)"
     >
       <div class="flex flex-col items-center justify-center p-[20px]">
         <div class="text-[18px] font-bold">
           提示
         </div>
         <view class="mt-[10px] text-[12px]">
-          <span v-if="confirmData.item.usedPower !== confirmData.item.power"> 确定提前赎回算力服务器吗？</span>
+          <span v-if="confirmData.item.usedPower !== confirmData.item.power">
+            确定提前赎回算力服务器吗？</span>
           <span v-else> 确定赎回算力服务器吗？</span>
         </view>
         <div class="mt-[5px] text-center text-[12px]">
-          注意：提前赎回算力服务器需要扣除手续费(本金20%)。
+          注意：提前赎回算力服务器需要扣除手续费(本金{{
+            confirmData.item.redeemRate * 100
+          }}%)。
         </div>
       </div>
     </confirm>

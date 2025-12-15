@@ -26,11 +26,13 @@ const taskData = ref({})
 const powerOrdersData = ref([])
 const upCountToKdk = ref(null)
 const notifyTitle = ref('')
+const conuntToKdk = ref(0)
 onMounted(async () => {
   await getTask()
   const getPowerOrdersRes = await getPowerOrders({
     status: 0,
   })
+  conuntToKdk.value = userInfo.value.kdkBalance
   powerOrdersData.value = getPowerOrdersRes.content
   if (powerOrdersData.value.length === 0) {
     notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
@@ -44,8 +46,12 @@ async function getTask() {
 async function fetchCountToKdk() {
   const userStore = useUserStore()
   await userStore.fetchUserInfo()
+  conuntToKdk.value = userInfo.value.kdkBalance
   upCountToKdk.value.reStart()
   await getTask()
+  if (taskData.value.usedPower > 0) {
+    notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
+  }
 }
 defineExpose({
   fetchCountToKdk,
@@ -53,11 +59,19 @@ defineExpose({
 </script>
 
 <template>
-  <view class="p-[15px] pt-[100px]" :class="systemInfo.uniPlatform === 'web' ? 'pt-[60px]' : 'pt-[100px]'">
+  <view
+    class="p-[15px] pt-[100px]"
+    :class="systemInfo.uniPlatform === 'web' ? 'pt-[60px]' : 'pt-[100px]'"
+  >
     <view>
       <view class="flex items-center justify-between px-[20px]">
         <view class="flex items-center">
-          <up-image :width="40" :height="40" round src="/static/images/ai_logo.png" />
+          <up-image
+            :width="40"
+            :height="40"
+            round
+            src="/static/images/ai_logo.png"
+          />
           <view class="ml-[20px]">
             <view class="text-[14px] text-[#666]">
               客服代码
@@ -69,24 +83,38 @@ defineExpose({
         </view>
         <view class="flex items-center">
           <up-image
-            v-if="userInfo.roleId === 2" :width="40" :height="50" class="mr-[10px]"
+            v-if="userInfo.roleId === 2"
+            :width="40"
+            :height="50"
+            class="mr-[10px]"
             src="/static/level/type_1.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 1" :width="40" :height="50" class="mr-[10px]"
+            v-if="userInfo.roleId === 1"
+            :width="40"
+            :height="50"
+            class="mr-[10px]"
             src="/static/level/type_2.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 3" :width="40" :height="50" class="mr-[10px]"
+            v-if="userInfo.roleId === 3"
+            :width="40"
+            :height="50"
+            class="mr-[10px]"
             src="/static/level/type_3.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 4" :width="40" :height="50" class="mr-[10px]"
+            v-if="userInfo.roleId === 4"
+            :width="40"
+            :height="50"
+            class="mr-[10px]"
             src="/static/level/type_4.gif"
           />
           <!-- <up-image :width="40" :height="40" class="mr-[20px]" src="/static/images/avatar.png" /> -->
           <up-image
-            :width="50" :height="50" src="/static/index/tg.png"
+            :width="50"
+            :height="50"
+            src="/static/index/tg.png"
             @click="openExternalUrl(userInfo.tgCustomerLink)"
           />
         </view>
@@ -95,7 +123,12 @@ defineExpose({
       <view class="bg mb-[10px] mt-[10px] py-[25px] text-[#fff]">
         <view class="flex items-center justify-between px-[20px]">
           <view class="w-1/2 flex items-center justify-center">
-            <up-image :width="60" :height="60" round src="/static/images/avatar.png" />
+            <up-image
+              :width="60"
+              :height="60"
+              round
+              src="/static/images/avatar.png"
+            />
             <view class="ml-[15px]">
               <view class="mb-[5px] text-[14px]">
                 {{ userInfo.name }}
@@ -103,13 +136,20 @@ defineExpose({
               <level />
             </view>
           </view>
-          <view v-if="powerOrdersData.length > 0" class="w-1/2 flex items-center justify-center">
+          <view
+            v-if="powerOrdersData.length > 0"
+            class="w-1/2 flex items-center justify-center"
+          >
             <up-swiper
-              class="w-[150px] !h-[40px] !bg-[transparent]" :list="powerOrdersData" @change="onChange"
+              class="w-[150px] !h-[40px] !bg-[transparent]"
+              :list="powerOrdersData"
+              @change="onChange"
               @click="handleClick"
             >
               <template #default="{ item, index }">
-                <view class="w-full flex flex-col items-center justify-center text-[14px]">
+                <view
+                  class="w-full flex flex-col items-center justify-center text-[14px]"
+                >
                   <view class="">
                     {{ item.usedPower }}/{{ item.power }}
                   </view>
@@ -132,8 +172,13 @@ defineExpose({
           <view class="w-1/2 flex flex-col items-center justify-center">
             <view class="mt-[2px] flex text-[18px] font-bold">
               <up-count-to
-                ref="upCountToKdk" bold :start-val="0" :decimals="2" :end-val="userInfo.kdkBalance"
-                :font-size="18" color="#fff"
+                ref="upCountToKdk"
+                bold
+                :start-val="0"
+                :decimals="2"
+                :end-val="conuntToKdk"
+                :font-size="18"
+                color="#fff"
               />
               <view class="ml-[5px]">
                 KDK
@@ -144,7 +189,10 @@ defineExpose({
             </view>
           </view>
           <view class="h-[50px] w-[1px] bg-[#374447]" />
-          <view class="w-1/2 flex flex-col items-center justify-center" @click="handleToUrl('/pages/server/index')">
+          <view
+            class="w-1/2 flex flex-col items-center justify-center"
+            @click="handleToUrl('/pages/server/index')"
+          >
             <up-icon name="plus" size="20px" class="h-[25px]" color="#fff" />
             <view class="mt-[5px] text-[14px]">
               产品中心
@@ -156,18 +204,31 @@ defineExpose({
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
         <view>
-          AI对话 {{ taskData.todayChatCount > taskData.taskTarget ? taskData.taskTarget : taskData.todayChatCount
-          }}/{{
-            taskData.taskTarget }}
+          AI对话
+          {{
+            taskData.todayChatCount > taskData.taskTarget
+              ? taskData.taskTarget
+              : taskData.todayChatCount
+          }}/{{ taskData.taskTarget }}
         </view>
         <view>奖励{{ formatAmount(taskData.rewardAmount) }}KDK</view>
       </view>
       <up-line-progress
-        height="16px" :percentage="(taskData.todayChatCount / taskData.taskTarget * 100).toFixed(2)"
+        height="16px"
+        :percentage="
+          ((taskData.todayChatCount / taskData.taskTarget) * 100).toFixed(2)
+        "
         active-color="#000"
       />
     </view>
-    <up-alert v-if="notifyTitle" class="mt-[5px]" type="warning" :description="notifyTitle" font-size="12" closable />
+    <up-alert
+      v-if="notifyTitle"
+      class="mt-[5px]"
+      type="warning"
+      :description="notifyTitle"
+      font-size="12"
+      closable
+    />
   </view>
 </template>
 
