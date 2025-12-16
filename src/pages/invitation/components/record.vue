@@ -5,7 +5,7 @@
         <view class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px]">
           <view class="">
             <view class="text-[14px] font-bold">
-              {{ item.amount }} KDK
+              {{ item.amount }} Xcoin
               <span class="mt-[5px] text-[12px] text-[#94999A]">
                 ≈ {{ item.usdtAmount }} USDT
               </span>

@@ -48,7 +48,7 @@ async function buyType1(item) {
   if (buttonLoading.value) {
     return
   }
-  if (userInfo.value.kdkBalance < item.fixedPrice) {
+  if (userInfo.value.XcoinBalance < item.fixedPrice) {
     uni.showToast({
       title: '余额不足,请购买算力',
       icon: 'none',
@@ -94,7 +94,7 @@ async function buyType2(item) {
   if (buttonLoading.value) {
     return
   }
-  if (userInfo.value.kdkBalance < item.fixedPrice) {
+  if (userInfo.value.XcoinBalance < item.fixedPrice) {
     uni.showToast({
       title: '余额不足,请购买算力',
       icon: 'none',
@@ -112,7 +112,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) < item.dynamicMin) {
     uni.showToast({
-      title: `动态购买金额不能小于${item.dynamicMin}KDK`,
+      title: `动态购买金额不能小于${item.dynamicMin}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -120,7 +120,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) > item.dynamicMax) {
     uni.showToast({
-      title: `动态购买金额不能大于${item.dynamicMax}KDK`,
+      title: `动态购买金额不能大于${item.dynamicMax}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -193,10 +193,10 @@ function changeDynamicIncome(e) {
           {{ item.serverName }}
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          每日 {{ formatAmount(item.fixedPrice * item.priceRate) }} (KDK)
+          每日 {{ formatAmount(item.fixedPrice * item.priceRate) }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          每月 {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (KDK)
+          每月 {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
           算力值 {{ item.fixedPower }}
@@ -206,7 +206,7 @@ function changeDynamicIncome(e) {
         </view> -->
         <view class="mb-[12px] mt-[15px] flex flex-col justify-center">
           <view class="text-[16px] text-[#D73A3C] font-bold">
-            {{ formatAmount(item.fixedPrice) }} KDK
+            {{ formatAmount(item.fixedPrice) }} Xcoin
           </view>
           <view class="mt-[5px] text-[12px] text-[#94999A]">
             库存 :{{ item.stock }}
@@ -219,10 +219,10 @@ function changeDynamicIncome(e) {
           {{ item.serverName }}
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          购买下限 {{ item.dynamicMin }} (KDK)
+          购买下限 {{ item.dynamicMin }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          购买上限 {{ item.dynamicMax }} (KDK)
+          购买上限 {{ item.dynamicMax }} (Xcoin)
         </view>
 
         <view class="mt-[5px] text-[12px] text-[#94999A]">
@@ -231,10 +231,10 @@ function changeDynamicIncome(e) {
         <view class="mt-[5px]">
           <view class="mr-[8px] text-[12px] text-[#D73A3C] font-bold">
             <div class="">
-              购买:{{ item.dynamicMax }} KDK
+              购买:{{ item.dynamicMax }} Xcoin
             </div>
             <div class="">
-              收益:{{ item.dynamicMax * item.priceRate }} KDK
+              收益:{{ item.dynamicMax * item.priceRate }} Xcoin
             </div>
           </view>
           <view class="mt-[5px] text-[12px] text-[#94999A]">
@@ -285,14 +285,14 @@ function changeDynamicIncome(e) {
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             每日
             {{ formatAmount(currentItem.fixedPrice * currentItem.priceRate) }}
-            (KDK)
+            (Xcoin)
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             每月
             {{
               formatAmount(currentItem.fixedPrice * currentItem.priceRate * 30)
             }}
-            (KDK)
+            (Xcoin)
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             算力值 {{ currentItem.fixedPower }}
@@ -303,7 +303,7 @@ function changeDynamicIncome(e) {
 
           <view class="mt-[5px] flex items-center justify-center">
             <view class="mr-[8px] text-[18px] text-[#D73A3C] font-bold">
-              {{ formatAmount(currentItem.fixedPrice) }} KDK
+              {{ formatAmount(currentItem.fixedPrice) }} Xcoin
             </view>
           </view>
         </view>
@@ -317,10 +317,10 @@ function changeDynamicIncome(e) {
           </view>
           <div class="mt-[10px] flex items-center justify-center">
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              购买下限 {{ currentItem.dynamicMin }} (KDK)
+              购买下限 {{ currentItem.dynamicMin }} (Xcoin)
             </view>
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              购买上限 {{ currentItem.dynamicMax }} (KDK)
+              购买上限 {{ currentItem.dynamicMax }} (Xcoin)
             </view>
           </div>
           <div class="mt-[5px] flex items-center justify-center">
@@ -335,11 +335,11 @@ function changeDynamicIncome(e) {
             class="mt-[5px] flex items-center text-[12px] text-[#D73A3C] font-bold"
           >
             <view class="mt-[5px] w-1/2 text-[12px]">
-              购买:{{ currentItem.dynamicMax }} KDK
+              购买:{{ currentItem.dynamicMax }} Xcoin
             </view>
             <view class="mt-[5px] w-1/2 text-[12px]">
               收益:{{ currentItem.dynamicMax * currentItem.priceRate }}
-              KDK
+              Xcoin
             </view>
           </view>
           <div class="mt-[10px] text-[12px] text-[#94999A]">
@@ -355,13 +355,13 @@ function changeDynamicIncome(e) {
               @change="changeDynamicIncome"
             >
               <template #suffix>
-                KDK
+                Xcoin
               </template>
             </up-input>
           </div>
           <div class="mt-[20px]">
             <div class="mt-[5px] text-[12px] text-[#94999A]">
-              预估收益: {{ dynamicData.income || 0 }} KDK
+              预估收益: {{ dynamicData.income || 0 }} Xcoin
             </div>
           </div>
         </view>

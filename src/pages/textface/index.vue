@@ -1,13 +1,13 @@
 <template>
   <view class="container">
-    <button @click="openCamera">
-      打开摄像头
-    </button>
-    <button @click="takePhoto">
-      拍照
-    </button>
-    <web-view id="faceWebview" :src="iframeUrl" class="webview" allow="camera; microphone; autoplay" allowfullscreen />
-
+    <web-view
+      id="faceWebview"
+      :src="iframeUrl"
+      class="webview"
+      allow="camera; microphone; autoplay"
+      allowfullscreen
+      style="height: 100%"
+    />
     <image v-if="snapshot" :src="snapshot" class="snapshot" />
   </view>
 </template>
@@ -15,9 +15,15 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
+definePage({
+  style: {
+    navigationStyle: 'custom',
+    navigationBarTitleText: '',
+  },
+})
 const snapshot = ref('')
 // iframe 页面地址
-const iframeUrl = 'https://chenshiqi.mynatapp.cc?apiUrl=https://chenshiqi.mynatapp.cc'
+const iframeUrl = 'https://face.eladmin-test.click/?type=0'
 
 let webview = null
 

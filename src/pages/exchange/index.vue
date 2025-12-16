@@ -40,10 +40,10 @@ onMounted(async () => {
     <view class="bg-default my-[20px] flex items-center justify-between py-[20px]">
       <view class="w-1/2 flex flex-col items-center justify-center">
         <view class="text-[18px] font-bold">
-          {{ formatAmount(userInfo.kdkBalance) }}
+          {{ formatAmount(userInfo.XcoinBalance) }}
         </view>
         <view class="mt-[5px] text-[14px] text-[#999]">
-          KDK
+          Xcoin
         </view>
       </view>
       <view class="w-1/2 flex flex-col items-center justify-center">

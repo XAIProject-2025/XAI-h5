@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getDepositWallets } from '@/api/index'
 import { formatAmount, handleCopy } from '@/utils/util'
 
 definePage({
@@ -6,6 +7,16 @@ definePage({
     navigationStyle: 'custom',
     navigationBarTitleText: '',
   },
+})
+onMounted(async () => {
+  const getDepositWalletsRes = await getDepositWallets()
+  // getDepositWallets({
+  //   chain: 'TRON',
+  // }).then((res) => {
+  //   if (res.code === 0) {
+  //     console.log(res)
+  //   }
+  // })
 })
 </script>
 

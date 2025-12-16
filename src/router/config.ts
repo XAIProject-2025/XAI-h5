@@ -25,6 +25,7 @@ export const EXCLUDE_LOGIN_PATH_LIST = [
   '/pages-sub/xxx/index', // 示例值
   '/pages-fg/login/loginC', // 登录页
   '/pages-fg/login/register', // 注册页
+  '/pages/textface/index', // 人脸识别页
   ...excludeLoginPathList, // 都是以 / 开头的 path
 ]
 

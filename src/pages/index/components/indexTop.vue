@@ -24,13 +24,13 @@ function onChange(e) {
 }
 const taskData = ref({})
 const powerOrdersData = ref([])
-const upCountToKdk = ref(null)
+const upCountToXcoin = ref(null)
 const notifyTitle = ref('')
-const conuntToKdk = ref(0)
+const conuntToXcoin = ref(0)
 onMounted(async () => {
   await getTask()
   await getPowerOrdersData()
-  conuntToKdk.value = userInfo.value.kdkBalance
+  conuntToXcoin.value = userInfo.value.XcoinBalance
   if (powerOrdersData.value.length === 0) {
     notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
   }
@@ -46,11 +46,11 @@ async function getPowerOrdersData() {
   })
   powerOrdersData.value = getPowerOrdersRes.content
 }
-async function fetchCountToKdk() {
+async function fetchCountToXcoin() {
   const userStore = useUserStore()
   await userStore.fetchUserInfo()
-  conuntToKdk.value = userInfo.value.kdkBalance
-  upCountToKdk.value.reStart()
+  conuntToXcoin.value = userInfo.value.XcoinBalance
+  upCountToXcoin.value.reStart()
   await getPowerOrdersData()
   await getTask()
   if (taskData.value.usedPower > 0) {
@@ -58,7 +58,7 @@ async function fetchCountToKdk() {
   }
 }
 defineExpose({
-  fetchCountToKdk,
+  fetchCountToXcoin,
 })
 </script>
 
@@ -176,16 +176,16 @@ defineExpose({
           <view class="w-1/2 flex flex-col items-center justify-center">
             <view class="mt-[2px] flex text-[18px] font-bold">
               <up-count-to
-                ref="upCountToKdk"
+                ref="upCountToXcoin"
                 bold
                 :start-val="0"
                 :decimals="2"
-                :end-val="conuntToKdk"
+                :end-val="conuntToXcoin"
                 :font-size="18"
                 color="#fff"
               />
               <view class="ml-[5px]">
-                KDK
+                Xcoin
               </view>
             </view>
             <view class="mt-[5px] text-[14px]">
@@ -215,7 +215,7 @@ defineExpose({
               : taskData.todayChatCount
           }}/{{ taskData.taskTarget }}
         </view>
-        <view>奖励{{ formatAmount(taskData.rewardAmount) }}KDK</view>
+        <view>奖励{{ formatAmount(taskData.rewardAmount) }}Xcoin</view>
       </view>
       <up-line-progress
         height="16px"

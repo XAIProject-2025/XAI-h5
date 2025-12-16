@@ -198,7 +198,13 @@ async function redemption(item) {
                 </view>
               </view>
 
-              <template v-if="item.status !== 2 && item.status !== 3">
+              <template
+                v-if="
+                  item.status !== 2
+                    && item.status !== 3
+                    && item.serverInfo.type != 3
+                "
+              >
                 <view
                   v-if="item.usedPower !== item.power"
                   class="w-[48%]"
@@ -247,13 +253,13 @@ async function redemption(item) {
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          完成每日聊天任务会消耗 1 个算力值；当算力值耗尽时，需重新租赁。
+          完成每日聊天任务会消耗算力值；当算力值耗尽时，需重新租赁。
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          训练师等级决定了可同时运行的服务器数量 ——
+          VIP等级决定了可同时运行的服务器数量 ——
           等级越高，支持同时运行的服务器数量越多。
         </view>
       </view>

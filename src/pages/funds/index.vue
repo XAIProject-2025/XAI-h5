@@ -61,12 +61,12 @@ function handleTabClick(item) {
             算力币余额
           </div>
           <div class="text-[10px] text-[#94999A]">
-            算力 (单位：KDK)
+            算力 (单位：Xcoin)
           </div>
         </div>
       </div>
       <div class="my-[15px] text-[22px] text-[#FFEE00] font-600">
-        {{ formatAmount(userInfo?.kdkBalance || 0) }}
+        {{ formatAmount(userInfo?.XcoinBalance || 0) }}
       </div>
       <div class="flex items-center justify-between">
         <div class="">
@@ -74,7 +74,7 @@ function handleTabClick(item) {
             约等于
           </div>
           <div class="mt-[5px] text-[10px] text-[#94999A]">
-            {{ formatAmount(userInfo?.kdkBalance * tokenPrice) }} USDT
+            {{ formatAmount(userInfo?.XcoinBalance * tokenPrice) }} USDT
           </div>
         </div>
         <div

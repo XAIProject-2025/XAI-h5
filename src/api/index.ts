@@ -19,3 +19,8 @@ export function getChatHistory(data) {
 export function getVipInfo(data) {
   return http.get('/api/v1/vip/info', data)
 }
+
+// 查询tron地址
+export function getDepositWallets(data) {
+  return http.get('/api/v1/user/balance/depositWallets', data)
+}

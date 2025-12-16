@@ -62,7 +62,7 @@ onMounted(async () => {
           |
         </view>
         <view>
-          <span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.kdkBalance) }} KDK
+          <span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.XcoinBalance) }} Xcoin
         </view>
       </view>
       <view
@@ -257,7 +257,9 @@ onMounted(async () => {
       <view class="mt-[20px] text-[16px] font-bold">
         当前费率
         <span class="text-[40px] text-[#FFEE00]">{{
-          (vipInfoData.currentPremium - vipInfoData.decayedNum) * 100
+          Number(
+            (vipInfoData.currentPremium - vipInfoData.decayedNum) * 100,
+          ).toFixed(2)
         }}</span>
         %
       </view>
@@ -281,7 +283,8 @@ onMounted(async () => {
           :trail-width="10"
           stroke-color="#000"
           trail-color="#ebedf0"
-          :percent="modelVale"
+          :percent="vipInfoData.decayedNum"
+          :max="vipInfoData.currentPremium"
         >
           <text>{{ vipInfoData.needDays }}天</text>
         </l-circle>
@@ -294,7 +297,9 @@ onMounted(async () => {
         剩余天数
       </view>
       <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
-        下次的费用减免，还剩 1 天
+        <!-- 下次的费用减免，还剩 1 天 -->
+        距离下一次 {{ Number(vipInfoData.decayNum * 100).toFixed(2) }}%
+        的费用优惠还剩 {{ vipInfoData.needDays }} 天
       </view>
     </view>
 
@@ -306,13 +311,15 @@ onMounted(async () => {
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          未提取的资金：费用费率每天自动降低 1%
+          未提取的资金：费用费率每天自动降低
+          {{ Number(vipInfoData.decayNum * 100).toFixed(2) }}%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          费用费率最低可降至 5%
+          费用费率最低可降至
+          {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">

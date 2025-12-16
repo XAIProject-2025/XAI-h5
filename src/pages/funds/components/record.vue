@@ -8,7 +8,7 @@
         <view class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px]">
           <view class="">
             <view class="text-[14px] font-bold">
-              {{ formatAmount(item.amount) }} {{ item.currencyType === 0 ? 'KDK' : 'USDT' }}
+              {{ formatAmount(item.amount) }} {{ item.currencyType === 0 ? 'Xcoin' : 'USDT' }}
               <span v-if="item.currencyType === 0" class="mt-[5px] text-[12px] text-[#94999A]">
                 ≈ {{ formatAmount(Math.abs(item.amountUsdt)) }} USDT
               </span>
