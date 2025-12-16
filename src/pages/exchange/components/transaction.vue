@@ -95,7 +95,7 @@ async function handleBuy(type) {
     }
   }
   if (type == 2) {
-    if (Number(form.amount) > Number(userInfo.value.XcoinBalance)) {
+    if (Number(form.amount) > Number(userInfo.value.kdkBalance)) {
       uni.showToast({
         title: 'Xcoin余额不足',
         icon: 'none',

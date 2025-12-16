@@ -66,7 +66,7 @@ function handleTabClick(item) {
         </div>
       </div>
       <div class="my-[15px] text-[22px] text-[#FFEE00] font-600">
-        {{ formatAmount(userInfo?.XcoinBalance || 0) }}
+        {{ formatAmount(userInfo?.kdkBalance || 0) }}
       </div>
       <div class="flex items-center justify-between">
         <div class="">
@@ -74,7 +74,7 @@ function handleTabClick(item) {
             约等于
           </div>
           <div class="mt-[5px] text-[10px] text-[#94999A]">
-            {{ formatAmount(userInfo?.XcoinBalance * tokenPrice) }} USDT
+            {{ formatAmount(userInfo?.kdkBalance * tokenPrice) }} USDT
           </div>
         </div>
         <div

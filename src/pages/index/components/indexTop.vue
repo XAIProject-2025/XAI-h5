@@ -30,7 +30,7 @@ const conuntToXcoin = ref(0)
 onMounted(async () => {
   await getTask()
   await getPowerOrdersData()
-  conuntToXcoin.value = userInfo.value.XcoinBalance
+  conuntToXcoin.value = userInfo.value.kdkBalance
   if (powerOrdersData.value.length === 0) {
     notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
   }
@@ -49,9 +49,11 @@ async function getPowerOrdersData() {
 async function fetchCountToXcoin() {
   const userStore = useUserStore()
   await userStore.fetchUserInfo()
-  conuntToXcoin.value = userInfo.value.XcoinBalance
+  conuntToXcoin.value = userInfo.value.kdkBalance
   upCountToXcoin.value.reStart()
-  await getPowerOrdersData()
+  if (taskData.value.taskTarget === taskData.value.todayChatCount) {
+    await getPowerOrdersData()
+  }
   await getTask()
   if (taskData.value.usedPower > 0) {
     notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
