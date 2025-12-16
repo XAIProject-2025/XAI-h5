@@ -171,7 +171,7 @@ async function redemption(item) {
             <view class="flex items-end gap-[10px]">
               <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
                 <view class="text-[24px] font-700">
-                  1
+                  {{ item.taskSpend }}
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
                   每任务消耗
