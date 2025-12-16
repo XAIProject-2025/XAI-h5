@@ -8,8 +8,11 @@ definePage({
     navigationBarTitleText: '',
   },
 })
+const depositWallets = ref({})
 onMounted(async () => {
   const getDepositWalletsRes = await getDepositWallets()
+  depositWallets.value = getDepositWalletsRes[0]
+  console.log('depositWallets :>> ', depositWallets)
   // getDepositWallets({
   //   chain: 'TRON',
   // }).then((res) => {
@@ -45,11 +48,11 @@ onMounted(async () => {
     >
       <!-- 核心新增：break-all / break-words -->
       <div class="w-[70%] whitespace-normal break-all">
-        0x6be4e16b1c3a8f377d22f2eadea3b739227a8cb0
+        {{ depositWallets.address }}
       </div>
       <div
         class="flex flex-1 items-center justify-center text-[13px] text-[#19A71D]"
-        @click="handleCopy('0x6be4e16b1c3a8f377d22f2eadea3b739227a8cb0')"
+        @click="handleCopy(depositWallets.address)"
       >
         复制
       </div>
