@@ -84,9 +84,9 @@ async function redemption(item) {
         <view class="relative flex">
           <div
             :class="{
-              'status-green':
-                item.status === 0 || item.status === 2 || item.status === 3,
+              'status-green': item.status === 2 || item.status === 3,
               'status-org': item.status === 1,
+              'status-black': item.status === 0,
             }"
             class="absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]"
           >
@@ -96,12 +96,20 @@ async function redemption(item) {
             <!-- <span v-if="item.status === 3">已赎回</span> -->
           </div>
           <view
-            class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded bg-[#000]"
+            class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded rounded-[5px] bg-[#000]"
           >
             <u-image
+              v-if="item.serverInfo.type == 3"
               src="/static/productCenter/server.png"
               width="20"
               height="20"
+            />
+            <u-image
+              v-else
+              :src="item.serverInfo.imgUrl"
+              width="100%"
+              height="100%"
+              rounded="5px"
             />
           </view>
           <view class="ml-[20px] flex-1">
@@ -188,7 +196,10 @@ async function redemption(item) {
               </view>
             </view>
 
-            <view class="flex items-center gap-[10px]">
+            <view
+              v-if="item.serverInfo.type !== 3"
+              class="flex items-center gap-[10px]"
+            >
               <view class="bg1 mt-[15px] box-border h-[100px] w-[48%]">
                 <view class="text-[24px] font-700">
                   {{ formatAmount(item.payPrice) }}

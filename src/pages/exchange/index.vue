@@ -37,7 +37,9 @@ onMounted(async () => {
     <view class="mb-[10px] mt-[5px] text-[14px] text-[#94999A]">
       实时计算能力币市场 & 闪电兑换中心
     </view>
-    <view class="bg-default my-[20px] flex items-center justify-between py-[20px]">
+    <view
+      class="bg-default my-[20px] flex items-center justify-between py-[20px]"
+    >
       <view class="w-1/2 flex flex-col items-center justify-center">
         <view class="text-[18px] font-bold">
           {{ formatAmount(userInfo.kdkBalance) }}
@@ -55,11 +57,21 @@ onMounted(async () => {
         </view>
       </view>
     </view>
-    <view class="clear-both mb-[20px] flex items-center text-[14px] text-[#94999A]">
-      <div class="text-[16px] font-bold" :class="{ 'text-[#000]': tabCurrent === 0 }" @click="tabCurrent = 0">
+    <view
+      class="clear-both mb-[20px] flex items-center text-[14px] text-[#94999A]"
+    >
+      <div
+        class="text-[16px] font-bold"
+        :class="{ 'text-[#000]': tabCurrent === 0 }"
+        @click="tabCurrent = 0"
+      >
         交易
       </div>
-      <div class="ml-[15px] text-[16px] font-bold" :class="{ 'text-[#000]': tabCurrent === 1 }" @click="tabCurrent = 1">
+      <div
+        class="ml-[15px] text-[16px] font-bold"
+        :class="{ 'text-[#000]': tabCurrent === 1 }"
+        @click="tabCurrent = 1"
+      >
         交易记录
       </div>
     </view>

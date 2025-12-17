@@ -50,13 +50,14 @@ onMounted(async () => {
           <span v-if="userInfo.roleId == 3">普通代理</span>
           <span v-if="userInfo.roleId == 2">激活用户</span>
           <span v-if="userInfo.roleId == 1">未激活</span>
+          <span v-if="userInfo.roleId == 0">顶级账号</span>
         </view>
       </view>
       <view
         class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]"
       >
         <view>
-          <span class="mr-[4px]">算力服务器</span>{{ vipInfoData.currentServerLimit }}
+          <span class="mr-[4px]">算力服务器</span>{{ vipInfoData.serverNum }}
         </view>
         <view class="mx-[10px]">
           |
@@ -210,7 +211,13 @@ onMounted(async () => {
         </view>
         <up-line-progress
           height="12px"
-          :percentage="vipInfoData.inviteUsersProgress"
+          :percentage="
+            formatAmount(
+              (vipInfoData.currentInviteUsers
+                / vipInfoData.nextRequiredInviteUsers)
+                * 100,
+            )
+          "
           active-color="#000"
         />
       </view>
@@ -227,7 +234,12 @@ onMounted(async () => {
         </view>
         <up-line-progress
           height="12px"
-          :percentage="vipInfoData.rechargeProgress"
+          :percentage="
+            formatAmount(
+              (vipInfoData.currentRecharge / vipInfoData.nextRequiredRecharge)
+                * 100,
+            )
+          "
           active-color="#000"
         />
       </view>
@@ -235,7 +247,7 @@ onMounted(async () => {
         <view
           class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
         >
-          <view>活动度</view>
+          <view>活跃度</view>
           <view>
             {{ vipInfoData.currentActivity }}/{{
               vipInfoData.nextRequiredActivity
@@ -244,7 +256,12 @@ onMounted(async () => {
         </view>
         <up-line-progress
           height="12px"
-          :percentage="vipInfoData.activityProgress"
+          :percentage="
+            formatAmount(
+              (vipInfoData.currentActivity / vipInfoData.nextRequiredActivity)
+                * 100,
+            )
+          "
           active-color="#000"
         />
       </view>
@@ -302,8 +319,8 @@ onMounted(async () => {
       </view>
       <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
         <!-- 下次的费用减免，还剩 1 天 -->
-        距离下一次 {{ Number(vipInfoData.decayNum * 100).toFixed(2) }}%
-        的费用优惠还剩 {{ vipInfoData.needDays }} 天
+        距离 {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}% 的费用优惠还剩
+        {{ vipInfoData.needDays }} 天
       </view>
     </view>
 

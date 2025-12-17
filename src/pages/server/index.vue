@@ -50,7 +50,7 @@ async function buyType1(item) {
   }
   if (userInfo.value.kdkBalance < item.fixedPrice) {
     uni.showToast({
-      title: '余额不足,请购买算力',
+      title: '余额不足,请兑换Xcoin',
       icon: 'none',
       mask: true,
     })
@@ -96,7 +96,7 @@ async function buyType2(item) {
   }
   if (userInfo.value.kdkBalance < item.fixedPrice) {
     uni.showToast({
-      title: '余额不足,请购买算力',
+      title: '余额不足,请兑换Xcoin',
       icon: 'none',
       mask: true,
     })

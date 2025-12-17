@@ -146,17 +146,25 @@ onMounted(async () => {
       </view>
       <view class="mb-[20px] mt-[20px] flex items-center">
         <div
-          v-for="item in dateRange.list" :key="item.key" :class="{
+          v-for="item in dateRange.list"
+          :key="item.key"
+          :class="{
             'btn-block': item.key === dateRange.current,
             'btn-block--white': item.key !== dateRange.current,
-          }" class="ml-[10px] h-[20px] min-h-[20px] rounded-[5px] px-[8px] text-center"
+          }"
+          class="ml-[10px] h-[20px] min-h-[20px] rounded-[5px] px-[8px] text-center"
           @click="dateRange.current = item.key"
         >
           {{ item.name }}
         </div>
       </view>
 
-      <ly-charts-line ref="straightChart" :option="straightOption" width="100%" height="260px" />
+      <ly-charts-line
+        ref="straightChart"
+        :option="straightOption"
+        width="100%"
+        height="260px"
+      />
       <view class="mt-[20px] flex items-center justify-between">
         <view class="w-1/4 flex flex-col items-center justify-center">
           <view class="text-[18px] font-bold">
@@ -195,10 +203,13 @@ onMounted(async () => {
     <view class="bg-default mt-[20px]">
       <view class="mb-[10px] flex items-center">
         <div
-          v-for="item in typeRange.list" :key="item.key" :class="{
+          v-for="item in typeRange.list"
+          :key="item.key"
+          :class="{
             'btn-block': item.key === typeRange.current,
             'btn-block--white': item.key !== typeRange.current,
-          }" class="ml-[10px] h-[25px] min-h-[25px] rounded-[5px] px-[20px] text-center"
+          }"
+          class="ml-[10px] h-[25px] min-h-[25px] rounded-[5px] px-[20px] text-center"
           @click="typeRange.current = item.key"
         >
           {{ item.name }}
@@ -217,7 +228,13 @@ onMounted(async () => {
           数量(算力币)
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
-          <up-input v-model="form.amount" class="!p-[0]" placeholder="请输入数量" border="surround" @change="change" />
+          <up-input
+            v-model="form.amount"
+            class="!p-[0]"
+            placeholder="请输入数量"
+            border="surround"
+            @change="change"
+          />
         </view>
       </view>
       <view class="mt-[15px]">
@@ -229,9 +246,11 @@ onMounted(async () => {
           {{ formatAmount(form.amountPay) }}
         </view>
       </view>
-      <view class="btn-block mt-[20px] h-[40px]">
-        <span v-if="typeRange.current === 1" @click="handleBuy(1)">买入算力币</span>
-        <span v-else @click="handleBuy(2)">卖出算力币</span>
+      <view v-if="typeRange.current === 1" class="btn-block mt-[20px] h-[40px]">
+        <span @click="handleBuy(1)">买入算力币</span>
+      </view>
+      <view v-else class="btn-block mt-[20px] h-[40px]">
+        <span @click="handleBuy(2)">卖出算力币</span>
       </view>
     </view>
   </view>

@@ -51,9 +51,9 @@ async function fetchCountToXcoin() {
   await userStore.fetchUserInfo()
   conuntToXcoin.value = userInfo.value.kdkBalance
   upCountToXcoin.value.reStart()
-  if (taskData.value.taskTarget === taskData.value.todayChatCount) {
-    await getPowerOrdersData()
-  }
+  // if (taskData.value.taskTarget === taskData.value.todayChatCount) {
+  await getPowerOrdersData()
+  // }
   await getTask()
   if (taskData.value.usedPower > 0) {
     notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
@@ -110,7 +110,7 @@ defineExpose({
             src="/static/level/type_3.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 4"
+            v-if="userInfo.roleId === 4 || userInfo.roleId === 0"
             :width="40"
             :height="50"
             class="mr-[10px]"
