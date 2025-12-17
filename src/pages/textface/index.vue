@@ -14,6 +14,8 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useFaceStore } from '@/store/face'
+import { useTokenStore } from '@/store/token'
 
 definePage({
   style: {
@@ -23,14 +25,23 @@ definePage({
 })
 const snapshot = ref('')
 // iframe 页面地址
-const iframeUrl = 'https://face.eladmin-test.click/?type=0'
+const iframeUrl = ref(null)
 
 let webview = null
 
 onMounted(() => {
+  const tokenStore = useTokenStore()
+  const token = tokenStore.validToken
+
+  if (useFaceStore().type === 1) {
+    iframeUrl.value = 'https://face.eladmin-test.click/?type=0'
+  }
+  else if (useFaceStore().type === 2) {
+    iframeUrl.value = `https://face.eladmin-test.click/?type=1&token=${token}`
+  }
   if (process.env.PLATFORM === 'app-plus') {
     // App-Plus: 使用 plus.webview
-    webview = plus.webview.getWebviewById('faceWebview') || plus.webview.create(iframeUrl, 'faceWebview', {
+    webview = plus.webview.getWebviewById('faceWebview') || plus.webview.create(iframeUrl.value, 'faceWebview', {
       hardwareAccelerated: true,
       allowFileAccess: true,
       mediaPlaybackRequiresUserGesture: false,

@@ -79,7 +79,7 @@ async function doLogin() {
   }
 }
 function handleFaceAuth() {
-  useFaceStore().setType(1)
+  useFaceStore().setType(2)
   handleToUrl('/pages/textface/index')
 }
 </script>
@@ -91,7 +91,7 @@ function handleFaceAuth() {
     </div>
     <view class="mt-[60px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        密码
+        旧密码
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"

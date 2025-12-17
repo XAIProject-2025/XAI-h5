@@ -23,11 +23,18 @@ onLaunch((options) => {
       uni.showToast({
         title: faceInfo.message || '人脸活体检测失败',
         icon: 'none',
+        duration: 2000,
         complete: () => {
-          useFaceStore().setFaceInfo({})
-          useFaceStore().setType(-1)
-          uni.navigateBack()
-          // handleToUrl('/pages-fg/login/register')
+          console.log('useFaceStore().type :>> ', useFaceStore().type)
+          if (useFaceStore().type === 1) {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages-fg/login/register')
+          }
+          else if (useFaceStore().type === 2) {
+            handleToUrl('/pages/changePassword/index')
+          }
+          // uni.navigateBack()
         },
       })
     }
