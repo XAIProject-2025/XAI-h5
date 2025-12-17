@@ -246,11 +246,15 @@ onMounted(async () => {
           {{ formatAmount(form.amountPay) }}
         </view>
       </view>
-      <view v-if="typeRange.current === 1" class="btn-block mt-[20px] h-[40px]">
-        <span @click="handleBuy(1)">买入算力币</span>
+      <view
+        v-if="typeRange.current === 1"
+        class="btn-block mt-[20px] h-[40px]"
+        @click="handleBuy(1)"
+      >
+        <span>买入算力币</span>
       </view>
-      <view v-else class="btn-block mt-[20px] h-[40px]">
-        <span @click="handleBuy(2)">卖出算力币</span>
+      <view v-else class="btn-block mt-[20px] h-[40px]" @click="handleBuy(2)">
+        <span>卖出算力币</span>
       </view>
     </view>
   </view>

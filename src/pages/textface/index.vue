@@ -39,34 +39,48 @@ onMounted(() => {
   else if (useFaceStore().type === 2) {
     iframeUrl.value = `https://face.eladmin-test.click/?type=1&token=${token}`
   }
-  if (process.env.PLATFORM === 'app-plus') {
-    // App-Plus: 使用 plus.webview
-    webview = plus.webview.getWebviewById('faceWebview') || plus.webview.create(iframeUrl.value, 'faceWebview', {
-      hardwareAccelerated: true,
-      allowFileAccess: true,
-      mediaPlaybackRequiresUserGesture: false,
-    })
-    webview.show()
-  }
-  else {
-    // H5: 获取 iframe DOM
-    webview = document.getElementById('faceWebview')
-  }
-
-  // 接收 iframe 回传消息
-  window.addEventListener('message', (e) => {
-    const data = e.data
-    if (data.status === 'camera_started') {
-      console.log('摄像头已启动')
+  // #ifdef APP-PLUS
+  plus.android.requestPermissions(['android.permission.CAMERA'], (e) => {
+    if (e.deniedAlways.length > 0) { // 权限被永久拒绝
+      // 弹出提示框解释为何需要权限，引导用户打开设置页面开启
+      console.log(`权限被永久拒绝${e.deniedAlways.toString()}`)
     }
-    else if (data.status === 'photo') {
-      snapshot.value = data.base64
+    if (e.deniedPresent.length > 0) { // 权限被临时拒绝
+      // 弹出提示框解释为何需要权限，可再次调用plus.android.requestPermissions申请权限
+      console.log(`权限被临时拒绝${e.deniedPresent.toString()}`)
     }
-    else if (data.status === 'camera_failed') {
-      console.error('摄像头启动失败', data.error)
-      uni.showToast({ title: '摄像头启动失败', icon: 'none' })
+    if (e.granted.length > 0) { // 权限被允许
+      console.log(`权限被允许${e.granted.toString()}`)
     }
+  }, (e) => {
+    console.log(`Request Permissions error:${JSON.stringify(e)}`)
   })
+  // #endif
+  // uni.navigateTo({
+  //   url: '/pages/mirror/index',
+  // })
+  // // App-Plus: 使用 plus.webview
+  // webview = plus.webview.getWebviewById('faceWebview') || plus.webview.create(iframeUrl.value, 'faceWebview', {
+  //   hardwareAccelerated: true,
+  //   allowFileAccess: true,
+  //   mediaPlaybackRequiresUserGesture: false,
+  // })
+  // webview.show()
+  webview = document.getElementById('faceWebview')
+  // // 接收 iframe 回传消息
+  // window.addEventListener('message', (e) => {
+  //   const data = e.data
+  //   if (data.status === 'camera_started') {
+  //     console.log('摄像头已启动')
+  //   }
+  //   else if (data.status === 'photo') {
+  //     snapshot.value = data.base64
+  //   }
+  //   else if (data.status === 'camera_failed') {
+  //     console.error('摄像头启动失败', data.error)
+  //     uni.showToast({ title: '摄像头启动失败', icon: 'none' })
+  //   }
+  // })
 })
 
 // 打开摄像头

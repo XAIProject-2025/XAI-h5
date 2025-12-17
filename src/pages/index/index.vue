@@ -14,7 +14,6 @@
       <template #top>
         <index-top ref="indexTopRef" />
       </template>
-      <!-- 聊天记录渲染 -->
       <view
         v-for="(item, index) in dataList"
         :key="index"
@@ -24,13 +23,10 @@
           <chat-item :item="item" />
         </view>
       </view>
-      <!-- 底部输入框 -->
       <template #bottom>
         <chat-input-bar ref="inputBar" :disabled="isAnswering" @send="doSend" />
       </template>
     </z-paging>
-    <!-- <up-toast ref="uToastRef" /> -->
-    <up-notify ref="uNotifyRef" message="Hi uview-plus" />
   </view>
 </template>
 

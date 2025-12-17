@@ -21,7 +21,9 @@ const iframeUrl = 'https://chenshiqi.mynatapp.cc?apiUrl=https://chenshiqi.mynata
 let webview = null
 
 onMounted(() => {
+  console.log('process.env.PLATFORM  :>> ', process.env.PLATFORM)
   if (process.env.PLATFORM === 'app-plus') {
+    console.log('111 :>> ', 111)
     // App-Plus: 获取 WebView 对象
     webview = plus.webview.getWebviewById('faceWebview') || plus.webview.create(iframeUrl, 'faceWebview', {
       hardwareAccelerated: true,
@@ -31,6 +33,7 @@ onMounted(() => {
     webview.show()
   }
   else {
+    console.log('111 :>> ', 111)
     // H5: 不需要处理
     webview = document.getElementById('faceWebview')
   }

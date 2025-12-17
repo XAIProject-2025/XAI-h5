@@ -1,53 +1,66 @@
 // 防抖
 
 /**
- * 监听父窗口/子窗口的 FACE_LIVENESS_SUCCESS 类型消息
- * @param {Function} callback 成功回调函数，接收消息数据
- * @param {Window} [targetWindow] 监听的目标窗口（默认当前窗口）
- * @returns {Function} 取消监听的函数
+ * 监听人脸活体检测成功（H5 + App，触发端仅 postMessage）
  */
-export function listenFaceLivenessSuccess(callback, callBackError, targetWindow = window) {
-  // 校验参数合法性
+export function listenFaceLivenessSuccess(
+  callback,
+  callBackError,
+) {
   if (typeof callback !== 'function') {
     throw new TypeError('callback 必须是函数类型')
   }
 
-  // 消息处理函数
-  const messageHandler = (event) => {
+  const handleData = (data, rawEvent) => {
     try {
-      // 1. 校验消息类型（核心）
-      if (event.data?.type !== 'FACE_LIVENESS_SUCCESS') {
-        return // 非目标类型直接忽略
-      }
-
-      // 2. 可选：校验消息来源（提升安全性，替换为实际的父窗口域名）
-      // const allowedOrigins = ['https://your-domain.com'];
-      // if (!allowedOrigins.includes(event.origin)) {
-      //   console.warn('非法消息来源:', event.origin);
-      //   return;
-      // }
-
-      // 3. 提取有效数据并执行回调
-      const livenessData = event.data.data
-      callback(livenessData, event) // 回调返回数据+原始事件（便于扩展）
+      if (data?.type !== 'FACE_LIVENESS_SUCCESS')
+        return
+      callback(data.data, rawEvent)
     }
-    catch (error) {
-      if (callBackError) {
-        callBackError(error)
-      }
-      else {
-        console.error('人脸活体检测消息处理失败:', error)
-      }
+    catch (err) {
+      callBackError ? callBackError(err) : console.error(err)
     }
   }
 
-  // 绑定监听事件
-  targetWindow.addEventListener('message', messageHandler)
+  /* ================= H5 ================= */
+  // #ifdef H5
+  const h5Handler = (event) => {
+    handleData(event.data, event)
+  }
+  window.addEventListener('message', h5Handler)
+  // #endif
 
-  // 返回取消监听的函数（避免内存泄漏）
+  /* ================= APP ================= */
+  // #ifdef APP-PLUS
+  let webview
+  const appHandler = (event) => {
+    // App 中 event.data 是数组
+    const msg = event.data?.[0]
+    handleData(msg, event)
+  }
+
+  const onPlusReady = () => {
+    webview = plus.webview.currentWebview()
+    webview.addEventListener('message', appHandler)
+  }
+
+  if (plus) {
+    onPlusReady()
+  }
+  else {
+    document.addEventListener('plusready', onPlusReady, false)
+  }
+  // #endif
+
+  /* =============== 取消监听 =============== */
   return () => {
-    targetWindow.removeEventListener('message', messageHandler)
-    console.log('已取消 FACE_LIVENESS_SUCCESS 消息监听')
+    // #ifdef H5
+    window.removeEventListener('message', h5Handler)
+    // #endif
+
+    // #ifdef APP-PLUS
+    webview?.removeEventListener('message', appHandler)
+    // #endif
   }
 }
 

@@ -19,11 +19,6 @@ const userInfo = reactive({
   isFaceAuth: false,
 })
 onShow((options) => {
-  console.log('options :>> ', options)
-  console.log(' :>> ', useFaceStore().faceInfo)
-  // if (options?.query?.faceAuth === 'true') {
-  //   userInfo.isFaceAuth = true
-  // }
   if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
     userInfo.isFaceAuth = true
   }
@@ -219,7 +214,7 @@ function handleFaceAuth() {
       登录
     </view>
     <view
-      class="btn-block absolute bottom-[100px] left-[50%] h-[40px] w-[90%] translate-x-[-50%]"
+      class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"
       @click="doLogin"
     >
       注册
