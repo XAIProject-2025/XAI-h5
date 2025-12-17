@@ -35,6 +35,7 @@ onMounted(() => {
   }
 })
 async function doLogin() {
+  return
   if (!userInfo.name || !userInfo.password || !userInfo.passwordNew || !userInfo.inviteCode) {
     uni.showToast({
       title: '请输入用户名、密码、确认密码和邀请码',
@@ -85,30 +86,10 @@ function handleFaceAuth() {
 
 <template>
   <view class="login relative">
-    <view class="box-border w-full flex items-center px-[20px] pt-[25vh]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        用户名
-      </view>
-      <view
-        class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
-      >
-        <up-input
-          v-model="userInfo.name"
-          placeholder="请输入内容"
-          color="#94999A"
-        >
-          <template #prefix>
-            <view class="mr-[10px] flex items-center">
-              <image
-                src="/static/login/pass_icon.png"
-                class="h-[15px] w-[15px]"
-              />
-            </view>
-          </template>
-        </up-input>
-      </view>
-    </view>
-    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
+    <div class="mt-[20px] text-center text-[20px] font-bold">
+      修改密码
+    </div>
+    <view class="mt-[60px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
         密码
       </view>
@@ -156,29 +137,6 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
-    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        邀请码
-      </view>
-      <view
-        class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
-      >
-        <up-input
-          v-model="userInfo.inviteCode"
-          placeholder="请输入内容"
-          color="#94999A"
-        >
-          <template #prefix>
-            <view class="mr-[10px] flex items-center">
-              <image
-                src="/static/login/invition_icon.png"
-                class="h-[15px] w-[15px]"
-              />
-            </view>
-          </template>
-        </up-input>
-      </view>
-    </view>
     <view
       class="mt-[20px] box-border w-full flex items-center px-[20px]"
       @click="handleFaceAuth"
@@ -213,16 +171,10 @@ function handleFaceAuth() {
       </view>
     </view>
     <view
-      class="mt-[20px] px-[20px] text-right text-[14px]"
-      @click="handleToUrl(LOGIN_PAGE)"
-    >
-      登录
-    </view>
-    <view
       class="btn-block absolute bottom-[100px] left-[50%] h-[40px] w-[90%] translate-x-[-50%]"
       @click="doLogin"
     >
-      注册
+      确定
     </view>
   </view>
 </template>
@@ -231,7 +183,7 @@ function handleFaceAuth() {
 //
 .login {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 130px);
   background: url('/static/login/login_bg_c.png');
   background-size: 100% 100%;
   // padding: 20px;

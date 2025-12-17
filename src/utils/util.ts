@@ -1,5 +1,56 @@
 // 防抖
 
+/**
+ * 监听父窗口/子窗口的 FACE_LIVENESS_SUCCESS 类型消息
+ * @param {Function} callback 成功回调函数，接收消息数据
+ * @param {Window} [targetWindow] 监听的目标窗口（默认当前窗口）
+ * @returns {Function} 取消监听的函数
+ */
+export function listenFaceLivenessSuccess(callback, callBackError, targetWindow = window) {
+  // 校验参数合法性
+  if (typeof callback !== 'function') {
+    throw new TypeError('callback 必须是函数类型')
+  }
+
+  // 消息处理函数
+  const messageHandler = (event) => {
+    try {
+      // 1. 校验消息类型（核心）
+      if (event.data?.type !== 'FACE_LIVENESS_SUCCESS') {
+        return // 非目标类型直接忽略
+      }
+
+      // 2. 可选：校验消息来源（提升安全性，替换为实际的父窗口域名）
+      // const allowedOrigins = ['https://your-domain.com'];
+      // if (!allowedOrigins.includes(event.origin)) {
+      //   console.warn('非法消息来源:', event.origin);
+      //   return;
+      // }
+
+      // 3. 提取有效数据并执行回调
+      const livenessData = event.data.data
+      callback(livenessData, event) // 回调返回数据+原始事件（便于扩展）
+    }
+    catch (error) {
+      if (callBackError) {
+        callBackError(error)
+      }
+      else {
+        console.error('人脸活体检测消息处理失败:', error)
+      }
+    }
+  }
+
+  // 绑定监听事件
+  targetWindow.addEventListener('message', messageHandler)
+
+  // 返回取消监听的函数（避免内存泄漏）
+  return () => {
+    targetWindow.removeEventListener('message', messageHandler)
+    console.log('已取消 FACE_LIVENESS_SUCCESS 消息监听')
+  }
+}
+
 export function debounce(fn: Function, delay: number) {
   let timer: any = null
   return function (...args: any) {

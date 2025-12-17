@@ -75,15 +75,15 @@ defineExpose({
           <up-image
             :width="40"
             :height="40"
-            round
-            src="/static/images/ai_logo.png"
+            radius="100%"
+            :src="userInfo.customer.avatar"
           />
           <view class="ml-[20px]">
             <view class="text-[14px] text-[#666]">
-              客服代码
+              客服名称
             </view>
             <view class="mt-[2px] text-[12px]">
-              6VAI005
+              {{ userInfo.customer.name }}
             </view>
           </view>
         </view>
@@ -121,7 +121,7 @@ defineExpose({
             :width="50"
             :height="50"
             src="/static/index/tg.png"
-            @click="openExternalUrl(userInfo.tgCustomerLink)"
+            @click="openExternalUrl(userInfo.customer.link)"
           />
         </view>
       </view>

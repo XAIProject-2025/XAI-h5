@@ -256,11 +256,15 @@ onMounted(async () => {
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
         当前费率
-        <span class="text-[40px] text-[#FFEE00]">{{
+        <span
+          v-if="vipInfoData.currentPremium"
+          class="text-[40px] text-[#FFEE00]"
+        >{{
           Number(
             (vipInfoData.currentPremium - vipInfoData.decayedNum) * 100,
           ).toFixed(2)
         }}</span>
+        <span v-else>0</span>
         %
       </view>
       <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">

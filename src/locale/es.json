@@ -1,0 +1,12 @@
+{
+  "tabbar.home": "Inicio",
+  "tabbar.about": "Acerca de",
+  "tabbar.me": "Mi",
+  "i18n.title": "Título en Español",
+  "alova.title": "Solicitud Alova",
+  "weight": "{heavy}KG",
+  "detail": "{0}cm, {1}KG",
+  "introduction": "Soy {name}, altura:{detail.height}, peso:{detail.weight}",
+  "she-zhi-zhong-xin": "Centro de Configuración",
+  "guan-li-ni-de-zhang-hu-xin-xi-yu-pian-hao": "Gestión de su información de cuenta y preferencias"
+}

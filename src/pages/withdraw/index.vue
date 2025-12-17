@@ -65,12 +65,12 @@ onMounted(async () => {
           USDT
         </template>
       </up-input>
-      <div
+      <!-- <div
         class="ml-[5px] border border-[#000] rounded-[5px] border-solid px-[5px] text-[14px] text-[#19A71D] font-bold"
         @click="form.amount = userInfo.usdtBalance"
       >
         MAX
-      </div>
+      </div> -->
     </div>
     <div class="mt-[10px] flex items-center justify-between">
       <div class="text-[12px] text-[#94999A]">
