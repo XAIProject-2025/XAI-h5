@@ -113,28 +113,28 @@ onMounted(async () => {
       <view class="mt-[20px] flex items-center justify-center">
         <view class="flex flex-col items-center justify-center">
           <u-image
-            v-if="vipInfoData.vipLevel == 1"
+            v-if="vipInfoData.vipLevel == 0"
             src="/static/level/level_0.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 2"
+            v-if="vipInfoData.vipLevel == 1"
             src="/static/level/level_1.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 3"
+            v-if="vipInfoData.vipLevel == 2"
             src="/static/level/level_2.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.vipLevel == 4"
+            v-if="vipInfoData.vipLevel == 3"
             src="/static/level/level_3.png"
             width="60"
             height="60"
@@ -145,7 +145,7 @@ onMounted(async () => {
               当前等级
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
-              P{{ vipInfoData.vipLevel }}
+              E{{ vipInfoData.vipLevel }}
             </view>
           </view>
         </view>
@@ -158,28 +158,28 @@ onMounted(async () => {
         />
         <view class="flex flex-col items-center justify-center">
           <u-image
-            v-if="vipInfoData.nextVipLevel == 1"
+            v-if="vipInfoData.nextVipLevel == 0"
             src="/static/level/level_0.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.nextVipLevel == 2"
+            v-if="vipInfoData.nextVipLevel == 1"
             src="/static/level/level_1.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.nextVipLevel == 3"
+            v-if="vipInfoData.nextVipLevel == 2"
             src="/static/level/level_2.png"
             width="60"
             height="60"
             alt=""
           />
           <u-image
-            v-if="vipInfoData.nextVipLevel == 4"
+            v-if="vipInfoData.nextVipLevel == 3"
             src="/static/level/level_3.png"
             width="60"
             height="60"
@@ -190,7 +190,7 @@ onMounted(async () => {
               下一等级
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
-              P{{ vipInfoData.nextVipLevel }}
+              E{{ vipInfoData.nextVipLevel }}
             </view>
           </view>
         </view>
