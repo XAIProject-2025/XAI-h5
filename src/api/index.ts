@@ -24,3 +24,7 @@ export function getVipInfo(data) {
 export function getDepositWallets(data) {
   return http.get('/api/v1/user/balance/depositWallets', data)
 }
+// 发起提现
+export function applyWithdrawal(data) {
+  return http.post('/api/v1/withdrawal/apply', data)
+}

@@ -11,11 +11,22 @@ export function listenFaceLivenessSuccess(
     throw new TypeError('callback 必须是函数类型')
   }
 
+  let called = false // ⭐ 是否已触发
+  let cleanup // 取消监听函数
+
   const handleData = (data, rawEvent) => {
+    if (called)
+      return
+
     try {
       if (data?.type !== 'FACE_LIVENESS_SUCCESS')
         return
+
+      called = true // ⭐ 立刻锁死
       callback(data.data, rawEvent)
+
+      // ⭐ 成功后立即解绑
+      cleanup?.()
     }
     catch (err) {
       callBackError ? callBackError(err) : console.error(err)
@@ -44,7 +55,7 @@ export function listenFaceLivenessSuccess(
     webview.addEventListener('message', appHandler)
   }
 
-  if (plus) {
+  if (typeof plus !== 'undefined') {
     onPlusReady()
   }
   else {
@@ -53,7 +64,7 @@ export function listenFaceLivenessSuccess(
   // #endif
 
   /* =============== 取消监听 =============== */
-  return () => {
+  cleanup = () => {
     // #ifdef H5
     window.removeEventListener('message', h5Handler)
     // #endif
@@ -62,6 +73,150 @@ export function listenFaceLivenessSuccess(
     webview?.removeEventListener('message', appHandler)
     // #endif
   }
+
+  return cleanup
+}
+
+export function listenFaceLivenessCancel(
+  callback,
+  callBackError,
+) {
+  if (typeof callback !== 'function') {
+    throw new TypeError('callback 必须是函数类型')
+  }
+
+  let called = false
+  let cleanup
+
+  const handleData = (data, rawEvent) => {
+    if (called)
+      return
+
+    try {
+      if (data?.type !== 'FACE_LIVENESS_CANCEL')
+        return
+
+      called = true
+      callback(data.data, rawEvent)
+      cleanup?.()
+    }
+    catch (err) {
+      callBackError ? callBackError(err) : console.error(err)
+    }
+  }
+
+  /* ================= H5 ================= */
+  // #ifdef H5
+  const h5Handler = (event) => {
+    handleData(event.data, event)
+  }
+  window.addEventListener('message', h5Handler)
+  // #endif
+
+  /* ================= APP ================= */
+  // #ifdef APP-PLUS
+  let webview
+  const appHandler = (event) => {
+    const msg = event.data?.[0]
+    handleData(msg, event)
+  }
+
+  const onPlusReady = () => {
+    webview = plus.webview.currentWebview()
+    webview.addEventListener('message', appHandler)
+  }
+
+  if (typeof plus !== 'undefined') {
+    onPlusReady()
+  }
+  else {
+    document.addEventListener('plusready', onPlusReady, false)
+  }
+  // #endif
+
+  /* =============== 取消监听 =============== */
+  cleanup = () => {
+    // #ifdef H5
+    window.removeEventListener('message', h5Handler)
+    // #endif
+
+    // #ifdef APP-PLUS
+    webview?.removeEventListener('message', appHandler)
+    // #endif
+  }
+
+  return cleanup
+}
+
+export function listenFaceLivenessError(
+  callback,
+  callBackError,
+) {
+  if (typeof callback !== 'function') {
+    throw new TypeError('callback 必须是函数类型')
+  }
+
+  let called = false
+  let cleanup
+
+  const handleData = (data, rawEvent) => {
+    if (called)
+      return
+
+    try {
+      if (data?.type !== 'FACE_LIVENESS_ERROR')
+        return
+
+      called = true
+      callback(data.data, rawEvent)
+      cleanup?.()
+    }
+    catch (err) {
+      callBackError ? callBackError(err) : console.error(err)
+    }
+  }
+
+  /* ================= H5 ================= */
+  // #ifdef H5
+  const h5Handler = (event) => {
+    handleData(event.data, event)
+  }
+  window.addEventListener('message', h5Handler)
+  // #endif
+
+  /* ================= APP ================= */
+  // #ifdef APP-PLUS
+  let webview
+  const appHandler = (event) => {
+    const msg = event.data?.[0]
+    handleData(msg, event)
+  }
+
+  const onPlusReady = () => {
+    webview = plus.webview.currentWebview()
+    webview.addEventListener('message', appHandler)
+  }
+
+  if (typeof plus !== 'undefined') {
+    onPlusReady()
+  }
+  else {
+    document.addEventListener('plusready', onPlusReady, false)
+  }
+  // #endif
+
+  /* =============== 取消监听 =============== */
+  cleanup = () => {
+    // #ifdef H5
+    window.removeEventListener('message', h5Handler)
+    // #endif
+
+    // #ifdef APP-PLUS
+    webview?.removeEventListener('message', appHandler)
+    // #endif
+  }
+
+  return cleanup
 }
 
 export function debounce(fn: Function, delay: number) {

@@ -70,7 +70,10 @@ defineExpose({
     :class="systemInfo.uniPlatform === 'web' ? 'pt-[60px]' : 'pt-[100px]'"
   >
     <view>
-      <view class="flex items-center justify-between px-[20px]">
+      <view
+        v-if="JSON.stringify(userInfo.customer) !== '{}'"
+        class="flex items-center justify-between px-[20px]"
+      >
         <view class="flex items-center">
           <up-image
             :width="40"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { getVipInfo } from '@/api/index'
+import { applyWithdrawal, getVipInfo } from '@/api/index'
 import { useUserStore } from '@/store'
 import { formatAmount, handleCopy } from '@/utils/util'
 
@@ -23,6 +23,39 @@ onMounted(async () => {
   const vipInfoRes = await getVipInfo()
   vipInfoData.value = vipInfoRes
 })
+async function applyWithdrawalData() {
+  uni.showLoading({
+    title: '提现申请中',
+  })
+  if (!form.address || !form.amount) {
+    uni.showToast({
+      title: '请输入提现地址和金额',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+  const applyRes = await applyWithdrawal(form)
+  uni.showToast({
+    title: '提现申请成功,等待审核',
+    icon: 'none',
+    duration: 2000,
+  })
+  console.log('applyRes :>> ', applyRes)
+  // try {
+
+  // }
+  // catch (error) {
+  //   console.log('error :>> ', error)
+  //   uni.hideLoading()
+  //   uni.showToast({
+  //     title: error.message || '提现申请失败',
+  //     icon: 'none',
+  //     duration: 2000,
+  //   })
+  //   return
+  // }
+}
 </script>
 
 <template>
@@ -75,7 +108,12 @@ onMounted(async () => {
     <div class="mt-[10px] flex items-center justify-between">
       <div class="text-[12px] text-[#94999A]">
         当前手续费比例:
-        <span class="text-[#94999A]">{{ vipInfoData.currentPremium }}</span>
+        <span class="text-[#94999A]">
+          {{
+            Number(
+              (vipInfoData.currentPremium - vipInfoData.decayedNum) * 100,
+            ).toFixed(2)
+          }}%</span>
       </div>
       <div class="text-[12px] text-[#94999A]">
         当前余额:
@@ -96,7 +134,7 @@ onMounted(async () => {
         *提现申请提交后，请耐心等待区块链确认，到账时间以网络情况为准
       </div>
     </div>
-    <div class="btn-block mt-[40px] h-[40px]">
+    <div class="btn-block mt-[40px] h-[40px]" @click="applyWithdrawalData">
       确认
     </div>
   </view>

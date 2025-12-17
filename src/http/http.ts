@@ -23,7 +23,6 @@ export function http<T>(options: CustomRequestOptions) {
       success: async (res) => {
         const responseData = res.data as IResponse<T>
         const { code } = responseData
-
         // 检查是否是401错误（包括HTTP状态码401或业务码401）
         const isTokenExpired = res.statusCode === 401 || code === 401
 
@@ -45,7 +44,6 @@ export function http<T>(options: CustomRequestOptions) {
 
           return reject(res)
         }
-
         // 处理其他成功状态（HTTP状态码200-299）
         if (res.statusCode >= 200 && res.statusCode < 300) {
           // 处理业务逻辑错误
@@ -57,12 +55,12 @@ export function http<T>(options: CustomRequestOptions) {
           }
           return resolve(responseData.data)
         }
-
+        console.log('111 :>> ', 111)
         // 处理其他错误
         !options.hideErrorToast
         && uni.showToast({
           icon: 'none',
-          title: (res.data as any).msg || '请求错误',
+          title: (res.data as any).msg || (res.data as any).message || '请求错误',
         })
         reject(res)
       },

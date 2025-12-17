@@ -3,46 +3,99 @@ import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { navigateToInterceptor } from '@/router/interceptor'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
-import { handleToUrl, listenFaceLivenessSuccess } from '@/utils/util'
+import { useTokenStore } from '@/store/token'
+import { debounce, handleToUrl, listenFaceLivenessError, listenFaceLivenessSuccess } from '@/utils/util'
 
 onLaunch((options) => {
   if (options?.query?.inviteCode) {
     useCommonStore().setInviteCode(options.query.inviteCode)
   }
+  // 防抖
   listenFaceLivenessSuccess((data, event) => {
-    console.log('人脸活体检测成功:', JSON.parse(data))
     const faceInfo = JSON.parse(data)
-    if (faceInfo.success === true) {
-      useFaceStore().setFaceInfo(faceInfo)
-      if (useFaceStore().type === 1) {
+    if (useFaceStore().type === 1) {
+      if (faceInfo.success === true) {
+        useFaceStore().setFaceInfo(faceInfo)
         handleToUrl('/pages-fg/login/register?faceAuth=true')
+        useFaceStore().setFaceInfo({})
       }
-    }
-    else {
-      console.log('人脸活体失败:', JSON.parse(data))
-      uni.showToast({
-        title: faceInfo.message || '人脸活体检测失败',
-        icon: 'none',
-        duration: 2000,
-        complete: () => {
-          console.log('useFaceStore().type :>> ', useFaceStore().type)
-          if (useFaceStore().type === 1) {
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸活体检测失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
             useFaceStore().setFaceInfo({})
             useFaceStore().setType(-1)
             handleToUrl('/pages-fg/login/register')
-          }
-          else if (useFaceStore().type === 2) {
+          },
+        })
+      }
+    }
+    if (useFaceStore().type === 2) {
+      if (faceInfo.success === true) {
+        uni.showToast({
+          title: '人脸验证成功',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo(faceInfo)
             handleToUrl('/pages/changePassword/index')
-          }
-          // uni.navigateBack()
+          },
+        })
+      }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages/changePassword/index')
+          },
+        })
+      }
+    }
+    if (useFaceStore().type === 3) {
+      const tokenStore = useTokenStore()
+      tokenStore._postLogin(faceInfo)
+      uni.showToast({
+        title: '登录成功',
+        icon: 'none',
+        duration: 2000,
+        complete: () => {
+          setTimeout(() => {
+            handleToUrl('/pages/index/index')
+          }, 1000)
         },
       })
+      // handleToUrl('/pages-fg/login/register?faceAuth=true')
+      // useFaceStore().setFaceInfo({})
+      // useFaceStore().setType(-1)
     }
+    console.log('useFaceStore().type :>> ', useFaceStore().type)
+    console.log('人脸活体检测成功:', JSON.parse(data))
     // 这里可以添加实际的业务逻辑，如更新用户状态、触发其他事件等
   }, (error) => {
     useFaceStore().setFaceInfo({})
     useFaceStore().setType(-1)
     console.error('人脸活体检测消息处理失败:', error)
+  })
+  listenFaceLivenessError((data, event) => {
+    console.log('人脸活体检测错误:', JSON.parse(data))
+    uni.showToast({
+      title: JSON.parse(data).message || '人脸活体检测失败',
+      icon: 'none',
+      duration: 2000,
+      complete: () => {
+        useFaceStore().setFaceInfo({})
+        useFaceStore().setType(-1)
+        handleToUrl('/pages-fg/login/register')
+      },
+    })
+  }, (error) => {
+    console.error('人脸活体检测错误处理失败监听:', error)
   })
 })
 onShow((options) => {

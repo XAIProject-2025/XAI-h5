@@ -83,7 +83,6 @@ async function buyType1(item) {
     uni.showToast({
       title: error.data.message || '购买失败',
       icon: 'none',
-
     })
   }
   finally {

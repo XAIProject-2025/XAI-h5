@@ -2,6 +2,7 @@
 import md5 from 'js-md5'
 import Textface from '@/pages/textface/index.vue'
 import { REGISTER_PAGE } from '@/router/config'
+import { useFaceStore } from '@/store/face'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
 
@@ -36,6 +37,11 @@ async function doLogin() {
     console.log('error :>> ', error)
   }
 }
+
+function handleFaceAuth() {
+  useFaceStore().setType(3)
+  handleToUrl('/pages/textface/index')
+}
 </script>
 
 <template>
@@ -47,10 +53,17 @@ async function doLogin() {
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
-        <up-input v-model="userInfo.name" placeholder="请输入内容" color="#94999A">
+        <up-input
+          v-model="userInfo.name"
+          placeholder="请输入内容"
+          color="#94999A"
+        >
           <template #prefix>
             <view class="mr-[10px] flex items-center">
-              <image src="/static/login/pass_icon.png" class="h-[15px] w-[15px]" />
+              <image
+                src="/static/login/pass_icon.png"
+                class="h-[15px] w-[15px]"
+              />
             </view>
           </template>
         </up-input>
@@ -63,23 +76,40 @@ async function doLogin() {
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
-        <up-input v-model="userInfo.password" placeholder="请输入内容" color="#94999A" type="password">
+        <up-input
+          v-model="userInfo.password"
+          placeholder="请输入内容"
+          color="#94999A"
+          type="password"
+        >
           <template #prefix>
             <view class="mr-[10px] flex items-center">
-              <image src="/static/login/name_icon.png" class="h-[15px] w-[15px]" />
+              <image
+                src="/static/login/name_icon.png"
+                class="h-[15px] w-[15px]"
+              />
             </view>
           </template>
         </up-input>
       </view>
     </view>
-    <view class="mt-[20px] px-[20px] text-right text-[14px]" @click="handleToUrl(REGISTER_PAGE)">
+    <view
+      class="mt-[20px] px-[20px] text-right text-[14px]"
+      @click="handleToUrl(REGISTER_PAGE)"
+    >
       注册
     </view>
-    <view class="absolute bottom-[160px] w-full flex flex-col items-center justify-center">
+    <view
+      class="absolute bottom-[160px] w-full flex flex-col items-center justify-center"
+      @click="handleFaceAuth"
+    >
       <image src="/static/login/face.png" class="mb-[5px] h-[40px] w-[40px]" />
       <view>人脸登录</view>
     </view>
-    <view class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]" @click="doLogin">
+    <view
+      class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"
+      @click="doLogin"
+    >
       登录
     </view>
     <!-- <textface /> -->

@@ -150,6 +150,7 @@ export const useTokenStore = defineStore(
       setTokenInfo,
       validToken,
       hasLogin,
+      _postLogin,
       // 注册
       register,
     }

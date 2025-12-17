@@ -30,9 +30,30 @@ onMounted(() => {
   }
 })
 async function doLogin() {
-  if (!userInfo.name || !userInfo.password || !userInfo.passwordNew || !userInfo.inviteCode) {
+  if (!userInfo.name) {
     uni.showToast({
-      title: '请输入用户名、密码、确认密码和邀请码',
+      title: '请输入用户名',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.password) {
+    uni.showToast({
+      title: '请输入密码',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.passwordNew) {
+    uni.showToast({
+      title: '请输入密码',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.inviteCode) {
+    uni.showToast({
+      title: '请输入密码',
       icon: 'none',
     })
     return
