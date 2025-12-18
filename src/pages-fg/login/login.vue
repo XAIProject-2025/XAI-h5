@@ -12,7 +12,10 @@ definePage({
 
 <template>
   <view class="login relative flex flex-col items-center">
-    <image src="/static/logo_big.png" class="mx-auto mt-[140px] h-[130px] w-[130px]" />
+    <image
+      src="/static/logo_big.png"
+      class="mx-auto mt-[140px] h-[130px] w-[130px]"
+    />
     <view class="mt-[20px] text-[20px] font-bold">
       3u Ai
     </view>

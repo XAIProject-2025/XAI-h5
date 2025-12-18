@@ -29,12 +29,13 @@ onMounted(async () => {
   recordList.value = getSubordinateListRes || []
   statistics.value = getStatisticsRes || {}
   uni.hideLoading()
-  if (UNI_PLATFORM === 'h5') {
-    inviteCodeLink.value = `${window.location.origin}/#/pages-fg/login/login?inviteCode=${userInfo.value.inviteCode}`
-  }
-  else {
-    inviteCodeLink.value = userInfo.value.inviteCode
-  }
+  console.log('UNI_PLATFORM :>> ', UNI_PLATFORM)
+  // #ifdef H5
+  inviteCodeLink.value = `${window.location.origin}/#/pages-fg/login/login?inviteCode=${userInfo.value.inviteCode}`
+  // #endif
+  // #ifdef APP-PLUS
+  inviteCodeLink.value = userInfo.value.inviteCode
+  // #endif
 })
 </script>
 
@@ -58,11 +59,17 @@ onMounted(async () => {
         <div class="uppercase">
           {{ userInfo.inviteCode }}
         </div>
-        <div class="ml-[10px] text-[13px] text-[#19A71D]" @click="handleCopy(userInfo.inviteCode)">
+        <div
+          class="ml-[10px] text-[13px] text-[#19A71D]"
+          @click="handleCopy(userInfo.inviteCode)"
+        >
           复制
         </div>
       </div>
-      <div class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]" @click="handleCopy(inviteCodeLink)">
+      <div
+        class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]"
+        @click="handleCopy(inviteCodeLink)"
+      >
         复制邀请链接以邀请好友
       </div>
       <!-- <div class="mx-[20px] mt-[20px] text-center text-[12px] text-[#94999A]">
@@ -80,7 +87,9 @@ onMounted(async () => {
       </div>
     </div> -->
     <!-- 详细规则 -->
-    <view class="bg-desc mx-[20px] mt-[20px] rounded-[10px] px-[15px] py-[20px]">
+    <view
+      class="bg-desc mx-[20px] mt-[20px] rounded-[10px] px-[15px] py-[20px]"
+    >
       <view class="mb-[20px] text-[16px] font-bold">
         邀请奖励
       </view>
@@ -107,7 +116,9 @@ onMounted(async () => {
     <!-- <div class="mt-[20px] text-center text-[14px] font-bold">
       无限分销
     </div> -->
-    <view class="bg-default mx-[20px] mb-[50px] mt-[20px] rounded-[10px] px-[20px] py-[20px]">
+    <view
+      class="bg-default mx-[20px] mb-[50px] mt-[20px] rounded-[10px] px-[20px] py-[20px]"
+    >
       <div class="w-full flex items-center justify-center">
         <div class="w-1/2 flex flex-col items-center justify-center">
           <div class="text-[12px] text-[#94999A]">
@@ -126,7 +137,9 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="mt-[20px] flex items-center justify-between text-[14px] font-bold">
+      <div
+        class="mt-[20px] flex items-center justify-between text-[14px] font-bold"
+      >
         <div class="w-1/3 text-center">
           昵称
         </div>
@@ -139,7 +152,8 @@ onMounted(async () => {
       </div>
       <template v-if="recordList.length > 0">
         <div
-          v-for="(item, index) in recordList" :key="index"
+          v-for="(item, index) in recordList"
+          :key="index"
           class="mt-[10px] flex items-center justify-between text-[12px] text-[#94999A]"
         >
           <div class="w-1/3 text-center">

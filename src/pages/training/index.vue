@@ -94,7 +94,10 @@ onMounted(async () => {
           />
           邀请
         </view>
-        <view class="btn-block--white h-[35px] w-1/2">
+        <view
+          class="btn-block--white h-[35px] w-1/2"
+          @click="handleToUrl('/pages/withdraw/index')"
+        >
           <image
             src="/static/training/withdraw.png"
             class="mr-[5px] h-[20px] w-[20px]"

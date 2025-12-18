@@ -35,13 +35,29 @@ async function applyWithdrawalData() {
     })
     return
   }
-  const applyRes = await applyWithdrawal(form)
-  uni.showToast({
-    title: '提现申请成功,等待审核',
-    icon: 'none',
-    duration: 2000,
-  })
-  console.log('applyRes :>> ', applyRes)
+  try {
+    const applyRes = await applyWithdrawal(form)
+    uni.showToast({
+      title: '提现申请成功,等待审核',
+      icon: 'none',
+      duration: 2000,
+    })
+    // userStore().fetchUserInfo()
+    await userStore.fetchUserInfo()
+
+    console.log('applyRes :>> ', applyRes)
+  }
+  catch (error) {
+    console.log('error :>> ', error)
+    uni.hideLoading()
+    uni.showToast({
+      title: error.data.message || '提现申请失败',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+
   // try {
 
   // }

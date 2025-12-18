@@ -46,14 +46,14 @@ async function doLogin() {
   }
   if (!userInfo.passwordNew) {
     uni.showToast({
-      title: '请输入密码',
+      title: '请输入确认密码',
       icon: 'none',
     })
     return
   }
   if (!userInfo.inviteCode) {
     uni.showToast({
-      title: '请输入密码',
+      title: '请输入邀请码',
       icon: 'none',
     })
     return
