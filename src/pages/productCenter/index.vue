@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { getChatTask } from '@/api'
 import { getPowerOrders, redeemPowerOrder } from '@/api/funds'
 import { formatAmount, handleToUrl } from '@/utils/util'
 
@@ -11,7 +12,14 @@ definePage({
 })
 onMounted(async () => {
   await getList()
+  await getTask()
 })
+const taskData = ref([])
+async function getTask() {
+  const getChatTaskRes = await getChatTask()
+  taskData.value = getChatTaskRes
+}
+
 const serverList = ref([])
 async function getList() {
   uni.showLoading({
@@ -31,6 +39,13 @@ const confirmData = reactive({
 })
 async function redemption(item) {
   console.log('item :>> ', item)
+  if (taskData.value.taskCompleted === false) {
+    uni.showToast({
+      title: '当前任务已经开始,请先完成任务',
+      icon: 'none',
+    })
+    return
+  }
   confirmData.loading = true
   try {
     await redeemPowerOrder({ orderId: item.id })
