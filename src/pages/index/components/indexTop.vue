@@ -32,7 +32,7 @@ onMounted(async () => {
   await getPowerOrdersData()
   conuntToXcoin.value = userInfo.value.kdkBalance
   if (powerOrdersData.value.length === 0) {
-    notifyTitle.value = '当前没有算力服务器,请前往购买后完全任务获取奖励'
+    notifyTitle.value = '当前没有算力服务器,请前往购买后完成任务获取奖励'
   }
 })
 // 暴露方法
@@ -150,7 +150,7 @@ defineExpose({
             class="w-1/2 flex items-center justify-center"
           >
             <up-swiper
-              class="w-[150px] !h-[40px] !bg-[transparent]"
+              class="w-[150px] !h-[50px] !bg-[transparent]"
               :list="powerOrdersData"
               @change="onChange"
               @click="handleClick"
