@@ -17,7 +17,8 @@ const { userInfo } = storeToRefs(userStore)
       src="/static/images/vip.png"
       class="mr-[8px]"
     />
-    E{{ userInfo.vipLevel }}
+    <!-- E{{ userInfo.vipLevel }} -->
+    {{ userInfo.vipLevelName }}
   </view>
 </template>
 

@@ -528,5 +528,8 @@ export function getRecordType(type: number) {
   if (type == 6) {
     obj.name = '服务器赎回'
   }
+  if (type == 7) {
+    obj.name = '提现'
+  }
   return obj
 }

@@ -12,8 +12,8 @@ definePage({
   },
 })
 const userInfo = reactive({
-  name: 'admin1',
-  password: '123456',
+  name: '',
+  password: '',
 })
 const tokenStore = useTokenStore()
 async function doLogin() {

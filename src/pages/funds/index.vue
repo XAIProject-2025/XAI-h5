@@ -35,6 +35,9 @@ const tabData = reactive({
   currentTab: -1,
 })
 onMounted(() => {
+
+})
+onShow(() => {
   commonStore.fetchTokenPrice()
   userStore.fetchUserInfo()
 })

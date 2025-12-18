@@ -17,7 +17,9 @@ onLaunch((options) => {
       if (faceInfo.success === true) {
         useFaceStore().setFaceInfo(faceInfo)
         handleToUrl('/pages-fg/login/register?faceAuth=true')
-        useFaceStore().setFaceInfo({})
+        // useFaceStore().setForm({})
+
+        // useFaceStore().setFaceInfo({})
       }
       else {
         uni.showToast({

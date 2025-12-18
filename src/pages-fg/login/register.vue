@@ -11,7 +11,7 @@ definePage({
     navigationStyle: 'custom',
   },
 })
-const userInfo = reactive({
+let userInfo = reactive({
   name: '',
   password: '',
   passwordNew: '',
@@ -19,8 +19,13 @@ const userInfo = reactive({
   isFaceAuth: false,
 })
 onShow((options) => {
-  if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
-    userInfo.isFaceAuth = true
+  console.log('useFaceStore().f :>> ', useFaceStore().faceInfo)
+
+  if (useFaceStore().type === 1) {
+    userInfo = useFaceStore().form
+    if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
+      userInfo.isFaceAuth = true
+    }
   }
 })
 const tokenStore = useTokenStore()
@@ -82,6 +87,9 @@ async function doLogin() {
     })
     setTimeout(() => {
       handleToUrl('/pages/index/index')
+      useFaceStore().setFaceInfo({})
+      useFaceStore().setType(-1)
+      useFaceStore().setForm({})
     }, 1000)
   }
   catch (error) {
@@ -95,6 +103,7 @@ async function doLogin() {
 }
 function handleFaceAuth() {
   useFaceStore().setType(1)
+  useFaceStore().setForm(userInfo)
   handleToUrl('/pages/textface/index')
 }
 </script>

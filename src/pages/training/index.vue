@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { getPowerOrders, redeemPowerOrder } from '@/api/funds'
 import { getVipInfo } from '@/api/index'
 import { useUserStore } from '@/store'
 import { formatAmount, handleToUrl } from '@/utils/util'
+
 import circleProgress from './components/circleProgress.vue'
 
 const userStore = useUserStore()
@@ -15,12 +17,15 @@ definePage({
   },
 })
 const vipInfoData = ref({})
+const serverList = ref([])
 onMounted(async () => {
   uni.showLoading({
     title: '加载中...',
     mask: true,
   })
   const vipInfoRes = await getVipInfo()
+  const getPowerOrdersRes = await getPowerOrders()
+  serverList.value = getPowerOrdersRes.content || []
   vipInfoData.value = vipInfoRes
   uni.hideLoading()
 })
@@ -57,7 +62,7 @@ onMounted(async () => {
         class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]"
       >
         <view>
-          <span class="mr-[4px]">算力服务器</span>{{ vipInfoData.serverNum }}
+          <span class="mr-[4px]">算力服务器</span>{{ serverList.length }}
         </view>
         <view class="mx-[10px]">
           |
