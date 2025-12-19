@@ -43,18 +43,24 @@ async function doLogin() {
     return
   }
   if (!userInfo.password) {
-    uni.showToast({
-      title: '请输入密码',
-      icon: 'none',
-    })
-    return
+    // 8位以上包含字母和数字
+    if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
+      uni.showToast({
+        title: '请输入密码（8位以上包含字母和数字）',
+        icon: 'none',
+      })
+      return
+    }
   }
   if (!userInfo.passwordNew) {
-    uni.showToast({
-      title: '请输入确认密码',
-      icon: 'none',
-    })
-    return
+    // 8位以上包含字母和数字
+    if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
+      uni.showToast({
+        title: '请输入确认密码（8位以上包含字母和数字）',
+        icon: 'none',
+      })
+      return
+    }
   }
   if (!userInfo.inviteCode) {
     uni.showToast({

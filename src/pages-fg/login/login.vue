@@ -17,7 +17,7 @@ definePage({
       class="mx-auto mt-[140px] h-[130px] w-[130px]"
     />
     <view class="mt-[20px] text-[20px] font-bold">
-      3u Ai
+      X-AI
     </view>
     <view
       class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"

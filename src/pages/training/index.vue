@@ -68,7 +68,7 @@ onMounted(async () => {
           |
         </view>
         <view>
-          <span class="mr-[4px]">算力币余额</span>{{ formatAmount(userInfo.kdkBalance) }} Xcoin
+          <span class="mr-[4px]">Xcoin余额</span>{{ formatAmount(userInfo.kdkBalance) }} Xcoin
         </view>
       </view>
       <view

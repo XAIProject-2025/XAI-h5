@@ -46,7 +46,7 @@ const navList = ref([
   },
   {
     icon: 'zj',
-    title: '资金管理',
+    title: 'Xcoin余额',
     url: '/pages/funds/index',
   },
   {
@@ -76,7 +76,7 @@ const navList = ref([
       <view
         class="mb-[20px] mt-[15px] text-center text-[16px] text-[#2d3738] font-bold"
       >
-        3u AI
+        X-AI
       </view>
       <view
         v-for="(item, index) in navList"

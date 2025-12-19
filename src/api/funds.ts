@@ -26,3 +26,9 @@ export function getPowerOrders(params) {
 export function redeemPowerOrder(params) {
   return http.post('/api/v1/power/redeem', params)
 }
+
+// 查询币价
+//
+export function getCurrencyHistory(params) {
+  return http.get('/api/v1/currency/history', params)
+}

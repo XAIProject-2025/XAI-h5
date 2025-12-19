@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
-import { getBalanceRate } from '@/api/funds'
+import { getBalanceRate, getCurrencyHistory } from '@/api/funds'
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 import transaction from './components/transaction.vue'
@@ -24,8 +24,15 @@ onMounted(async () => {
   const getBalanceRateRes = await getBalanceRate({
     currencyName: '1',
   })
+  const getCurrencyHistoryRes = await getCurrencyHistory({
+    currencyName: '1',
+    type: '1D',
+  })
   tokenPrice.value = getBalanceRateRes?.toUsdt || 0
   uni.hideLoading()
+})
+onShow(() => {
+  userStore.fetchUserInfo()
 })
 </script>
 

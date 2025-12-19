@@ -61,10 +61,7 @@ function handleTabClick(item) {
         <u-image src="/static/images/coin.png" width="40" height="45" />
         <div class="ml-[15px]">
           <div class="text-[14px] text-[#fff] font-bold">
-            算力币余额
-          </div>
-          <div class="text-[10px] text-[#94999A]">
-            算力 (单位：Xcoin)
+            Xcoin余额
           </div>
         </div>
       </div>

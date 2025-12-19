@@ -160,10 +160,11 @@ defineExpose({
                   class="w-full flex flex-col items-center justify-center text-[14px]"
                 >
                   <view class="">
-                    {{ item.usedPower }}/{{ item.power }}
+                    {{ item.serverInfo.serverName }}
                   </view>
                   <view class="mt-[5px]">
-                    {{ item.serverInfo.serverName }}
+                    剩余:{{ Number(item.power) - Number(item.usedPower) }}
+                    <!-- {{ item.usedPower }}/{{ item.power }} -->
                   </view>
                 </view>
               </template>
