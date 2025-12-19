@@ -11,6 +11,8 @@ const userStore = useUserStore()
 // 使用storeToRefs解构userInfo
 const { userInfo } = storeToRefs(userStore)
 const { tokenPrice } = storeToRefs(commonStore)
+// 2025-12-18 17:15:04 去掉年
+
 definePage({
   style: {
     navigationStyle: 'custom',

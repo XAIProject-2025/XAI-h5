@@ -529,7 +529,13 @@ export function getRecordType(type: number) {
     obj.name = '服务器赎回'
   }
   if (type == 7) {
-    obj.name = '提现'
+    obj.name = '提现审核中'
+  }
+  if (type == 8) {
+    obj.name = '提现失败'
+  }
+  if (type == 9) {
+    obj.name = '提现通过'
   }
   return obj
 }

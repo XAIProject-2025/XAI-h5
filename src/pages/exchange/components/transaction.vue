@@ -16,6 +16,15 @@ const props = defineProps({
 onMounted(async () => {
   await getList()
 })
+function removeYearFromDatetime(datetimeStr) {
+  // 校验输入类型和格式（简单正则匹配 YYYY-MM-DD 开头）
+  const reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+  if (typeof datetimeStr !== 'string' || !reg.test(datetimeStr)) {
+    return ''
+  }
+  // 截取第5位开始的字符（跳过 "YYYY-" 部分）
+  return datetimeStr.slice(5)
+}
 const chartData = ref([])
 const straightOption = ref()
 
@@ -34,7 +43,8 @@ async function getList() {
     },
     xAxis: {
       type: 'category',
-      data: chartData.value.map(item => item.activateTime),
+      data: chartData.value.map(item => removeYearFromDatetime(item.activateTime)),
+      boundaryGap: true,
     },
     yAxis: {
       type: 'category',
@@ -52,7 +62,7 @@ async function getList() {
           width: 2,
         },
         label: {
-          show: true, // 显示标签
+          show: false, // 显示标签
           color: '#666',
           position: 'top', // 标签的位置，可以是 'top', 'bottom', 'left', 'right' 等
         },
@@ -144,8 +154,14 @@ async function handleBuy(type) {
   })
 }
 onMounted(async () => {
-
+  // await getList()
 })
+function changeTab(item) {
+  console.log('item :>> ', item)
+  dateRange.value.current = item.key
+
+  getList()
+}
 </script>
 
 <template>
@@ -164,7 +180,7 @@ onMounted(async () => {
             'btn-block--white': item.key !== dateRange.current,
           }"
           class="ml-[10px] h-[20px] min-h-[20px] rounded-[5px] px-[8px] text-center"
-          @click="dateRange.current = item.key"
+          @click="changeTab(item)"
         >
           {{ item.name }}
         </div>

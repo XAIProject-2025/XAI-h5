@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getImage } from '@/utils/util'
+import { getImage, handleToUrl } from '@/utils/util'
 
 const show = ref(false)
 function handleClose() {
@@ -60,6 +60,12 @@ const navList = ref([
   //   url: '/pages/textface/index',
   // },
 ])
+function handleToTab(item) {
+  handleToUrl(item.url)
+  // uni.navigateTo({
+  //   url: item.url,
+  // })
+}
 </script>
 
 <template>
@@ -88,9 +94,9 @@ const navList = ref([
           class="mr-[15px] h-[16px] w-[16px]"
           alt=""
         />
-        <navigator :url="item.url" class="text-[14px] text-[#2d3738]">
+        <div class="text-[14px] text-[#2d3738]" @click="handleToTab(item)">
           {{ item.title }}
-        </navigator>
+        </div>
       </view>
     </view>
   </up-popup>

@@ -140,13 +140,13 @@ onMounted(async () => {
       <div
         class="mt-[20px] flex items-center justify-between text-[14px] font-bold"
       >
-        <div class="w-1/3 text-center">
+        <div class="w-1/4 text-center">
           昵称
         </div>
-        <div class="w-1/3 text-center">
+        <div class="w-1/4 text-center">
           关系类型
         </div>
-        <div class="w-1/3 text-center">
+        <div class="w-2/4 text-center">
           注册时间
         </div>
       </div>
@@ -156,15 +156,15 @@ onMounted(async () => {
           :key="index"
           class="mt-[10px] flex items-center justify-between text-[12px] text-[#94999A]"
         >
-          <div class="w-1/3 text-center">
+          <div class="w-1/4 text-center">
             {{ item.name }}
           </div>
-          <div class="w-1/3 text-center">
+          <div class="w-1/4 text-center">
             <span v-if="item.level == 1"> 一级</span>
             <span v-else-if="item.level == 2"> 二级</span>
             <span v-else> 三级</span>
           </div>
-          <div class="w-1/3 text-center">
+          <div class="w-2/4 text-center">
             {{ item.registerTime }}
           </div>
         </div>

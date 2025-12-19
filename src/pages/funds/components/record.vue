@@ -1,15 +1,25 @@
 <template>
   <view>
     <z-paging
-      ref="paging" v-model="dataList" use-page-scroll to-bottom-loading-more-enabled :refresher-enabled="false"
+      ref="paging"
+      v-model="dataList"
+      use-page-scroll
+      to-bottom-loading-more-enabled
+      :refresher-enabled="false"
       @query="queryList"
     >
       <view v-for="(item, index) in dataList" :key="index">
-        <view class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px]">
+        <view
+          class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px]"
+        >
           <view class="">
             <view class="text-[14px] font-bold">
-              {{ formatAmount(item.amount) }} {{ item.currencyType === 0 ? 'Xcoin' : 'USDT' }}
-              <span v-if="item.currencyType === 0" class="mt-[5px] text-[12px] text-[#94999A]">
+              {{ formatAmount(item.amount) }}
+              {{ item.currencyType === 0 ? "Xcoin" : "USDT" }}
+              <span
+                v-if="item.currencyType === 0"
+                class="mt-[5px] text-[12px] text-[#94999A]"
+              >
                 ≈ {{ formatAmount(Math.abs(item.amountUsdt)) }} USDT
               </span>
             </view>
@@ -17,11 +27,25 @@
               {{ item.createTime }}
             </view>
           </view>
+          <div v-if="item.type === 8" class="text-[12px] text-[#94999A]">
+            拒绝原因:{{ item.remark }}
+          </div>
           <div
+            v-if="item.type !== 9"
             :class="{
               'status-green': item.amount > 0,
-              'status-red': item.amount < 0,
-            }" class="absolute right-[0] top-[0] min-w-[120px] text-center text-[12px] text-[#fff]"
+              'status-red': item.amount <= 0,
+            }"
+            class="absolute right-[0] top-[0] min-w-[120px] text-center text-[12px] text-[#fff]"
+          >
+            <!-- :class="item.type === 1 ? 'bg2' : 'bg1'" -->
+
+            {{ getRecordType(item.type).name }}
+            <!-- {{ item.type === 1 ? '买入' : '卖出' }} -->
+          </div>
+          <div
+            v-if="item.type === 9"
+            class="status-green absolute right-[0] top-[0] min-w-[120px] text-center text-[12px] text-[#fff]"
           >
             <!-- :class="item.type === 1 ? 'bg2' : 'bg1'" -->
 

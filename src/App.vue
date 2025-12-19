@@ -13,25 +13,12 @@ onLaunch((options) => {
   // 防抖
   listenFaceLivenessSuccess((data, event) => {
     const faceInfo = JSON.parse(data)
+    console.log('faceInfo :>> ', faceInfo)
+    console.log('useFaceStore().type :>> ', useFaceStore().type)
     if (useFaceStore().type === 1) {
       if (faceInfo.success === true) {
         useFaceStore().setFaceInfo(faceInfo)
         handleToUrl('/pages-fg/login/register?faceAuth=true')
-        // useFaceStore().setForm({})
-
-        // useFaceStore().setFaceInfo({})
-      }
-      else {
-        uni.showToast({
-          title: faceInfo.message || '人脸活体检测失败',
-          icon: 'none',
-          duration: 2000,
-          complete: () => {
-            useFaceStore().setFaceInfo({})
-            useFaceStore().setType(-1)
-            handleToUrl('/pages-fg/login/register')
-          },
-        })
       }
     }
     if (useFaceStore().type === 2) {
@@ -76,7 +63,6 @@ onLaunch((options) => {
       // useFaceStore().setFaceInfo({})
       // useFaceStore().setType(-1)
     }
-    console.log('useFaceStore().type :>> ', useFaceStore().type)
     console.log('人脸活体检测成功:', JSON.parse(data))
     // 这里可以添加实际的业务逻辑，如更新用户状态、触发其他事件等
   }, (error) => {
@@ -85,9 +71,9 @@ onLaunch((options) => {
     console.error('人脸活体检测消息处理失败:', error)
   })
   listenFaceLivenessError((data, event) => {
-    console.log('人脸活体检测错误:', JSON.parse(data))
+    console.log('data :>> ', data)
     uni.showToast({
-      title: JSON.parse(data).message || '人脸活体检测失败',
+      title: '人脸检测失败',
       icon: 'none',
       duration: 2000,
       complete: () => {

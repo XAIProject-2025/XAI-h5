@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
+import { touristLogin } from '@/api/login'
 import Textface from '@/pages/textface/index.vue'
 import { REGISTER_PAGE } from '@/router/config'
 import { useFaceStore } from '@/store/face'
@@ -41,6 +42,22 @@ async function doLogin() {
 function handleFaceAuth() {
   useFaceStore().setType(3)
   handleToUrl('/pages/textface/index')
+}
+async function handleTouristLogin() {
+  // handleToUrl('/pages/index/index')
+  const res = await touristLogin()
+  const tokenStore = useTokenStore()
+  tokenStore._postLogin(res)
+  uni.showToast({
+    title: '游客模式登录成功',
+    icon: 'none',
+    duration: 2000,
+    complete: () => {
+      setTimeout(() => {
+        handleToUrl('/pages/index/index')
+      }, 1000)
+    },
+  })
 }
 </script>
 
@@ -100,17 +117,23 @@ function handleFaceAuth() {
       注册
     </view>
     <view
-      class="absolute bottom-[160px] w-full flex flex-col items-center justify-center"
+      class="absolute bottom-[220px] w-full flex flex-col items-center justify-center"
       @click="handleFaceAuth"
     >
       <image src="/static/login/face.png" class="mb-[5px] h-[40px] w-[40px]" />
       <view>人脸登录</view>
     </view>
     <view
-      class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"
+      class="btn-block absolute bottom-[80px] left-[5%] mx-auto h-[40px] w-[90%]"
       @click="doLogin"
     >
       登录
+    </view>
+    <view
+      class="btn-block--white absolute bottom-[140px] left-[5%] mx-auto h-[40px] w-[90%]"
+      @click="handleTouristLogin"
+    >
+      游客模式
     </view>
     <!-- <textface /> -->
   </view>

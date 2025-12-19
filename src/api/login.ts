@@ -99,3 +99,8 @@ export function getWxCode() {
 export function wxLogin(data: { code: string }) {
   return http.post<IAuthLoginRes>('/auth/wxLogin', data)
 }
+
+// 游客模式登录
+export function touristLogin() {
+  return http.post<IAuthLoginRes>('/api/v1/auth/guest')
+}

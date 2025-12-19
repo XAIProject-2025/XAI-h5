@@ -18,11 +18,12 @@ definePage({
 })
 const vipInfoData = ref({})
 const serverList = ref([])
-onMounted(async () => {
+onShow(async () => {
   uni.showLoading({
     title: '加载中...',
     mask: true,
   })
+  await userStore.fetchUserInfo()
   const vipInfoRes = await getVipInfo()
   const getPowerOrdersRes = await getPowerOrders()
   getPowerOrdersRes.content.map((v) => {
@@ -32,6 +33,9 @@ onMounted(async () => {
   })
   vipInfoData.value = vipInfoRes
   uni.hideLoading()
+})
+onMounted(async () => {
+
 })
 </script>
 

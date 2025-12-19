@@ -3,10 +3,12 @@ import { storeToRefs } from 'pinia'
 import { getChatTask } from '@/api'
 import { getPowerOrders } from '@/api/funds'
 import { useUserStore } from '@/store'
+import { useTokenStore } from '@/store/token'
 
 import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 
 const userStore = useUserStore()
+const showLoginModal = ref(false)
 const { userInfo } = storeToRefs(userStore)
 const { UNI_PLATFORM } = process.env
 const systemInfo = uni.getSystemInfoSync()
@@ -35,10 +37,22 @@ onMounted(async () => {
     notifyTitle.value = '当前没有算力服务器,请前往购买后完成任务获取奖励'
   }
 })
+// // 监听userinfo roleid 变化
+// watch(() => userInfo.value.roleId, async (newVal, oldVal) => {
+//   console.log('newVal :>> ', newVal)
+//   // if (newVal !== oldVal) {
+//   //   await getTask()
+//   //   await getPowerOrdersData()
+//   // }
+// })
 // 暴露方法
 async function getTask() {
   const getChatTaskRes = await getChatTask()
   taskData.value = getChatTaskRes
+  console.log('getChatTaskRes :>> ', getChatTaskRes)
+  if (taskData.value.taskCompleted && userInfo.value.roleId === -1) {
+    showLoginModal.value = true
+  }
 }
 async function getPowerOrdersData() {
   const getPowerOrdersRes = await getPowerOrders({
@@ -58,6 +72,12 @@ async function fetchCountToXcoin() {
   if (taskData.value.usedPower > 0) {
     notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
   }
+}
+function handleClickAlert() {
+  const tokenStore = useTokenStore()
+
+  handleToUrl('/pages-fg/login/loginC')
+  tokenStore.logout()
 }
 defineExpose({
   fetchCountToXcoin,
@@ -86,7 +106,7 @@ defineExpose({
               客服名称
             </view>
             <view class="mt-[2px] text-[12px]">
-              {{ userInfo.customer.name }}
+              {{ userInfo.roleId === -1 ? "游客模式" : userInfo.customer.name }}
             </view>
           </view>
         </view>
@@ -99,7 +119,7 @@ defineExpose({
             src="/static/level/type_1.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 1"
+            v-if="userInfo.roleId === 1 || userInfo.roleId === -1"
             :width="40"
             :height="50"
             class="mr-[10px]"
@@ -140,7 +160,8 @@ defineExpose({
             />
             <view class="ml-[15px]">
               <view class="mb-[5px] text-[14px]">
-                {{ userInfo.name }}
+                <!-- {{ userInfo.name }} -->
+                {{ userInfo.roleId === -1 ? "游客模式" : userInfo.name }}
               </view>
               <level />
             </view>
@@ -232,13 +253,81 @@ defineExpose({
       />
     </view>
     <up-alert
-      v-if="notifyTitle"
+      v-if="notifyTitle && userInfo.roleId !== -1"
       class="mt-[5px]"
       type="warning"
       :description="notifyTitle"
       font-size="12"
       closable
     />
+    <up-alert
+      v-if="userInfo.roleId === -1"
+      class="mt-[5px]"
+      type="error"
+      description="当前为游客模式,请尽快登录账号，就能解锁正式奖励哦"
+      font-size="12"
+      @click="handleClickAlert"
+    />
+
+    <up-modal
+      :show="showLoginModal"
+      show-cancel-button
+      confirm-text="立即登录"
+      cancel-text="稍后再说"
+      confirm-color="#FF6738"
+      confirm-bg-color="#FF6738"
+      cancel-color="#666666"
+      cancel-bg-color="#F5F5F5"
+      modal-radius="12px"
+      button-radius="8px"
+      style="z-index: 1000"
+      @cancel="showLoginModal = false"
+      @confirm="handleClickAlert"
+    >
+      <div class="flex flex-col items-center px-[24px] py-[16px]">
+        <!-- 标题区域（带图标更生动） -->
+        <div class="mb-[16px] flex items-center">
+          <svg
+            class="mr-[8px] h-[20px] w-[20px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 2L4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8L12 2Z"
+              stroke="#FF6738"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9 12L11 14L15 10"
+              stroke="#FF6738"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <div class="text-[18px] text-[#333333] font-bold">
+            奖励提示
+          </div>
+        </div>
+
+        <!-- 内容卡片（优化背景/内边距/文字排版） -->
+        <div
+          class="mb-[8px] w-full border border-[#FFE8DD] rounded-[12px] bg-[#FFF9F6] p-[16px]"
+        >
+          <div class="text-[15px] text-[#333333] leading-[1.5]">
+            你已成功领取体验奖励啦～ 现在登录账号，就能解锁正式奖励哦！
+          </div>
+        </div>
+
+        <!-- 小字提示（增加引导性） -->
+        <div class="mb-[4px] text-[12px] text-[#999999]">
+          登录后会有更多的奖励哦
+        </div>
+      </div>
+    </up-modal>
   </view>
 </template>
 
