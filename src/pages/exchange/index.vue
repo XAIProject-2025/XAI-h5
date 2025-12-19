@@ -24,10 +24,7 @@ onMounted(async () => {
   const getBalanceRateRes = await getBalanceRate({
     currencyName: '1',
   })
-  const getCurrencyHistoryRes = await getCurrencyHistory({
-    currencyName: '1',
-    type: '1D',
-  })
+
   tokenPrice.value = getBalanceRateRes?.toUsdt || 0
   uni.hideLoading()
 })

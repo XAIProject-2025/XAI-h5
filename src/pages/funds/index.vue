@@ -51,7 +51,7 @@ function handleTabClick(item) {
 <template>
   <view class="p-[15px]">
     <div class="px-[15px] text-[15px] font-bold">
-      资金管理
+      X-AI支付
     </div>
     <div class="mb-[5px] mt-[5px] px-[15px] text-[12px] text-[#94999A]">
       管理你的算力币与稳定币资产

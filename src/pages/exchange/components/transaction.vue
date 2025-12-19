@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { exchange } from '@/api/exchange'
-import { getBalanceRate } from '@/api/funds'
+import { getCurrencyHistory } from '@/api/funds'
+
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 
@@ -12,6 +13,53 @@ const props = defineProps({
   },
 })
 
+onMounted(async () => {
+  await getList()
+})
+const chartData = ref([])
+const straightOption = ref()
+
+async function getList() {
+  const getCurrencyHistoryRes = await getCurrencyHistory({
+    currencyName: '1',
+    type: dateRange.value.current == 1 ? '1d' : dateRange.value.current == 2 ? '7d' : '30d',
+  })
+  chartData.value = getCurrencyHistoryRes || []
+  straightOption.value = {
+    title: {
+      textStyle: {
+        fontSize: 16,
+        color: '#333',
+      },
+    },
+    xAxis: {
+      type: 'category',
+      data: chartData.value.map(item => item.activateTime),
+    },
+    yAxis: {
+      type: 'category',
+      axisLabel: {
+        show: true,
+      },
+    },
+    series: [
+      {
+        type: 'line',
+        data: chartData.value.map(item => item.toUsdt),
+        color: '#000',
+        smooth: true, // 直线模式
+        lineStyle: {
+          width: 2,
+        },
+        label: {
+          show: true, // 显示标签
+          color: '#666',
+          position: 'top', // 标签的位置，可以是 'top', 'bottom', 'left', 'right' 等
+        },
+      },
+    ],
+  }
+}
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const dateRange = ref(
@@ -34,43 +82,6 @@ const typeRange = ref(
     ],
   },
 )
-const straightOption = ref({
-  title: {
-    textStyle: {
-      fontSize: 16,
-      color: '#333',
-    },
-  },
-  xAxis: {
-    type: 'category',
-    data: ['一月', '二月', '三月', '四月', '五月', '六月'],
-    axisLabel: {
-      rotate: 45,
-    },
-  },
-  yAxis: {
-    type: 'category',
-    axisLabel: {
-      show: true,
-    },
-  },
-  series: [
-    {
-      type: 'line',
-      data: [120, 132, 101, 134, 90, 230],
-      color: '#000',
-      smooth: true, // 直线模式
-      lineStyle: {
-        width: 2,
-      },
-      label: {
-        show: true, // 显示标签
-        color: '#666',
-        position: 'top', // 标签的位置，可以是 'top', 'bottom', 'left', 'right' 等
-      },
-    },
-  ],
-})
 const form = reactive({
   amount: '',
   amountPay: null,
