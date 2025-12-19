@@ -46,7 +46,7 @@ const navList = ref([
   },
   {
     icon: 'zj',
-    title: 'Xcoin余额',
+    title: 'Xcoin钱包',
     url: '/pages/funds/index',
   },
   {

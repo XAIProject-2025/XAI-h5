@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { getVipInfo } from '@/api/index'
 import { buyServer, getServerList } from '@/api/server'
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
+
+const vipInfoData = ref({})
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
@@ -26,6 +29,9 @@ onMounted(async () => {
     title: '加载中...',
   })
   await getServerListData()
+  const vipInfoRes = await getVipInfo()
+  vipInfoData.value = vipInfoRes || {}
+
   uni.hideLoading()
 })
 async function getServerListData() {

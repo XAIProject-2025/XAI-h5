@@ -25,7 +25,11 @@ onMounted(async () => {
   })
   const vipInfoRes = await getVipInfo()
   const getPowerOrdersRes = await getPowerOrders()
-  serverList.value = getPowerOrdersRes.content || []
+  getPowerOrdersRes.content.map((v) => {
+    if (v.status == 0) {
+      serverList.value.push(v)
+    }
+  })
   vipInfoData.value = vipInfoRes
   uni.hideLoading()
 })
@@ -243,10 +247,10 @@ onMounted(async () => {
         <up-line-progress
           height="12px"
           :percentage="
-            formatAmount(
+            Number(
               (vipInfoData.currentRecharge / vipInfoData.nextRequiredRecharge)
                 * 100,
-            )
+            ).toFixed(2)
           "
           active-color="#000"
         />
