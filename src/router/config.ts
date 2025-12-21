@@ -11,6 +11,8 @@ export const isNeedLoginMode = LOGIN_STRATEGY === LOGIN_STRATEGY_MAP.DEFAULT_NEE
 export const LOGIN_PAGE = '/pages-fg/login/login'
 export const REGISTER_PAGE = '/pages-fg/login/register'
 export const LOGIN_C_PAGE = '/pages-fg/login/loginC'
+export const FORGOT_PASSWORD_PAGE = '/pages-fg/login/forgotPassword'
+
 export const NOT_FOUND_PAGE = '/pages-fg/404/index'
 
 export const LOGIN_PAGE_LIST = [LOGIN_PAGE, REGISTER_PAGE, LOGIN_C_PAGE]
@@ -25,6 +27,7 @@ export const EXCLUDE_LOGIN_PATH_LIST = [
   '/pages-sub/xxx/index', // 示例值
   '/pages-fg/login/loginC', // 登录页
   '/pages-fg/login/register', // 注册页
+  '/pages-fg/login/forgotPassword', // 忘记密码页
   '/pages/textface/index', // 人脸识别页
   ...excludeLoginPathList, // 都是以 / 开头的 path
 ]

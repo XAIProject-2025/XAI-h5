@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
-import { updatePassword } from '@/api/index'
+import { forgotPassword } from '@/api/index'
 import { LOGIN_PAGE, REGISTER_PAGE } from '@/router/config'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
@@ -12,20 +12,18 @@ definePage({
     navigationStyle: 'custom',
   },
 })
-const userInfo = reactive({
+let userInfo = reactive({
   name: '',
   password: '',
   passwordNew: '',
   isFaceAuth: false,
 })
 onShow((options) => {
-  console.log('options :>> ', options)
   console.log(' :>> ', useFaceStore().faceInfo)
-  // if (options?.query?.faceAuth === 'true') {
-  //   userInfo.isFaceAuth = true
-  // }
-  if (useFaceStore().type === 2) {
-    userInfo = useFaceStore().form
+  if (useFaceStore().type === 4) {
+    if (JSON.stringify(useFaceStore().form) !== '{}') {
+      userInfo = useFaceStore().form
+    }
     if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
       userInfo.isFaceAuth = true
     }
@@ -40,27 +38,42 @@ onMounted(() => {
 async function doLogin() {
   if (!userInfo.password || !userInfo.passwordNew) {
     uni.showToast({
-      title: '请输入密码、确认密码',
+      title: '请输入新密码、确认新密码',
       icon: 'none',
     })
     return
   }
-  if (!userInfo.isFaceAuth) {
+
+  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
     uni.showToast({
-      title: '请先验证人脸',
+      title: '请输入新密码（8位以上包含字母和数字）',
       icon: 'none',
     })
     return
   }
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
     uni.showToast({
-      title: '请输入密码（8位以上包含字母和数字）',
+      title: '请输入确认新密码（8位以上包含字母和数字）',
+      icon: 'none',
+    })
+    return
+  }
+  if (userInfo.password !== userInfo.passwordNew) {
+    uni.showToast({
+      title: '两次输入密码不一致',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.isFaceAuth) {
+    uni.showToast({
+      title: '请验证人脸',
       icon: 'none',
     })
     return
   }
   try {
-    const res = await updatePassword({
+    const res = await forgotPassword({
       oldPwd: md5(userInfo.password),
       newPwd: md5(userInfo.passwordNew),
       faceSessionId: useFaceStore().faceInfo?.sessionId || '',
@@ -89,7 +102,7 @@ async function doLogin() {
   }
 }
 function handleFaceAuth() {
-  useFaceStore().setType(2)
+  useFaceStore().setType(4)
   useFaceStore().setForm(userInfo)
   handleToUrl('/pages/textface/index')
 }
@@ -98,11 +111,11 @@ function handleFaceAuth() {
 <template>
   <view class="login relative">
     <div class="mt-[20px] text-center text-[20px] font-bold">
-      修改密码
+      忘记密码
     </div>
-    <view class="mt-[60px] box-border w-full flex items-center px-[20px]">
+    <view class="mt-[120px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        旧密码
+        新密码
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
@@ -126,7 +139,7 @@ function handleFaceAuth() {
     </view>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        新密码
+        确认密码
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
@@ -194,7 +207,7 @@ function handleFaceAuth() {
 //
 .login {
   width: 100vw;
-  height: calc(100vh - 130px);
+  height: calc(100vh);
   background: url('/static/login/login_bg_c.png');
   background-size: 100% 100%;
   // padding: 20px;

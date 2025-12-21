@@ -47,23 +47,66 @@ onLaunch((options) => {
       }
     }
     if (useFaceStore().type === 3) {
-      const tokenStore = useTokenStore()
-      tokenStore._postLogin(faceInfo)
-      uni.showToast({
-        title: '登录成功',
-        icon: 'none',
-        duration: 2000,
-        complete: () => {
-          setTimeout(() => {
-            handleToUrl('/pages/index/index')
-          }, 1000)
-        },
-      })
+      if (faceInfo.token) {
+        const tokenStore = useTokenStore()
+        tokenStore._postLogin(faceInfo)
+        uni.showToast({
+          title: '登录成功',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            setTimeout(() => {
+              handleToUrl('/pages/index/index')
+            }, 1000)
+          },
+        })
+      }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages-fg/login/loginC')
+          },
+        })
+      }
+
       // handleToUrl('/pages-fg/login/register?faceAuth=true')
       // useFaceStore().setFaceInfo({})
       // useFaceStore().setType(-1)
     }
-    console.log('人脸活体检测成功:', JSON.parse(data))
+    if (useFaceStore().type === 4) {
+      if (faceInfo.token) {
+        uni.showToast({
+          title: '验证成功',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            setTimeout(() => {
+              handleToUrl('/pages-fg/login/forgotPassword')
+            }, 1000)
+          },
+        })
+      }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages-fg/login/forgotPassword')
+          },
+        })
+      }
+      // handleToUrl('/pages-fg/login/register?faceAuth=true')
+      // useFaceStore().setFaceInfo({})
+      // useFaceStore().setType(-1)
+    }
     // 这里可以添加实际的业务逻辑，如更新用户状态、触发其他事件等
   }, (error) => {
     useFaceStore().setFaceInfo({})

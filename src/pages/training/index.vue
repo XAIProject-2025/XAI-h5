@@ -315,6 +315,7 @@ onMounted(async () => {
       <view class="flex items-center justify-center">
         <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
         <l-circle
+          v-if="vipInfoData.needDays != 0"
           :stroke-width="10"
           size="150px"
           :trail-width="10"
@@ -325,19 +326,41 @@ onMounted(async () => {
         >
           <text>{{ vipInfoData.needDays }}天</text>
         </l-circle>
+        <l-circle
+          v-else
+          :stroke-width="10"
+          size="150px"
+          :trail-width="10"
+          stroke-color="#000"
+          trail-color="#ebedf0"
+          :percent="100"
+          :max="100"
+        >
+          <text>最低手续费</text>
+        </l-circle>
         <!-- <lime-circle v-model:current="modelVale" :percent="100">
           <text>{{ modelVale }}%</text>
         </lime-circle> -->
         <!-- <circle-progress :value="50" :max="100" color="#3f808a" /> -->
       </view>
-      <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
-        剩余天数
-      </view>
-      <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
-        <!-- 下次的费用减免，还剩 1 天 -->
-        距离 {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}% 的费用优惠还剩
-        {{ vipInfoData.needDays }} 天
-      </view>
+      <template v-if="vipInfoData.needDays == 0">
+        <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
+          当前手续费为等级最低{{
+            Number(vipInfoData.decayMin * 100).toFixed(2)
+          }}%
+        </view>
+      </template>
+
+      <template v-else>
+        <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
+          剩余天数
+        </view>
+        <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
+          <!-- 下次的费用减免，还剩 1 天 -->
+          距离 {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
+          的费用优惠还剩 {{ vipInfoData.needDays }} 天
+        </view>
+      </template>
     </view>
 
     <!-- 详细规则 -->

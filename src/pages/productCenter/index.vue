@@ -39,7 +39,7 @@ const confirmData = reactive({
 })
 async function redemption(item) {
   console.log('item :>> ', item)
-  if (taskData.value.taskCompleted === false) {
+  if (taskData.value.todayChatCount > 0) {
     uni.showToast({
       title: '当前任务已经开始,请先完成任务',
       icon: 'none',

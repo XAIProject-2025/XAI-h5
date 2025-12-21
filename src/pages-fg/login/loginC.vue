@@ -2,7 +2,7 @@
 import md5 from 'js-md5'
 import { touristLogin } from '@/api/login'
 import Textface from '@/pages/textface/index.vue'
-import { REGISTER_PAGE } from '@/router/config'
+import { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } from '@/router/config'
 import { useFaceStore } from '@/store/face'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
@@ -110,12 +110,20 @@ async function handleTouristLogin() {
         </up-input>
       </view>
     </view>
-    <view
-      class="mt-[20px] px-[20px] text-right text-[14px]"
-      @click="handleToUrl(REGISTER_PAGE)"
-    >
-      注册
-    </view>
+    <div class="flex items-center justify-end">
+      <view
+        class="mt-[15px] px-[20px] text-right text-[14px]"
+        @click="handleToUrl(FORGOT_PASSWORD_PAGE)"
+      >
+        忘记密码
+      </view>
+      <view
+        class="mt-[15px] px-[20px] text-right text-[14px]"
+        @click="handleToUrl(REGISTER_PAGE)"
+      >
+        注册
+      </view>
+    </div>
     <view
       class="absolute bottom-[220px] w-full flex flex-col items-center justify-center"
       @click="handleFaceAuth"

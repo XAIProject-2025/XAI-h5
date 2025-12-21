@@ -28,3 +28,11 @@ export function getDepositWallets(data) {
 export function applyWithdrawal(data) {
   return http.post('/api/v1/withdrawal/apply', data)
 }
+// 修改密码
+export function updatePassword(data) {
+  return http.post('/api/v1/user/updatePassword', data)
+}
+// 忘记密码
+export function forgotPassword(data) {
+  return http.post('/api/v1/user/forgotPwd', data)
+}

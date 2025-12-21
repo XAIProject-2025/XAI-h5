@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 export const useFaceStore = defineStore('face', () => {
   const faceInfo = ref({})
-  const type = ref(null) // 1注册 // 2验证 // 3 登陆 //-1失败
+  const type = ref(null) // 1注册 // 2验证 // 3 登陆 //-1失败 //4 忘记密码
   const form = ref({})
   const setFaceInfo = (info: any) => {
     faceInfo.value = info

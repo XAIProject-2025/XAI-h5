@@ -75,7 +75,6 @@ async function fetchCountToXcoin() {
 }
 function handleClickAlert() {
   const tokenStore = useTokenStore()
-
   handleToUrl('/pages-fg/login/loginC')
   tokenStore.logout()
 }
@@ -264,7 +263,7 @@ defineExpose({
       v-if="userInfo.roleId === -1"
       class="mt-[5px]"
       type="error"
-      description="当前为游客模式,请尽快登录账号，就能解锁正式奖励哦"
+      description="当前为游客模式,请尽快登录账号，就能解锁正式奖励哦(点击登录)"
       font-size="12"
       @click="handleClickAlert"
     />

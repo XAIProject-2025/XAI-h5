@@ -215,7 +215,7 @@ function handleFaceAuth() {
       @click="handleFaceAuth"
     >
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        人脸识别
+        人脸验证
       </view>
       <view
         class="w-[30%] flex items-center border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[9px] py-[6px] shadow-blueGray"

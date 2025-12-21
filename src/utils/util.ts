@@ -15,6 +15,7 @@ export function listenFaceLivenessSuccess(
   let cleanup // 取消监听函数
 
   const handleData = (data, rawEvent) => {
+    console.log('data1111111111 :>> ', data)
     if (called)
       return
 

@@ -42,6 +42,9 @@ onMounted(() => {
   else if (useFaceStore().type === 3) {
     iframeUrl.value = `https://face.eladmin-test.click/?type=2`
   }
+  else if (useFaceStore().type === 4) {
+    iframeUrl.value = `https://face.eladmin-test.click/?type=2`
+  }
   // #ifdef APP-PLUS
   plus.android.requestPermissions(['android.permission.CAMERA'], (e) => {
     if (e.deniedAlways.length > 0) { // 权限被永久拒绝

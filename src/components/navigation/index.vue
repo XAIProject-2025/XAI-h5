@@ -1,6 +1,12 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/store'
+import { useTokenStore } from '@/store/token'
+
 import { getImage, handleToUrl } from '@/utils/util'
 
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const show = ref(false)
 function handleClose() {
   show.value = false
@@ -46,7 +52,7 @@ const navList = ref([
   },
   {
     icon: 'zj',
-    title: 'Xcoin钱包',
+    title: 'X支付',
     url: '/pages/funds/index',
   },
   {
@@ -61,10 +67,22 @@ const navList = ref([
   // },
 ])
 function handleToTab(item) {
+  if (userInfo.value.roleId === -1) {
+    return uni.showToast({
+      title: '当前游客用户,请登录使用',
+      icon: 'none',
+    })
+  }
   handleToUrl(item.url)
   // uni.navigateTo({
   //   url: item.url,
   // })
+}
+
+function handleClickAlert() {
+  const tokenStore = useTokenStore()
+  handleToUrl('/pages-fg/login/loginC')
+  tokenStore.logout()
 }
 </script>
 
@@ -73,6 +91,7 @@ function handleToTab(item) {
     :show="show"
     mode="left"
     close-on-click-overlay
+    z-index="998"
     @close="handleClose"
   >
     <view class="w-[50vw] p-[20px]">
@@ -98,6 +117,13 @@ function handleToTab(item) {
           {{ item.title }}
         </div>
       </view>
+      <div
+        v-if="userInfo.roleId === -1"
+        class="btn-block mt-[20px] h-[30px] flex items-center justify-center"
+        @click="handleClickAlert"
+      >
+        登录
+      </div>
     </view>
   </up-popup>
 </template>
