@@ -41,7 +41,21 @@ onMounted(() => {
   }
 })
 async function doLogin() {
-  if (!userInfo.password || !userInfo.passwordNew || !userInfo.passwordNewConfirm) {
+  if (!userInfo.password) {
+    uni.showToast({
+      title: '请输入密码、确认密码',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.passwordNew) {
+    uni.showToast({
+      title: '请输入密码、确认密码',
+      icon: 'none',
+    })
+    return
+  }
+  if (!userInfo.passwordNewConfirm) {
     uni.showToast({
       title: '请输入密码、确认密码',
       icon: 'none',

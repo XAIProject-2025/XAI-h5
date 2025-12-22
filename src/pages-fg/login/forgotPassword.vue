@@ -37,14 +37,20 @@ onMounted(() => {
   }
 })
 async function doLogin() {
-  if (!userInfo.password || !userInfo.passwordNew) {
+  if (!userInfo.password) {
     uni.showToast({
-      title: '请输入新密码、确认新密码',
+      title: '请输入新密码',
       icon: 'none',
     })
     return
   }
-
+  if (!userInfo.passwordNew) {
+    uni.showToast({
+      title: '请输入确认新密码',
+      icon: 'none',
+    })
+    return
+  }
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
     uni.showToast({
       title: '请输入新密码（8位以上包含字母和数字）',
