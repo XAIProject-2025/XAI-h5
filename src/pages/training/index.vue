@@ -281,12 +281,11 @@ onMounted(async () => {
         />
       </view>
     </view>
-
     <up-alert
-      v-if="userInfo.level === 0"
-      class="my-[5px]"
-      type="info"
-      description="购买一台服务器即可升级E1"
+      v-if="vipInfoData.vipLevel === 0"
+      class="my-[10px]"
+      type="warning"
+      description="购买一台服务器即可立即升级E1"
       font-size="12"
     />
 
