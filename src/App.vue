@@ -20,6 +20,18 @@ onLaunch((options) => {
         useFaceStore().setFaceInfo(faceInfo)
         handleToUrl('/pages-fg/login/register?faceAuth=true')
       }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages-fg/login/register?faceAuth=true')
+          },
+        })
+      }
     }
     if (useFaceStore().type === 2) {
       if (faceInfo.success === true) {
@@ -80,6 +92,7 @@ onLaunch((options) => {
     }
     if (useFaceStore().type === 4) {
       if (faceInfo.token) {
+        useFaceStore().setFaceInfo(faceInfo)
         uni.showToast({
           title: '验证成功',
           icon: 'none',
@@ -120,9 +133,21 @@ onLaunch((options) => {
       icon: 'none',
       duration: 2000,
       complete: () => {
+        if (useFaceStore().type === 4) {
+          handleToUrl('/pages-fg/login/forgotPassword')
+        }
+        if (useFaceStore().type === 3) {
+          handleToUrl('/pages-fg/login/loginC')
+        }
+        if (useFaceStore().type === 2) {
+          handleToUrl('/pages/changePassword/index')
+        }
+        if (useFaceStore().type === 1) {
+          handleToUrl('/pages-fg/login/register')
+        }
         useFaceStore().setFaceInfo({})
         useFaceStore().setType(-1)
-        handleToUrl('/pages-fg/login/register')
+        // handleToUrl('/pages-fg/login/register')
       },
     })
   }, (error) => {

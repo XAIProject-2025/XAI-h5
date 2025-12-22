@@ -12,7 +12,7 @@ definePage({
     navigationStyle: 'custom',
   },
 })
-const userInfo = reactive({
+let userInfo = reactive({
   name: '',
   password: '',
   passwordNew: '',
@@ -25,7 +25,9 @@ onShow((options) => {
   //   userInfo.isFaceAuth = true
   // }
   if (useFaceStore().type === 2) {
-    userInfo = useFaceStore().form
+    if (JSON.stringify(useFaceStore().form) !== '{}') {
+      userInfo = useFaceStore().form
+    }
     if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
       userInfo.isFaceAuth = true
     }

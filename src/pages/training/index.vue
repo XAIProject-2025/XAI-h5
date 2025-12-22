@@ -35,7 +35,6 @@ onShow(async () => {
   uni.hideLoading()
 })
 onMounted(async () => {
-
 })
 </script>
 
@@ -282,6 +281,15 @@ onMounted(async () => {
         />
       </view>
     </view>
+
+    <up-alert
+      v-if="userInfo.level === 0"
+      class="my-[5px]"
+      type="info"
+      description="购买一台服务器即可升级E1"
+      font-size="12"
+    />
+
     <!-- 手续费信息 -->
     <view class="bg3 mt-[20px] px-[20px] py-[20px] text-[#fff]">
       <view class="text-[16px] font-bold">

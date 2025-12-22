@@ -213,8 +213,17 @@ function changeDynamicIncome(e) {
           <view class="text-[16px] text-[#D73A3C] font-bold">
             {{ formatAmount(item.fixedPrice) }} Xcoin
           </view>
-          <view class="mt-[5px] text-[12px] text-[#94999A]">
+          <view
+            v-if="item.buyLimit === -1"
+            class="mt-[5px] text-[12px] text-[#94999A]"
+          >
             库存 :{{ item.stock }}
+          </view>
+          <view
+            v-if="item.buyLimit !== -1"
+            class="mt-[5px] text-[12px] text-[#94999A]"
+          >
+            限购 :{{ item.buyLimit }}
           </view>
         </view>
       </view>
@@ -242,8 +251,17 @@ function changeDynamicIncome(e) {
               收益:{{ item.dynamicMax * item.priceRate }} Xcoin
             </div>
           </view>
-          <view class="mt-[5px] text-[12px] text-[#94999A]">
+          <view
+            v-if="item.buyLimit === -1"
+            class="mt-[5px] text-[12px] text-[#94999A]"
+          >
             库存 :{{ item.stock }}
+          </view>
+          <view
+            v-if="item.buyLimit !== -1"
+            class="mt-[5px] text-[12px] text-[#94999A]"
+          >
+            限购 :{{ item.buyLimit }}
           </view>
         </view>
       </view>
@@ -302,8 +320,17 @@ function changeDynamicIncome(e) {
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             算力值 {{ currentItem.fixedPower }}
           </view>
-          <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
+          <view
+            v-if="currentItem.buyLimit === -1"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
             库存 :{{ currentItem.stock }}
+          </view>
+          <view
+            v-if="currentItem.buyLimit !== -1"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
+            限购 :{{ currentItem.buyLimit }}
           </view>
 
           <view class="mt-[5px] flex items-center justify-center">
@@ -332,8 +359,17 @@ function changeDynamicIncome(e) {
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
               算力值 {{ currentItem.fixedPower }}
             </view>
-            <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
+            <view
+              v-if="currentItem.buyLimit === -1"
+              class="mt-[5px] w-1/2 text-[12px] text-[#94999A]"
+            >
               库存 :{{ currentItem.stock }}
+            </view>
+            <view
+              v-if="currentItem.buyLimit !== -1"
+              class="mt-[5px] w-1/2 text-[12px] text-[#94999A]"
+            >
+              限购 :{{ currentItem.buyLimit }}
             </view>
           </div>
           <view

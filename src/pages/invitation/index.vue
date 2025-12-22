@@ -146,8 +146,11 @@ onMounted(async () => {
         <div class="w-1/4 text-center">
           关系类型
         </div>
-        <div class="w-2/4 text-center">
+        <div class="w-1/4 text-center">
           注册时间
+        </div>
+        <div class="w-1/4 text-center">
+          有效用户
         </div>
       </div>
       <template v-if="recordList.length > 0">
@@ -164,8 +167,14 @@ onMounted(async () => {
             <span v-else-if="item.level == 2"> 二级</span>
             <span v-else> 三级</span>
           </div>
-          <div class="w-2/4 text-center">
+          <div class="w-1/4 text-center">
             {{ item.registerTime }}
+          </div>
+          <div class="w-1/4 text-center">
+            <span v-if="item.roleId == 4">无限代理</span>
+            <span v-if="item.roleId == 3">普通代理</span>
+            <span v-if="item.roleId == 2">激活用户</span>
+            <span v-if="item.roleId == 1">未激活</span>
           </div>
         </div>
       </template>

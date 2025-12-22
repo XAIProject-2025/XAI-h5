@@ -24,7 +24,8 @@ onShow((options) => {
     if (JSON.stringify(useFaceStore().form) !== '{}') {
       userInfo = useFaceStore().form
     }
-    if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
+    if (useFaceStore().faceInfo?.sessionId) {
+      console.log('11111 :>> ', 11111)
       userInfo.isFaceAuth = true
     }
   }

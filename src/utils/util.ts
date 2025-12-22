@@ -3,38 +3,49 @@
 /**
  * 监听人脸活体检测成功（H5 + App，触发端仅 postMessage）
  */
-export function listenFaceLivenessSuccess(
-  callback,
-  callBackError,
-) {
+export function listenFaceLivenessSuccess(callback, callBackError) {
   if (typeof callback !== 'function') {
     throw new TypeError('callback 必须是函数类型')
   }
 
-  let called = false // ⭐ 是否已触发
-  let cleanup // 取消监听函数
+  let called = false
+  let cleanup
 
-  const handleData = (data, rawEvent) => {
-    console.log('data1111111111 :>> ', data)
+  const normalizeData = (raw) => {
+    // App 端可能是数组
+    if (Array.isArray(raw))
+      return raw[0]
+    return raw
+  }
+
+  const handleData = (rawData, rawEvent) => {
     if (called)
       return
 
+    const data = normalizeData(rawData)
+
+    // 1️⃣ 严格校验
+    if (!data || data.type !== 'FACE_LIVENESS_SUCCESS')
+      return
+
+    // 2️⃣ SUCCESS 才 lock
+    called = true
+
     try {
-      if (data?.type !== 'FACE_LIVENESS_SUCCESS')
-        return
-
-      called = true // ⭐ 立刻锁死
       callback(data.data, rawEvent)
-
-      // ⭐ 成功后立即解绑
-      cleanup?.()
     }
     catch (err) {
-      callBackError ? callBackError(err) : console.error(err)
+      // callback 报错 ≠ 监听失败
+      callBackError
+        ? callBackError(err)
+        : console.error('[FACE_LIVENESS callback error]', err)
+    }
+    finally {
+      cleanup?.()
     }
   }
 
-  /* ================= H5 ================= */
+  /* =============== H5 =============== */
   // #ifdef H5
   const h5Handler = (event) => {
     handleData(event.data, event)
@@ -42,13 +53,12 @@ export function listenFaceLivenessSuccess(
   window.addEventListener('message', h5Handler)
   // #endif
 
-  /* ================= APP ================= */
+  /* =============== APP =============== */
   // #ifdef APP-PLUS
   let webview
+
   const appHandler = (event) => {
-    // App 中 event.data 是数组
-    const msg = event.data?.[0]
-    handleData(msg, event)
+    handleData(event.data, event)
   }
 
   const onPlusReady = () => {
@@ -56,15 +66,12 @@ export function listenFaceLivenessSuccess(
     webview.addEventListener('message', appHandler)
   }
 
-  if (typeof plus !== 'undefined') {
+  if (typeof plus !== 'undefined')
     onPlusReady()
-  }
-  else {
-    document.addEventListener('plusready', onPlusReady, false)
-  }
+  else
+    document.addEventListener('plusready', onPlusReady)
   // #endif
 
-  /* =============== 取消监听 =============== */
   cleanup = () => {
     // #ifdef H5
     window.removeEventListener('message', h5Handler)

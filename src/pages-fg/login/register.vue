@@ -22,7 +22,9 @@ onShow((options) => {
   console.log('useFaceStore().f :>> ', useFaceStore().faceInfo)
 
   if (useFaceStore().type === 1) {
-    userInfo = useFaceStore().form
+    if (JSON.stringify(useFaceStore().form) !== '{}') {
+      userInfo = useFaceStore().form
+    }
     if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
       userInfo.isFaceAuth = true
     }
@@ -42,25 +44,21 @@ async function doLogin() {
     })
     return
   }
-  if (!userInfo.password) {
-    // 8位以上包含字母和数字
-    if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
-      uni.showToast({
-        title: '请输入密码（8位以上包含字母和数字）',
-        icon: 'none',
-      })
-      return
-    }
+  // 8位以上包含字母和数字
+  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
+    uni.showToast({
+      title: '请输入密码（8位以上包含字母和数字）',
+      icon: 'none',
+    })
+    return
   }
-  if (!userInfo.passwordNew) {
-    // 8位以上包含字母和数字
-    if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
-      uni.showToast({
-        title: '请输入确认密码（8位以上包含字母和数字）',
-        icon: 'none',
-      })
-      return
-    }
+  // 8位以上包含字母和数字
+  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
+    uni.showToast({
+      title: '请输入确认密码（8位以上包含字母和数字）',
+      icon: 'none',
+    })
+    return
   }
   if (!userInfo.inviteCode) {
     uni.showToast({

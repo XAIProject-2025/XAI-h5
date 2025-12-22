@@ -9,6 +9,9 @@ import { handleToUrl } from '@/utils/util'
 const tokenStore = useTokenStore()
 
 const userStore = useUserStore()
+onShow(async () => {
+  await userStore.fetchUserInfo()
+})
 const { userInfo } = storeToRefs(userStore)
 const show = ref(false)
 const columns = reactive([
