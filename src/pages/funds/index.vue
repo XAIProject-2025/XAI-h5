@@ -26,7 +26,7 @@ const tabData = reactive({
       index: -1,
     },
     {
-      title: '算力币',
+      title: 'Xcoin',
       index: 0,
     },
     {
@@ -56,7 +56,7 @@ function handleTabClick(item) {
       X-AI支付
     </div>
     <div class="mb-[5px] mt-[5px] px-[15px] text-[12px] text-[#94999A]">
-      管理你的算力币与稳定币资产
+      管理你的Xcoin与USDT资产
     </div>
     <div class="bg3 mt-[10px] box-border w-full rounded-[4px] p-[15px]">
       <div class="flex items-center">

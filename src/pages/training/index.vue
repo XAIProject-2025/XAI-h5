@@ -285,7 +285,7 @@ onMounted(async () => {
       v-if="vipInfoData.vipLevel === 0"
       class="my-[10px]"
       type="warning"
-      description="购买一台服务器即可立即升级E1"
+      description="租赁一台服务器即可立即升级E1"
       font-size="12"
     />
 
@@ -310,7 +310,7 @@ onMounted(async () => {
       <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">
         <up-icon name="info-circle" color="#94999A" />
         <view class="text-[14px] text-[#94999A]">
-          VIP 等级越高，初始费率越低
+          训练师等级越高，初始费率越低
         </view>
       </view>
     </view>
@@ -378,14 +378,14 @@ onMounted(async () => {
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          未提取的资金：费用费率每天自动降低
+          未提取的资金：提现手续费每天自动降低
           {{ Number(vipInfoData.decayNum * 100).toFixed(2) }}%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          费用费率最低可降至
+          提现手续费最低可降至
           {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
         </view>
       </view>
@@ -398,7 +398,7 @@ onMounted(async () => {
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          VIP 等级越高，初始费率越低
+          训练师等级越高，初始费率越低
         </view>
       </view>
       <!-- <view class="mt-[10px] flex items-center text-[14px]">

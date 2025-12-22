@@ -207,7 +207,7 @@ export function handleCopy(value: string) {
   })
 }
 
-export function formatAmount(amount: any, fixed = 2) {
+export function formatAmount(amount: any, fixed = 4) {
   // 处理空值、非数字情况
   if (amount === null || amount === undefined || isNaN(Number(amount))) {
     return '0.00'.slice(0, 2 + fixed) // 根据fixed返回对应长度的0值
@@ -414,7 +414,7 @@ export function getRecordType(type: number) {
     obj.name = '充值'
   }
   if (type == 2) {
-    obj.name = '购买算力服务器'
+    obj.name = '租赁算力服务器'
   }
   if (type == 3) {
     obj.name = '奖励'

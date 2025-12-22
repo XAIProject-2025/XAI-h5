@@ -34,7 +34,7 @@ onMounted(async () => {
   await getPowerOrdersData()
   conuntToXcoin.value = userInfo.value.kdkBalance
   if (powerOrdersData.value.length === 0) {
-    notifyTitle.value = '当前没有算力服务器,请前往购买后完成任务获取奖励'
+    notifyTitle.value = '当前没有算力服务器,请前往租赁后完成任务获取奖励'
   }
 })
 // // 监听userinfo roleid 变化
@@ -205,7 +205,7 @@ defineExpose({
                 ref="upCountToXcoin"
                 bold
                 :start-val="0"
-                :decimals="2"
+                :decimals="4"
                 :end-val="conuntToXcoin"
                 :font-size="18"
                 color="#fff"
@@ -215,7 +215,7 @@ defineExpose({
               </view>
             </view>
             <view class="mt-[5px] text-[14px]">
-              算力币余额
+              Xcoin余额
             </view>
           </view>
           <view class="h-[50px] w-[1px] bg-[#374447]" />

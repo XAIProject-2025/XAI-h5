@@ -39,7 +39,7 @@ async function getServerListData() {
   serverList.value = serverListRes || []
 }
 const currentItem = ref({})
-// 购买算力服务器
+// 租赁算力服务器
 async function buyServerCon(item) {
   console.log('item :>> ', item)
   if (item.type === 1) {
@@ -76,7 +76,7 @@ async function buyType1(item) {
       serverId: item.id,
     })
     uni.showToast({
-      title: '购买成功',
+      title: '租赁成功',
       icon: 'success',
       mask: true,
     })
@@ -87,7 +87,7 @@ async function buyType1(item) {
   catch (error) {
     console.log('error :>> ', error)
     uni.showToast({
-      title: error.data.message || '购买失败',
+      title: error.data.message || '租赁失败',
       icon: 'none',
     })
   }
@@ -99,7 +99,7 @@ async function buyType2(item) {
   if (buttonLoading.value) {
     return
   }
-  if (userInfo.value.kdkBalance < item.fixedPrice) {
+  if (userInfo.value.kdkBalance < dynamicData.amount) {
     uni.showToast({
       title: '余额不足,请兑换Xcoin',
       icon: 'none',
@@ -117,7 +117,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) < item.dynamicMin) {
     uni.showToast({
-      title: `动态购买金额不能小于${item.dynamicMin}Xcoin`,
+      title: `动态租赁金额不能小于${item.dynamicMin}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -125,7 +125,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) > item.dynamicMax) {
     uni.showToast({
-      title: `动态购买金额不能大于${item.dynamicMax}Xcoin`,
+      title: `动态租赁金额不能大于${item.dynamicMax}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -138,7 +138,7 @@ async function buyType2(item) {
       price: dynamicData.amount,
     })
     uni.showToast({
-      title: '购买成功',
+      title: '租赁成功',
       icon: 'success',
       mask: true,
     })
@@ -149,7 +149,7 @@ async function buyType2(item) {
   catch (error) {
     console.log('error :>> ', error)
     uni.showToast({
-      title: error.data.message || '购买失败',
+      title: error.data.message || '租赁失败',
       icon: 'none',
 
     })
@@ -233,10 +233,10 @@ function changeDynamicIncome(e) {
           {{ item.serverName }}
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          购买下限 {{ item.dynamicMin }} (Xcoin)
+          租赁下限 {{ item.dynamicMin }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          购买上限 {{ item.dynamicMax }} (Xcoin)
+          租赁上限 {{ item.dynamicMax }} (Xcoin)
         </view>
 
         <view class="mt-[5px] text-[12px] text-[#94999A]">
@@ -245,7 +245,7 @@ function changeDynamicIncome(e) {
         <view class="mt-[5px]">
           <view class="mr-[8px] text-[12px] text-[#D73A3C] font-bold">
             <div class="">
-              购买:{{ item.dynamicMax }} Xcoin
+              租赁:{{ item.dynamicMax }} Xcoin
             </div>
             <div class="">
               收益:{{ item.dynamicMax * item.priceRate }} Xcoin
@@ -272,7 +272,7 @@ function changeDynamicIncome(e) {
           showDetail = true;
         "
       >
-        立即购买
+        立即租赁
       </view>
       <view
         class="flex items-end items-center justify-center rounded-b-[8px] px-[4px] py-[6px] text-center text-[10px] text-[#000]"
@@ -349,10 +349,10 @@ function changeDynamicIncome(e) {
           </view>
           <div class="mt-[10px] flex items-center justify-center">
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              购买下限 {{ currentItem.dynamicMin }} (Xcoin)
+              租赁下限 {{ currentItem.dynamicMin }} (Xcoin)
             </view>
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              购买上限 {{ currentItem.dynamicMax }} (Xcoin)
+              租赁上限 {{ currentItem.dynamicMax }} (Xcoin)
             </view>
           </div>
           <div class="mt-[5px] flex items-center justify-center">
@@ -376,7 +376,7 @@ function changeDynamicIncome(e) {
             class="mt-[5px] flex items-center text-[12px] text-[#D73A3C] font-bold"
           >
             <view class="mt-[5px] w-1/2 text-[12px]">
-              购买:{{ currentItem.dynamicMax }} Xcoin
+              租赁:{{ currentItem.dynamicMax }} Xcoin
             </view>
             <view class="mt-[5px] w-1/2 text-[12px]">
               收益:{{ currentItem.dynamicMax * currentItem.priceRate }}
@@ -384,13 +384,13 @@ function changeDynamicIncome(e) {
             </view>
           </view>
           <div class="mt-[10px] text-[12px] text-[#94999A]">
-            购买金额
+            租赁金额
           </div>
           <div class="bg-default mt-[10px]">
             <up-input
               v-model="dynamicData.amount"
               class="!p-[0]"
-              placeholder="请输入购买金额"
+              placeholder="请输入租赁金额"
               border="surround"
               type="number"
               @change="changeDynamicIncome"

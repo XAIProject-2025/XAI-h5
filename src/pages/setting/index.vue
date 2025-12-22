@@ -61,6 +61,12 @@ function confirmLanguage(e) {
   location.reload()
   // #endif
 }
+function showToast() {
+  uni.showToast({
+    title: '暂未开放',
+    icon: 'none',
+  })
+}
 </script>
 
 <template>
@@ -99,6 +105,7 @@ function confirmLanguage(e) {
     </div>
     <div
       class="bg-default mb-[10px] flex items-center justify-between rounded-[20px] px-[10px] py-[10px]"
+      @click="showToast"
     >
       <div class="flex items-center text-[14px]">
         <up-icon name="google" size="20" />

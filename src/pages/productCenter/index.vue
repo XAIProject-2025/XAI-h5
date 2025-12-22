@@ -94,7 +94,7 @@ async function redemption(item) {
         class="btn-block h-[30px] min-h-[30px] w-[100px]"
         @click="handleToUrl('/pages/server/index')"
       >
-        购买
+        租赁
       </view>
     </view>
 
@@ -294,7 +294,7 @@ async function redemption(item) {
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          VIP等级决定了可同时运行的服务器数量 ——
+          训练师等级决定了可同时运行的服务器数量 ——
           等级越高，支持同时运行的服务器数量越多。
         </view>
       </view>

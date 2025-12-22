@@ -98,10 +98,10 @@ const form = reactive({
 })
 function change(e) {
   if (typeRange.value.current == 1) {
-    form.amountPay = Number(e) * props.tokenPrice
+    form.amountPay = Number(Number(e) * props.tokenPrice).toFixed(4)
   }
   else {
-    form.amountPay = Number(e) * props.tokenPrice
+    form.amountPay = Number(Number(e) * props.tokenPrice).toFixed(4)
   }
 }
 async function handleBuy(type) {
@@ -169,7 +169,7 @@ function changeTab(item) {
     <view class="bg-default">
       <!-- 11 -->
       <view class="flex items-center justify-center text-[16px] font-bold">
-        算力币价格趋势
+        Xcoin价格趋势
       </view>
       <view class="mb-[20px] mt-[20px] flex items-center">
         <div
@@ -252,7 +252,7 @@ function changeTab(item) {
       </view>
       <view class="mt-[15px]">
         <view class="text-[14px] text-[#94999A]">
-          数量(算力币)
+          数量(Xcoin)
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
           <up-input
@@ -278,10 +278,10 @@ function changeTab(item) {
         class="btn-block mt-[20px] h-[40px]"
         @click="handleBuy(1)"
       >
-        <span>买入算力币</span>
+        <span>买入Xcoin</span>
       </view>
       <view v-else class="btn-block mt-[20px] h-[40px]" @click="handleBuy(2)">
-        <span>卖出算力币</span>
+        <span>卖出Xcoin</span>
       </view>
     </view>
   </view>

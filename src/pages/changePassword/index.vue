@@ -43,7 +43,7 @@ onMounted(() => {
 async function doLogin() {
   if (!userInfo.password) {
     uni.showToast({
-      title: '请输入旧密码',
+      title: '请输入密码',
       icon: 'none',
     })
     return
@@ -57,7 +57,7 @@ async function doLogin() {
   }
   if (!userInfo.passwordNewConfirm) {
     uni.showToast({
-      title: '请输入确认新密码',
+      title: '请输入确认密码',
       icon: 'none',
     })
     return
