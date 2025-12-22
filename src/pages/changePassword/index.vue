@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
-import { updatePassword } from '@/api/index'
+import { forgotPassword, updatePassword } from '@/api/index'
 import { LOGIN_PAGE, REGISTER_PAGE } from '@/router/config'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
@@ -43,21 +43,21 @@ onMounted(() => {
 async function doLogin() {
   if (!userInfo.password) {
     uni.showToast({
-      title: '请输入密码、确认密码',
+      title: '请输入旧密码',
       icon: 'none',
     })
     return
   }
   if (!userInfo.passwordNew) {
     uni.showToast({
-      title: '请输入密码、确认密码',
+      title: '请输入新密码',
       icon: 'none',
     })
     return
   }
   if (!userInfo.passwordNewConfirm) {
     uni.showToast({
-      title: '请输入密码、确认密码',
+      title: '请输入确认新密码',
       icon: 'none',
     })
     return
@@ -92,9 +92,13 @@ async function doLogin() {
   }
 
   try {
-    const res = await updatePassword({
-      oldPwd: md5(userInfo.password),
-      newPwd: md5(userInfo.passwordNew),
+    // const res = await updatePassword({
+    //   oldPwd: md5(userInfo.password),
+    //   newPwd: md5(userInfo.passwordNew),
+    //   faceSessionId: useFaceStore().faceInfo?.sessionId || '',
+    // })
+    const res = await forgotPassword({
+      password: md5(userInfo.passwordNew),
       faceSessionId: useFaceStore().faceInfo?.sessionId || '',
     })
     uni.showToast({
