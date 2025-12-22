@@ -34,5 +34,5 @@ export function updatePassword(data) {
 }
 // 忘记密码
 export function forgotPassword(data) {
-  return http.post('/api/v1/user/forgotPwd', data)
+  return http.post('/api/v1/auth/forgotPwd', data)
 }

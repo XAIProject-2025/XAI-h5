@@ -1,230 +1,122 @@
-// 防抖
+// =====================
+// 事件监听与回调
+// =====================
+let listeners = {
+  success: [],
+  cancel: [],
+  error: [],
+}
 
-/**
- * 监听人脸活体检测成功（H5 + App，触发端仅 postMessage）
- */
-export function listenFaceLivenessSuccess(callback, callBackError) {
-  if (typeof callback !== 'function') {
-    throw new TypeError('callback 必须是函数类型')
+// 上一次触发时间
+let lastTriggerTime = {
+  success: 0,
+  cancel: 0,
+  error: 0,
+}
+
+// 防抖时间 5 秒
+const DEBOUNCE_MS = 5000
+
+// 发送消息给父窗口
+function postToParent(type, payload) {
+  window.parent.postMessage(payload, '*')
+}
+
+// 处理接收到的消息，防抖
+function handleIncoming(type, data, rawEvent) {
+  const now = Date.now()
+  if (now - lastTriggerTime[type] < DEBOUNCE_MS) {
+    return // 防抖期间忽略事件
   }
+  lastTriggerTime[type] = now
 
-  let called = false
-  let cleanup
-
-  const normalizeData = (raw) => {
-    // App 端可能是数组
-    if (Array.isArray(raw))
-      return raw[0]
-    return raw
-  }
-
-  const handleData = (rawData, rawEvent) => {
-    if (called)
-      return
-
-    const data = normalizeData(rawData)
-
-    // 1️⃣ 严格校验
-    if (!data || data.type !== 'FACE_LIVENESS_SUCCESS')
-      return
-
-    // 2️⃣ SUCCESS 才 lock
-    called = true
-
+  // 调用所有注册回调
+  listeners[type].forEach((fn) => {
     try {
-      callback(data.data, rawEvent)
+      fn(data, rawEvent)
     }
     catch (err) {
-      // callback 报错 ≠ 监听失败
-      callBackError
-        ? callBackError(err)
-        : console.error('[FACE_LIVENESS callback error]', err)
+      console.error(`[FACE_LIVENESS callback error]`, err)
     }
-    finally {
-      cleanup?.()
-    }
-  }
+  })
 
-  /* =============== H5 =============== */
-  // #ifdef H5
+  // 始终发送给父窗口
+  postToParent(`FACE_LIVENESS_${type.toUpperCase()}`, {
+    type: `FACE_LIVENESS_${type.toUpperCase()}`,
+    data,
+  })
+}
+
+// =====================
+// 注册全局监听器
+// =====================
+function setupListeners() {
+  // H5
   const h5Handler = (event) => {
-    handleData(event.data, event)
+    const data = event.data
+    if (!data?.type)
+      return
+
+    if (data.type === 'FACE_LIVENESS_SUCCESS')
+      handleIncoming('success', data.data, event)
+    else if (data.type === 'FACE_LIVENESS_CANCEL')
+      handleIncoming('cancel', data.data, event)
+    else if (data.type === 'FACE_LIVENESS_ERROR')
+      handleIncoming('error', data.error ?? data.data, event)
   }
   window.addEventListener('message', h5Handler)
-  // #endif
 
-  /* =============== APP =============== */
-  // #ifdef APP-PLUS
+  // APP-PLUS
   let webview
-
   const appHandler = (event) => {
-    handleData(event.data, event)
+    const data = Array.isArray(event.data) ? event.data[0] : event.data
+    if (!data?.type)
+      return
+
+    if (data.type === 'FACE_LIVENESS_SUCCESS')
+      handleIncoming('success', data.data, event)
+    else if (data.type === 'FACE_LIVENESS_CANCEL')
+      handleIncoming('cancel', data.data, event)
+    else if (data.type === 'FACE_LIVENESS_ERROR')
+      handleIncoming('error', data.error ?? data.data, event)
   }
 
   const onPlusReady = () => {
     webview = plus.webview.currentWebview()
     webview.addEventListener('message', appHandler)
   }
-
   if (typeof plus !== 'undefined')
     onPlusReady()
-  else
-    document.addEventListener('plusready', onPlusReady)
-  // #endif
+  else document.addEventListener('plusready', onPlusReady, false)
 
-  cleanup = () => {
-    // #ifdef H5
+  return () => {
     window.removeEventListener('message', h5Handler)
-    // #endif
-
-    // #ifdef APP-PLUS
     webview?.removeEventListener('message', appHandler)
-    // #endif
   }
-
-  return cleanup
 }
 
-export function listenFaceLivenessCancel(
-  callback,
-  callBackError,
-) {
-  if (typeof callback !== 'function') {
+// 页面加载就注册
+setupListeners()
+
+// =====================
+// 外部注册回调
+// =====================
+export function listenFaceLivenessSuccess(callback) {
+  if (typeof callback !== 'function')
     throw new TypeError('callback 必须是函数类型')
-  }
-
-  let called = false
-  let cleanup
-
-  const handleData = (data, rawEvent) => {
-    if (called)
-      return
-
-    try {
-      if (data?.type !== 'FACE_LIVENESS_CANCEL')
-        return
-
-      called = true
-      callback(data.data, rawEvent)
-      cleanup?.()
-    }
-    catch (err) {
-      callBackError ? callBackError(err) : console.error(err)
-    }
-  }
-
-  /* ================= H5 ================= */
-  // #ifdef H5
-  const h5Handler = (event) => {
-    handleData(event.data, event)
-  }
-  window.addEventListener('message', h5Handler)
-  // #endif
-
-  /* ================= APP ================= */
-  // #ifdef APP-PLUS
-  let webview
-  const appHandler = (event) => {
-    const msg = event.data?.[0]
-    handleData(msg, event)
-  }
-
-  const onPlusReady = () => {
-    webview = plus.webview.currentWebview()
-    webview.addEventListener('message', appHandler)
-  }
-
-  if (typeof plus !== 'undefined') {
-    onPlusReady()
-  }
-  else {
-    document.addEventListener('plusready', onPlusReady, false)
-  }
-  // #endif
-
-  /* =============== 取消监听 =============== */
-  cleanup = () => {
-    // #ifdef H5
-    window.removeEventListener('message', h5Handler)
-    // #endif
-
-    // #ifdef APP-PLUS
-    webview?.removeEventListener('message', appHandler)
-    // #endif
-  }
-
-  return cleanup
+  listeners.success.push(callback)
 }
 
-export function listenFaceLivenessError(
-  callback,
-  callBackError,
-) {
-  if (typeof callback !== 'function') {
+export function listenFaceLivenessCancel(callback) {
+  if (typeof callback !== 'function')
     throw new TypeError('callback 必须是函数类型')
-  }
+  listeners.cancel.push(callback)
+}
 
-  let called = false
-  let cleanup
-
-  const handleData = (data, rawEvent) => {
-    if (called)
-      return
-
-    try {
-      if (data?.type !== 'FACE_LIVENESS_ERROR')
-        return
-
-      called = true
-      callback(data.data, rawEvent)
-      cleanup?.()
-    }
-    catch (err) {
-      callBackError ? callBackError(err) : console.error(err)
-    }
-  }
-
-  /* ================= H5 ================= */
-  // #ifdef H5
-  const h5Handler = (event) => {
-    handleData(event.data, event)
-  }
-  window.addEventListener('message', h5Handler)
-  // #endif
-
-  /* ================= APP ================= */
-  // #ifdef APP-PLUS
-  let webview
-  const appHandler = (event) => {
-    const msg = event.data?.[0]
-    handleData(msg, event)
-  }
-
-  const onPlusReady = () => {
-    webview = plus.webview.currentWebview()
-    webview.addEventListener('message', appHandler)
-  }
-
-  if (typeof plus !== 'undefined') {
-    onPlusReady()
-  }
-  else {
-    document.addEventListener('plusready', onPlusReady, false)
-  }
-  // #endif
-
-  /* =============== 取消监听 =============== */
-  cleanup = () => {
-    // #ifdef H5
-    window.removeEventListener('message', h5Handler)
-    // #endif
-
-    // #ifdef APP-PLUS
-    webview?.removeEventListener('message', appHandler)
-    // #endif
-  }
-
-  return cleanup
+export function listenFaceLivenessError(callback) {
+  if (typeof callback !== 'function')
+    throw new TypeError('callback 必须是函数类型')
+  listeners.error.push(callback)
 }
 
 export function debounce(fn: Function, delay: number) {

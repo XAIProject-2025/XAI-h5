@@ -67,7 +67,7 @@ const navList = ref([
   // },
 ])
 function handleToTab(item) {
-  if (userInfo.value.roleId === -1) {
+  if (userInfo.value.roleId === -1 && item.icon !== 'sy') {
     return uni.showToast({
       title: '当前游客用户,请登录使用',
       icon: 'none',

@@ -75,13 +75,9 @@ async function doLogin() {
   }
   try {
     const res = await forgotPassword({
-      oldPwd: md5(userInfo.password),
-      newPwd: md5(userInfo.passwordNew),
+      password: md5(userInfo.passwordNew),
       faceSessionId: useFaceStore().faceInfo?.sessionId || '',
     })
-    if (!res) {
-      return
-    }
     uni.showToast({
       title: '修改成功,请重新登录',
       icon: 'none',

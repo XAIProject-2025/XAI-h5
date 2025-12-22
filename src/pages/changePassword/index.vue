@@ -16,6 +16,7 @@ let userInfo = reactive({
   name: '',
   password: '',
   passwordNew: '',
+  passwordNewConfirm: '',
   isFaceAuth: false,
 })
 onShow((options) => {
@@ -40,7 +41,7 @@ onMounted(() => {
   }
 })
 async function doLogin() {
-  if (!userInfo.password || !userInfo.passwordNew) {
+  if (!userInfo.password || !userInfo.passwordNew || !userInfo.passwordNewConfirm) {
     uni.showToast({
       title: '请输入密码、确认密码',
       icon: 'none',
@@ -54,6 +55,13 @@ async function doLogin() {
     })
     return
   }
+  if (userInfo.passwordNew !== userInfo.passwordNewConfirm) {
+    uni.showToast({
+      title: '两次输入密码不一致',
+      icon: 'none',
+    })
+    return
+  }
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
     uni.showToast({
       title: '请输入密码（8位以上包含字母和数字）',
@@ -61,15 +69,20 @@ async function doLogin() {
     })
     return
   }
+  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNewConfirm)) {
+    uni.showToast({
+      title: '请输入密码（8位以上包含字母和数字）',
+      icon: 'none',
+    })
+    return
+  }
+
   try {
     const res = await updatePassword({
       oldPwd: md5(userInfo.password),
       newPwd: md5(userInfo.passwordNew),
       faceSessionId: useFaceStore().faceInfo?.sessionId || '',
     })
-    if (!res) {
-      return
-    }
     uni.showToast({
       title: '修改成功,请重新登录',
       icon: 'none',
@@ -135,6 +148,31 @@ function handleFaceAuth() {
       >
         <up-input
           v-model="userInfo.passwordNew"
+          placeholder="请输入内容"
+          color="#94999A"
+          type="password"
+        >
+          <template #prefix>
+            <view class="mr-[10px] flex items-center">
+              <image
+                src="/static/login/name_icon.png"
+                class="h-[15px] w-[15px]"
+              />
+            </view>
+          </template>
+        </up-input>
+      </view>
+    </view>
+
+    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
+      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
+        确认密码
+      </view>
+      <view
+        class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
+      >
+        <up-input
+          v-model="userInfo.passwordNewConfirm"
           placeholder="请输入内容"
           color="#94999A"
           type="password"
