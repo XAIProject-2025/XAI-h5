@@ -225,7 +225,7 @@ defineExpose({
           >
             <up-icon name="plus" size="20px" class="h-[25px]" color="#fff" />
             <view class="mt-[5px] text-[14px]">
-              产品中心
+              算力服务器
             </view>
           </view>
         </view>

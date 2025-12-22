@@ -39,13 +39,22 @@ const confirmData = reactive({
 })
 async function redemption(item) {
   console.log('item :>> ', item)
-  if (taskData.value.todayChatCount > 0) {
-    uni.showToast({
-      title: '当前任务已经开始,请先完成任务',
-      icon: 'none',
-    })
-    return
+  if (taskData.value.taskCompleted == false) {
+    if (taskData.value.todayChatCount !== 0) {
+      uni.showToast({
+        title: '当前任务已经开始,请先完成任务',
+        icon: 'none',
+      })
+      return
+    }
   }
+  // if (taskData.value.todayChatCount === 1) {
+  //   uni.showToast({
+  //     title: '当前任务已经开始,请先完成任务',
+  //     icon: 'none',
+  //   })
+  //   return
+  // }
   confirmData.loading = true
   try {
     await redeemPowerOrder({ orderId: item.id })
@@ -85,7 +94,7 @@ async function redemption(item) {
         class="btn-block h-[30px] min-h-[30px] w-[100px]"
         @click="handleToUrl('/pages/server/index')"
       >
-        产品中心
+        购买
       </view>
     </view>
 
