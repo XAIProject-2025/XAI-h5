@@ -76,7 +76,7 @@ async function doLogin() {
   }
   try {
     const res = await tokenStore.register({
-      name: userInfo.name,
+      name: userInfo.name.trim(),
       password: md5(userInfo.password),
       inviteCode: userInfo.inviteCode,
       faceSessionId: useFaceStore().faceInfo?.sessionId || '',

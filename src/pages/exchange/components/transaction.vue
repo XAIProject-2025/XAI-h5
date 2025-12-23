@@ -107,7 +107,7 @@ function change(e) {
 async function handleBuy(type) {
   console.log('userInfo :>> ', userInfo)
   if (type == 1) {
-    if (Number(form.amount) > Number(userInfo.value.usdtBalance)) {
+    if (Number(form.amountPay) > Number(userInfo.value.usdtBalance)) {
       uni.showToast({
         title: 'USDT余额不足',
         icon: 'none',

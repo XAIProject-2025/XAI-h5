@@ -36,6 +36,19 @@ onShow(async () => {
 })
 onMounted(async () => {
 })
+const computedNextTimeDecay = computed(() => {
+  if (!vipInfoData.value.currentPremium || !vipInfoData.value.decayedNum || !vipInfoData.value.decayNum) {
+    return 0
+  }
+  let nextTime = (vipInfoData.value.currentPremium
+    - vipInfoData.value.decayedNum
+    - vipInfoData.value.decayNum) * 100
+  if (nextTime < vipInfoData.value.decayMin) {
+    nextTime = vipInfoData.value.decayMin
+  }
+
+  return Number(nextTime).toFixed(2)
+})
 </script>
 
 <template>
@@ -317,7 +330,7 @@ onMounted(async () => {
     <!-- 手续费减免 -->
     <view class="bg-default mt-[20px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
-        下次减免
+        剩余天数
       </view>
       <view class="flex items-center justify-center">
         <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
@@ -331,7 +344,14 @@ onMounted(async () => {
           :percent="vipInfoData.decayedNum"
           :max="vipInfoData.currentPremium"
         >
-          <text>{{ vipInfoData.needDays }}天</text>
+          <div
+            class="flex flex-col items-center justify-center text-[14px] font-bold"
+          >
+            <div class="">
+              最低手续费
+            </div>
+            <div>还需{{ vipInfoData.needDays }}天</div>
+          </div>
         </l-circle>
         <l-circle
           v-else
@@ -343,7 +363,7 @@ onMounted(async () => {
           :percent="100"
           :max="100"
         >
-          <text>最低手续费</text>
+          <text>当前最低手续费</text>
         </l-circle>
         <!-- <lime-circle v-model:current="modelVale" :percent="100">
           <text>{{ modelVale }}%</text>
@@ -360,12 +380,12 @@ onMounted(async () => {
 
       <template v-else>
         <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
-          剩余天数
+          下次减免
         </view>
         <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
           <!-- 下次的费用减免，还剩 1 天 -->
-          距离 {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
-          的费用优惠还剩 {{ vipInfoData.needDays }} 天
+          距离
+          {{ computedNextTimeDecay }}% 的费用优惠还剩 1 天
         </view>
       </template>
     </view>
