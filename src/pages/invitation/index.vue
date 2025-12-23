@@ -171,9 +171,9 @@ onMounted(async () => {
             {{ item.registerTime }}
           </div>
           <div class="w-1/4 text-center">
-            <span v-if="item.roleId == 4">无限代理</span>
-            <span v-if="item.roleId == 3">普通代理</span>
-            <span v-if="item.roleId == 2">激活用户</span>
+            <span v-if="item.roleId == 4" class="text-[#eb4d3e]">无限代理</span>
+            <span v-if="item.roleId == 3" class="text-[#f2c142]">普通代理</span>
+            <span v-if="item.roleId == 2" class="text-[#89d5fa]">激活用户</span>
             <span v-if="item.roleId == 1">未激活</span>
           </div>
         </div>
