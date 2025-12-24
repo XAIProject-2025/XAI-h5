@@ -8,5 +8,6 @@
   "detail": "{0}cm, {1}公斤",
   "introduction": "我是 {name},身高:{detail.height},体重:{detail.weight}",
   "she-zhi-zhong-xin": "设置中心",
-  "guan-li-ni-de-zhang-hu-xin-xi-yu-pian-hao": "管理您的账户信息与偏好"
+  "guan-li-ni-de-zhang-hu-xin-xi-yu-pian-hao": "管理您的账户信息与偏好",
+  "ti-shi": "提示"
 }

@@ -46,6 +46,15 @@ onMounted(() => {
   }
 })
 async function doLogin() {
+  if (userInfo.value.payPwd) {
+    if (!userInfoData.password) {
+      uni.showToast({
+        title: '请输入旧密码',
+        icon: 'none',
+      })
+      return
+    }
+  }
   if (!userInfoData.passwordNew) {
     uni.showToast({
       title: '请输入新密码',
@@ -88,24 +97,26 @@ async function doLogin() {
     })
     return
   }
-
   try {
     const data = {
       newPwd: md5(userInfoData.passwordNew),
-      // faceSessionId: useFaceStore().faceInfo?.sessionId || '',
+      faceSessionId: useFaceStore().faceInfo?.sessionId || '',
     }
     if (userInfo.value.payPwd) {
-      data.oldPwd = md5(userInfoData.value.password)
+      data.oldPwd = md5(userInfoData.password)
     }
+
     const res = await updatePayPwd(data)
     uni.showToast({
-      title: '更新成功,请重新登录',
+      title: '更新成功',
       icon: 'none',
     })
     setTimeout(() => {
-      const tokenStore = useTokenStore()
-      tokenStore.logout()
-      handleToUrl(LOGIN_PAGE)
+      userInfoData.password = ''
+      userInfoData.passwordNew = ''
+      userInfoData.passwordNewConfirm = ''
+      userInfoData.isFaceAuth = false
+      // useFaceStore().setForm(userInfoData)
       useFaceStore().setFaceInfo({})
       useFaceStore().setType(-1)
     }, 1000)
@@ -113,7 +124,7 @@ async function doLogin() {
   catch (error) {
     console.log('修改失败', error)
     uni.showToast({
-      title: '更新失败',
+      title: error.data.message || '更新失败',
       icon: 'none',
     })
   }
@@ -128,10 +139,10 @@ function handleFaceAuth() {
 <template>
   <view class="login relative">
     <div class="mt-[20px] text-center text-[20px] font-bold">
-      支付密码
+      {{ userInfo.payPwd ? "修改支付密码" : "设置支付密码" }}
     </div>
     <view
-      v-if="userInfoData.payPwd"
+      v-if="userInfo.payPwd"
       class="mt-[60px] box-border w-full flex items-center px-[20px]"
     >
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">

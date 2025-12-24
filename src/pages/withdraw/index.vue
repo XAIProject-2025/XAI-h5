@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import md5 from 'js-md5'
 import { storeToRefs } from 'pinia'
 import { applyWithdrawal, getVipInfo } from '@/api/index'
 import { useUserStore } from '@/store'
@@ -48,35 +49,24 @@ async function applyWithdrawalData() {
   }
   console.log('userInfo.value :>> ', userInfo.value)
   if (vipInfoData.value.serverNum > 0) {
-    console.log('form :>> ', form)
-    if (userInfo.value.payPwd) {
-      if (!form.payPwd) {
-        uni.showToast({
-          title: '请输入支付密码',
-          icon: 'none',
-          duration: 2000,
-        })
-        return
-      }
-    }
-    else {
-      if (!form.isFaceAuth) {
-        uni.showToast({
-          title: '请先进行人脸验证',
-          icon: 'none',
-          duration: 2000,
-        })
-        return
-      }
+    if (!form.payPwd) {
+      uni.showToast({
+        title: '请输入支付密码,未设置请前往个人中心设置',
+        icon: 'none',
+        duration: 2000,
+      })
+      return
     }
   }
   else {
-    uni.showToast({
-      title: '请先进行人脸验证',
-      icon: 'none',
-      duration: 2000,
-    })
-    return
+    if (!form.isFaceAuth) {
+      uni.showToast({
+        title: '请先进行人脸验证',
+        icon: 'none',
+        duration: 2000,
+      })
+      return
+    }
   }
   //
   // if (vipInfoData.value.serverNum > 0 && !form.payPwd) {
@@ -118,14 +108,18 @@ async function applyWithdrawalDataConfirm() {
     title: '提现申请中',
     zIndex: 20000,
   })
-  if (vipInfoData.value.serverNum === 0) {
-    form.faceSessionId = useFaceStore().faceInfo?.sessionId
+  const data = {
+    address: form.address,
+    amount: form.amount,
   }
-  if (form.payPwd) {
-    form.payPwd = md5(form.payPwd)
+  if (vipInfoData.value.serverNum === 0) {
+    data.faceSessionId = useFaceStore().faceInfo?.sessionId
+  }
+  else {
+    data.payPwd = md5(form.payPwd)
   }
   try {
-    const applyRes = await applyWithdrawal(form)
+    const applyRes = await applyWithdrawal(data)
     uni.showToast({
       title: '提现申请成功,等待审核',
       icon: 'none',
@@ -133,6 +127,7 @@ async function applyWithdrawalDataConfirm() {
     })
     // userStore().fetchUserInfo()
     await userStore.fetchUserInfo()
+    form.isFaceAuth = false
     form.address = null
     form.amount = null
 
@@ -173,7 +168,7 @@ async function handleFaceAuth() {
     <div class="bg-default text-[13px] font-bold">
       TRON
     </div>
-    <template v-if="userInfo.serverNum > 0 && userInfo.payPwd">
+    <template v-if="userInfo.serverCount > 0">
       <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
         支付密码
       </div>
@@ -181,7 +176,8 @@ async function handleFaceAuth() {
         <up-input
           v-model="form.payPwd"
           class="!p-[0]"
-          placeholder="请输入提现地址"
+          type="password"
+          placeholder="请输入支付密码"
           border="surround"
         />
       </div>

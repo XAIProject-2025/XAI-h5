@@ -182,9 +182,12 @@ function changeDynamicIncome(e) {
     >
       <div
         class="absolute right-[0px] top-[0px] z-[100] w-[70%] py-[4px] text-center text-[12px] text-[#fff]"
-        :class="{ 'bg': item.type === 1, 'status-green': item.type === 2 }"
+        :class="{
+          'bg': item.type % 2 === 1,
+          'status-green': item.type % 2 === 0,
+        }"
       >
-        {{ item.type === 1 ? "算力服务器" : "动态服务器" }}
+        {{ item.serverName }}
       </div>
       <u-image
         :src="item.imgUrl"
@@ -193,15 +196,36 @@ function changeDynamicIncome(e) {
         radius="8px"
         alt=""
       />
-      <view v-if="item.type === 1" class="px-[15px] pt-[10px] text-[14px]">
+      <view
+        v-if="item.type === 1 || item.type === 4"
+        class="px-[15px] pt-[10px] text-[14px]"
+      >
         <view class="font-bold">
           {{ item.serverName }}
         </view>
-        <view class="mt-[5px] text-[12px] text-[#94999A]">
+        <view
+          v-if="item.type === 1"
+          class="mt-[5px] text-[12px] text-[#94999A]"
+        >
           每日 {{ formatAmount(item.fixedPrice * item.priceRate) }} (Xcoin)
         </view>
-        <view class="mt-[5px] text-[12px] text-[#94999A]">
+        <view
+          v-if="item.type === 4"
+          class="mt-[5px] text-[12px] text-[#94999A]"
+        >
+          每日 {{ formatAmount(1 * item.priceRate) }} (Xcoin)
+        </view>
+        <view
+          v-if="item.type === 1"
+          class="mt-[5px] text-[12px] text-[#94999A]"
+        >
           每月 {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (Xcoin)
+        </view>
+        <view
+          v-if="item.type === 4"
+          class="mt-[5px] text-[12px] text-[#94999A]"
+        >
+          每月 {{ formatAmount(1 * item.priceRate * 30) }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
           算力值 {{ item.fixedPower }}
@@ -214,13 +238,13 @@ function changeDynamicIncome(e) {
             {{ formatAmount(item.fixedPrice) }} Xcoin
           </view>
           <view
-            v-if="item.buyLimit === -1"
+            v-if="item.type === 1"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
             库存 :{{ item.stock }}
           </view>
           <view
-            v-if="item.buyLimit !== -1"
+            v-if="item.type === 4"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
             限购 :{{ item.buyLimit }}
@@ -286,7 +310,9 @@ function changeDynamicIncome(e) {
     <confirm
       :show="showDetail"
       :button-loading="buttonLoading"
-      :height="currentItem.type === 1 ? '420px' : '530px'"
+      :height="
+        currentItem.type === 1 || currentItem.type == 4 ? '420px' : '530px'
+      "
       @close="showDetail = false"
       @confirm="buyServerCon(currentItem)"
     >
@@ -299,35 +325,57 @@ function changeDynamicIncome(e) {
           alt=""
         />
         <view
-          v-if="currentItem.type === 1"
+          v-if="currentItem.type === 1 || currentItem.type === 4"
           class="px-[15px] py-[10px] text-[14px]"
         >
           <view class="text-center font-bold">
             {{ currentItem.serverName }}
           </view>
-          <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
+          <view
+            v-if="currentItem.type === 1"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
             每日
             {{ formatAmount(currentItem.fixedPrice * currentItem.priceRate) }}
             (Xcoin)
           </view>
-          <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
+          <view
+            v-if="currentItem.type === 4"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
+            每日
+            {{ formatAmount(1 * currentItem.priceRate) }}
+            (Xcoin)
+          </view>
+          <view
+            v-if="currentItem.type === 1"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
             每月
             {{
               formatAmount(currentItem.fixedPrice * currentItem.priceRate * 30)
             }}
             (Xcoin)
           </view>
+          <view
+            v-if="currentItem.type === 4"
+            class="mt-[5px] text-center text-[12px] text-[#94999A]"
+          >
+            每月
+            {{ formatAmount(1 * currentItem.priceRate * 30) }}
+            (Xcoin)
+          </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
             算力值 {{ currentItem.fixedPower }}
           </view>
           <view
-            v-if="currentItem.buyLimit === -1"
+            v-if="currentItem.type === 1"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
             库存 :{{ currentItem.stock }}
           </view>
           <view
-            v-if="currentItem.buyLimit !== -1"
+            v-if="currentItem.type === 4"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
             限购 :{{ currentItem.buyLimit }}

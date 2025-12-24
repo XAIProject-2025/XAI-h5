@@ -44,8 +44,9 @@ onLaunch((options) => {
           }
         }
         catch (error) {
+          console.log('error :>> ', error)
           uni.showToast({
-            title: faceInfo.message || '人脸验证失败',
+            title: error.message || '人脸验证失败',
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -115,20 +116,49 @@ onLaunch((options) => {
     }
     if (useFaceStore().type === 3) {
       if (faceInfo.success === true && faceInfo.sessionId) {
-        const TokenInfo = await loginByFace({ sessionId: faceInfo.sessionId })
-        const tokenStore = useTokenStore()
-        tokenStore._postLogin(TokenInfo)
-        // sessionId
-        uni.showToast({
-          title: '登录成功',
-          icon: 'none',
-          duration: 2000,
-          complete: () => {
-            setTimeout(() => {
-              handleToUrl('/pages/index/index', true)
-            }, 1000)
-          },
-        })
+        try {
+          const TokenInfo = await loginByFace({ sessionId: faceInfo.sessionId })
+          if (TokenInfo) {
+            const tokenStore = useTokenStore()
+            tokenStore._postLogin(TokenInfo)
+            // sessionId
+            uni.showToast({
+              title: '登录成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                setTimeout(() => {
+                  handleToUrl('/pages/index/index', true)
+                }, 1000)
+              },
+            })
+          }
+          else {
+            uni.showToast({
+              title: '人脸验证失败',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages-fg/login/loginC', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          console.log('error :>> ', error)
+          uni.showToast({
+            title: error.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages-fg/login/loginC', true)
+            },
+          })
+        }
       }
       else {
         uni.showToast({
