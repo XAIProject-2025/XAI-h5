@@ -2,7 +2,8 @@
 import { storeToRefs } from 'pinia'
 import { applyWithdrawal, getVipInfo } from '@/api/index'
 import { useUserStore } from '@/store'
-import { formatAmount, handleCopy } from '@/utils/util'
+import { useFaceStore } from '@/store/face'
+import { formatAmount, handleCopy, handleToUrl } from '@/utils/util'
 
 definePage({
   style: {
@@ -10,14 +11,27 @@ definePage({
     navigationBarTitleText: '',
   },
 })
-const form = reactive({
+let form = reactive({
   amount: null,
   address: null,
+  payPwd: null,
+  isFaceAuth: false,
 })
 const show = ref(false)
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const vipInfoData = ref({})
+onShow((options) => {
+  if (useFaceStore().type === 6) {
+    console.log('form :>> ', useFaceStore().form)
+    if (JSON.stringify(useFaceStore().form) !== '{}') {
+      form = useFaceStore().form
+    }
+    if (useFaceStore().faceInfo?.success && useFaceStore().faceInfo?.sessionId) {
+      form.isFaceAuth = true
+    }
+  }
+})
 onMounted(async () => {
   // const vipInfoData = ref({})
   const vipInfoRes = await getVipInfo()
@@ -32,6 +46,55 @@ async function applyWithdrawalData() {
     })
     return
   }
+  console.log('userInfo.value :>> ', userInfo.value)
+  if (vipInfoData.value.serverNum > 0) {
+    console.log('form :>> ', form)
+    if (userInfo.value.payPwd) {
+      if (!form.payPwd) {
+        uni.showToast({
+          title: '请输入支付密码',
+          icon: 'none',
+          duration: 2000,
+        })
+        return
+      }
+    }
+    else {
+      if (!form.isFaceAuth) {
+        uni.showToast({
+          title: '请先进行人脸验证',
+          icon: 'none',
+          duration: 2000,
+        })
+        return
+      }
+    }
+  }
+  else {
+    uni.showToast({
+      title: '请先进行人脸验证',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+  //
+  // if (vipInfoData.value.serverNum > 0 && !form.payPwd) {
+  //   uni.showToast({
+  //     title: '请输入支付密码',
+  //     icon: 'none',
+  //     duration: 2000,
+  //   })
+  //   return
+  // }
+  // if (vipInfoData.value.serverNum === 0 && !form.isFaceAuth) {
+  //   uni.showToast({
+  //     title: '请先进行人脸验证',
+  //     icon: 'none',
+  //     duration: 2000,
+  //   })
+  //   return
+  // }
   show.value = true
   return
 
@@ -55,6 +118,12 @@ async function applyWithdrawalDataConfirm() {
     title: '提现申请中',
     zIndex: 20000,
   })
+  if (vipInfoData.value.serverNum === 0) {
+    form.faceSessionId = useFaceStore().faceInfo?.sessionId
+  }
+  if (form.payPwd) {
+    form.payPwd = md5(form.payPwd)
+  }
   try {
     const applyRes = await applyWithdrawal(form)
     uni.showToast({
@@ -83,6 +152,11 @@ async function applyWithdrawalDataConfirm() {
     uni.hideLoading()
   }
 }
+async function handleFaceAuth() {
+  useFaceStore().setType(6)
+  useFaceStore().setForm(form)
+  handleToUrl('/pages/textface/index')
+}
 </script>
 
 <template>
@@ -99,7 +173,51 @@ async function applyWithdrawalDataConfirm() {
     <div class="bg-default text-[13px] font-bold">
       TRON
     </div>
-
+    <template v-if="userInfo.serverNum > 0 && userInfo.payPwd">
+      <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
+        支付密码
+      </div>
+      <div class="bg-default">
+        <up-input
+          v-model="form.payPwd"
+          class="!p-[0]"
+          placeholder="请输入提现地址"
+          border="surround"
+        />
+      </div>
+    </template>
+    <template v-else>
+      <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
+        人脸验证
+      </div>
+      <div class="bg-default" @click="handleFaceAuth">
+        <view
+          class="w-[30%] flex items-center border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[9px] py-[6px] shadow-blueGray"
+        >
+          <image
+            v-if="!form.isFaceAuth"
+            src="/static/login/face_s.png"
+            class="h-[15px] w-[15px]"
+            mode="scaleToFill"
+          />
+          <view
+            v-if="!form.isFaceAuth"
+            class="ml-[10px] text-[14px] text-[#94999A]"
+          >
+            未认证
+          </view>
+          <image
+            v-if="form.isFaceAuth"
+            src="/static/login/face_s_a.png"
+            class="h-[15px] w-[15px]"
+            mode="scaleToFill"
+          />
+          <view v-if="form.isFaceAuth" class="ml-[10px] text-[14px]">
+            已认证
+          </view>
+        </view>
+      </div>
+    </template>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
       提现地址
     </div>
@@ -132,6 +250,7 @@ async function applyWithdrawalDataConfirm() {
         MAX
       </div> -->
     </div>
+
     <div class="mt-[10px] flex items-center justify-between">
       <div class="text-[12px] text-[#94999A]">
         当前手续费比例:

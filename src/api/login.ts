@@ -104,3 +104,8 @@ export function wxLogin(data: { code: string }) {
 export function touristLogin() {
   return http.post<IAuthLoginRes>('/api/v1/auth/guest')
 }
+
+// 支付密码
+export function updatePayPwd(data) {
+  return http.post('/api/v1/user/updatePayPwd', data)
+}

@@ -7,6 +7,7 @@ import { useTokenStore } from '@/store/token'
 
 import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 
+const emits = defineEmits(['getTask'])
 const userStore = useUserStore()
 const showLoginModal = ref(false)
 const { userInfo } = storeToRefs(userStore)
@@ -49,7 +50,8 @@ onMounted(async () => {
 async function getTask() {
   const getChatTaskRes = await getChatTask()
   taskData.value = getChatTaskRes
-  console.log('getChatTaskRes :>> ', getChatTaskRes)
+  // console.log('getChatTaskRes :>> ', getChatTaskRes)
+  emits('getTask', taskData.value)
   if (taskData.value.taskCompleted && userInfo.value.roleId === -1) {
     showLoginModal.value = true
   }
@@ -78,8 +80,12 @@ function handleClickAlert() {
   handleToUrl('/pages-fg/login/loginC')
   tokenStore.logout()
 }
+function openShowLoginModal() {
+  showLoginModal.value = true
+}
 defineExpose({
   fetchCountToXcoin,
+  openShowLoginModal,
 })
 </script>
 
@@ -118,7 +124,7 @@ defineExpose({
             src="/static/level/type_1.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 1 || userInfo.roleId === -1"
+            v-if="userInfo.roleId === 1"
             :width="40"
             :height="50"
             class="mr-[10px]"
@@ -132,7 +138,11 @@ defineExpose({
             src="/static/level/type_3.gif"
           />
           <up-image
-            v-if="userInfo.roleId === 4 || userInfo.roleId === 0"
+            v-if="
+              userInfo.roleId === 4
+                || userInfo.roleId === 0
+                || userInfo.roleId === -1
+            "
             :width="40"
             :height="50"
             class="mr-[10px]"

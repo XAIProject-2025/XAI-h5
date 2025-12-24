@@ -12,7 +12,7 @@
       @hided-keyboard="hidedKeyboard"
     >
       <template #top>
-        <index-top ref="indexTopRef" />
+        <index-top ref="indexTopRef" @get-task="getTask" />
       </template>
       <view
         v-for="(item, index) in dataList"
@@ -31,6 +31,7 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { nextTick, ref } from 'vue'
 import { getChatHistory, getChatLose } from '@/api/index'
 import { useUserStore } from '@/store'
@@ -42,9 +43,8 @@ import indexTop from './components/indexTop.vue'
 defineOptions({
   name: 'Home',
 })
-
 const userStore = useUserStore()
-
+const { userInfo } = storeToRefs(userStore)
 let abortController = null
 
 const STREAM_URL
@@ -63,6 +63,10 @@ definePage({
 // 聊天记录
 const dataList = ref([])
 const uNotifyRef = ref(null)
+const taskData = ref({})
+async function getTask(data) {
+  taskData.value = data
+}
 onMounted(async () => {
   uni.showLoading({
     title: '加载中...',
@@ -112,8 +116,12 @@ function hidedKeyboard() {
 
 // 发送消息
 async function doSend(msg) {
-  if (isAnswering.value)
+  console.log('userInfo :>> ', userInfo)
+  console.log('taskData.value.hasPower :>> ', taskData.value.hasPower)
+  if (userInfo.value.roleId === -1 && taskData.value.taskCompleted) {
+    indexTopRef.value.openShowLoginModal()
     return
+  }
 
   askMsg.value = msg
 

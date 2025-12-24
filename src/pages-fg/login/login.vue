@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { touristLogin } from '@/api/login'
 import { LOGIN_C_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
@@ -8,6 +9,22 @@ definePage({
     navigationStyle: 'custom',
   },
 })
+async function handleTouristLogin() {
+  // handleToUrl('/pages/index/index')
+  const res = await touristLogin()
+  const tokenStore = useTokenStore()
+  tokenStore._postLogin(res)
+  uni.showToast({
+    title: '游客模式登录成功',
+    icon: 'none',
+    duration: 2000,
+    complete: () => {
+      setTimeout(() => {
+        handleToUrl('/pages/index/index')
+      }, 1000)
+    },
+  })
+}
 </script>
 
 <template>
@@ -21,8 +38,9 @@ definePage({
     </view>
     <view
       class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"
-      @click="handleToUrl(LOGIN_C_PAGE)"
+      @click="handleTouristLogin"
     >
+      <!-- @click="handleToUrl(LOGIN_C_PAGE)" -->
       立即开始
     </view>
   </view>

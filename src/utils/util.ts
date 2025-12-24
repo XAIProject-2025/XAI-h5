@@ -7,7 +7,7 @@ let listeners = {
   error: [],
 }
 
-// 上一次触发时间
+// 上一次触发时间（按类型）
 let lastTriggerTime = {
   success: 0,
   cancel: 0,
@@ -22,13 +22,25 @@ function postToParent(type, payload) {
   window.parent.postMessage(payload, '*')
 }
 
-// 处理接收到的消息，防抖
-function handleIncoming(type, data, rawEvent) {
+// =====================
+// 防抖核心：5 秒内同一 type 只触发一次
+// =====================
+function canTrigger(type) {
   const now = Date.now()
-  if (now - lastTriggerTime[type] < DEBOUNCE_MS) {
-    return // 防抖期间忽略事件
+  const last = lastTriggerTime[type] || 0
+
+  if (now - last < DEBOUNCE_MS) {
+    return false
   }
+
   lastTriggerTime[type] = now
+  return true
+}
+
+// 处理接收到的消息
+function handleIncoming(type, data, rawEvent) {
+  if (!canTrigger(type))
+    return
 
   // 调用所有注册回调
   listeners[type].forEach((fn) => {
@@ -36,7 +48,7 @@ function handleIncoming(type, data, rawEvent) {
       fn(data, rawEvent)
     }
     catch (err) {
-      console.error(`[FACE_LIVENESS callback error]`, err)
+      console.error('[FACE_LIVENESS callback error]', err)
     }
   })
 
@@ -53,32 +65,38 @@ function handleIncoming(type, data, rawEvent) {
 function setupListeners() {
   // H5
   const h5Handler = (event) => {
-    const data = event.data
-    if (!data?.type)
+    const msg = event.data
+    if (!msg?.type)
       return
 
-    if (data.type === 'FACE_LIVENESS_SUCCESS')
-      handleIncoming('success', data.data, event)
-    else if (data.type === 'FACE_LIVENESS_CANCEL')
-      handleIncoming('cancel', data.data, event)
-    else if (data.type === 'FACE_LIVENESS_ERROR')
-      handleIncoming('error', data.error ?? data.data, event)
+    if (msg.type === 'FACE_LIVENESS_SUCCESS') {
+      handleIncoming('success', msg.data ?? msg, event)
+    }
+    else if (msg.type === 'FACE_LIVENESS_CANCEL') {
+      handleIncoming('cancel', msg.data ?? msg, event)
+    }
+    else if (msg.type === 'FACE_LIVENESS_ERROR') {
+      handleIncoming('error', msg.error ?? msg.data ?? msg, event)
+    }
   }
   window.addEventListener('message', h5Handler)
 
   // APP-PLUS
   let webview
   const appHandler = (event) => {
-    const data = Array.isArray(event.data) ? event.data[0] : event.data
-    if (!data?.type)
+    const msg = Array.isArray(event.data) ? event.data[0] : event.data
+    if (!msg?.type)
       return
 
-    if (data.type === 'FACE_LIVENESS_SUCCESS')
-      handleIncoming('success', data.data, event)
-    else if (data.type === 'FACE_LIVENESS_CANCEL')
-      handleIncoming('cancel', data.data, event)
-    else if (data.type === 'FACE_LIVENESS_ERROR')
-      handleIncoming('error', data.error ?? data.data, event)
+    if (msg.type === 'FACE_LIVENESS_SUCCESS') {
+      handleIncoming('success', msg.data ?? msg, event)
+    }
+    else if (msg.type === 'FACE_LIVENESS_CANCEL') {
+      handleIncoming('cancel', msg.data ?? msg, event)
+    }
+    else if (msg.type === 'FACE_LIVENESS_ERROR') {
+      handleIncoming('error', msg.error ?? msg.data ?? msg, event)
+    }
   }
 
   const onPlusReady = () => {
@@ -87,7 +105,8 @@ function setupListeners() {
   }
   if (typeof plus !== 'undefined')
     onPlusReady()
-  else document.addEventListener('plusready', onPlusReady, false)
+  else
+    document.addEventListener('plusready', onPlusReady, false)
 
   return () => {
     window.removeEventListener('message', h5Handler)
@@ -399,8 +418,14 @@ export function compareRatio(previousValue, currentValue, decimalPlaces = 2) {
 }
 export function handleToUrl(
   url: string,
+  redirectTo: boolean = false,
 ) {
-  uni.navigateTo({ url })
+  if (redirectTo) {
+    uni.redirectTo({ url })
+  }
+  else {
+    uni.navigateTo({ url })
+  }
 };
 
 export function getRecordType(type: number) {
@@ -409,6 +434,9 @@ export function getRecordType(type: number) {
     name: '',
     img: '',
     color: '',
+  }
+  if (type == 0) {
+    obj.name = '人工充值'
   }
   if (type == 1) {
     obj.name = '充值'

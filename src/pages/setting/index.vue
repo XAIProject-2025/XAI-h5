@@ -67,6 +67,20 @@ function showToast() {
     icon: 'none',
   })
 }
+// 支付密码
+function handleToPaymentPassword() {
+  if (userInfo.value.serverCount > 0) {
+    handleToUrl('/pages/paymentPassword/index')
+  }
+  else {
+    if (userInfo.value.serverCount === 0) {
+      uni.showToast({
+        title: '当前没有服务器,不能设置支付密码',
+        icon: 'none',
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -99,6 +113,18 @@ function showToast() {
         <up-icon name="lock-open" size="20" />
         <div class="ml-[10px]">
           修改密码
+        </div>
+      </div>
+      <up-icon name="arrow-right" />
+    </div>
+    <div
+      class="bg-default mb-[10px] flex items-center justify-between rounded-[20px] px-[10px] py-[10px]"
+      @click="handleToPaymentPassword"
+    >
+      <div class="flex items-center text-[14px]">
+        <up-icon name="lock-open" size="20" />
+        <div class="ml-[10px]">
+          支付密码
         </div>
       </div>
       <up-icon name="arrow-right" />

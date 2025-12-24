@@ -10,7 +10,7 @@
     >
       <view v-for="(item, index) in dataList" :key="index">
         <view
-          class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px]"
+          class="bg-default relative mb-[12px] flex items-end justify-between rounded-[10px] pt-[15px]"
         >
           <view class="">
             <view class="text-[14px] font-bold">

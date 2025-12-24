@@ -36,3 +36,19 @@ export function updatePassword(data) {
 export function forgotPassword(data) {
   return http.post('/api/v1/auth/forgotPwd', data)
 }
+// 人脸登陆
+export function loginByFace(query: { sessionId: string }) {
+  return http.post(`/api/v1/auth/loginByFace?sessionId=${query.sessionId}`)
+}
+// 人脸校验
+export function verifyFace(query: { sessionId: string }) {
+  return http.get(`/api/v1/face/validate?session=${query.sessionId}`)
+}
+// 人脸注册
+export function registerByFace(data) {
+  return http.get(`/api/v1/face/register?session=${data.sessionId}`)
+}
+// 注册用户绑定人脸
+export function bindFace(data) {
+  return http.get(`/api/v1/face/bindFace?session=${data.sessionId}`)
+}

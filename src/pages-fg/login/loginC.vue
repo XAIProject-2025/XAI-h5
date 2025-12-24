@@ -43,22 +43,6 @@ function handleFaceAuth() {
   useFaceStore().setType(3)
   handleToUrl('/pages/textface/index')
 }
-async function handleTouristLogin() {
-  // handleToUrl('/pages/index/index')
-  const res = await touristLogin()
-  const tokenStore = useTokenStore()
-  tokenStore._postLogin(res)
-  uni.showToast({
-    title: '游客模式登录成功',
-    icon: 'none',
-    duration: 2000,
-    complete: () => {
-      setTimeout(() => {
-        handleToUrl('/pages/index/index')
-      }, 1000)
-    },
-  })
-}
 </script>
 
 <template>
@@ -137,12 +121,12 @@ async function handleTouristLogin() {
     >
       登录
     </view>
-    <view
+    <!-- <view
       class="btn-block--white absolute bottom-[140px] left-[5%] mx-auto h-[40px] w-[90%]"
       @click="handleTouristLogin"
     >
       游客模式
-    </view>
+    </view> -->
     <!-- <textface /> -->
   </view>
 </template>

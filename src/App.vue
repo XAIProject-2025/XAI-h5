@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
+import { bindFace, loginByFace, registerByFace, verifyFace } from '@/api/index'
 import { navigateToInterceptor } from '@/router/interceptor'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
@@ -11,14 +12,51 @@ onLaunch((options) => {
     useCommonStore().setInviteCode(options.query.inviteCode)
   }
   // 防抖
-  listenFaceLivenessSuccess((data, event) => {
-    const faceInfo = JSON.parse(data)
-    console.log('faceInfo :>> ', faceInfo)
-    console.log('useFaceStore().type :>> ', useFaceStore().type)
+  listenFaceLivenessSuccess(async (data, event) => {
+    console.log('data :>> ', data)
+    const faceInfo = data
     if (useFaceStore().type === 1) {
       if (faceInfo.success === true) {
-        useFaceStore().setFaceInfo(faceInfo)
-        handleToUrl('/pages-fg/login/register?faceAuth=true')
+        try {
+          const registerByFaceRes = await registerByFace(faceInfo)
+          if (registerByFaceRes === true) {
+            uni.showToast({
+              title: '人脸验证成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo(faceInfo)
+                handleToUrl('/pages-fg/login/register', true)
+              },
+            })
+          }
+          else {
+            uni.showToast({
+              title: faceInfo.message || '人脸验证失败,已注册或者活体检查未通过,请重新校验',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages-fg/login/register', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          uni.showToast({
+            title: faceInfo.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages-fg/login/register', true)
+            },
+          })
+        }
+        // useFaceStore().setFaceInfo(faceInfo)
+        // handleToUrl('/pages-fg/login/register?faceAuth=true')
       }
       else {
         uni.showToast({
@@ -28,22 +66,39 @@ onLaunch((options) => {
           complete: () => {
             useFaceStore().setFaceInfo({})
             useFaceStore().setType(-1)
-            handleToUrl('/pages-fg/login/register?faceAuth=true')
+            handleToUrl('/pages-fg/login/register?faceAuth=true', true)
           },
         })
       }
     }
     if (useFaceStore().type === 2) {
       if (faceInfo.success === true) {
-        uni.showToast({
-          title: '人脸验证成功',
-          icon: 'none',
-          duration: 2000,
-          complete: () => {
-            useFaceStore().setFaceInfo(faceInfo)
-            handleToUrl('/pages/changePassword/index')
-          },
-        })
+        try {
+          const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
+          if (verifyFaceRes === true) {
+            uni.showToast({
+              title: '人脸验证成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo(faceInfo)
+                handleToUrl('/pages/changePassword/index', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          uni.showToast({
+            title: faceInfo.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages/changePassword/index', true)
+            },
+          })
+        }
       }
       else {
         uni.showToast({
@@ -53,22 +108,24 @@ onLaunch((options) => {
           complete: () => {
             useFaceStore().setFaceInfo({})
             useFaceStore().setType(-1)
-            handleToUrl('/pages/changePassword/index')
+            handleToUrl('/pages/changePassword/index', true)
           },
         })
       }
     }
     if (useFaceStore().type === 3) {
-      if (faceInfo.token) {
+      if (faceInfo.success === true && faceInfo.sessionId) {
+        const TokenInfo = await loginByFace({ sessionId: faceInfo.sessionId })
         const tokenStore = useTokenStore()
-        tokenStore._postLogin(faceInfo)
+        tokenStore._postLogin(TokenInfo)
+        // sessionId
         uni.showToast({
           title: '登录成功',
           icon: 'none',
           duration: 2000,
           complete: () => {
             setTimeout(() => {
-              handleToUrl('/pages/index/index')
+              handleToUrl('/pages/index/index', true)
             }, 1000)
           },
         })
@@ -81,7 +138,7 @@ onLaunch((options) => {
           complete: () => {
             useFaceStore().setFaceInfo({})
             useFaceStore().setType(-1)
-            handleToUrl('/pages-fg/login/loginC')
+            handleToUrl('/pages-fg/login/loginC', true)
           },
         })
       }
@@ -91,18 +148,33 @@ onLaunch((options) => {
       // useFaceStore().setType(-1)
     }
     if (useFaceStore().type === 4) {
-      if (faceInfo.token) {
-        useFaceStore().setFaceInfo(faceInfo)
-        uni.showToast({
-          title: '验证成功',
-          icon: 'none',
-          duration: 2000,
-          complete: () => {
-            setTimeout(() => {
-              handleToUrl('/pages-fg/login/forgotPassword')
-            }, 1000)
-          },
-        })
+      if (faceInfo.success === true) {
+        try {
+          const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
+          if (verifyFaceRes === true) {
+            uni.showToast({
+              title: '人脸验证成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo(faceInfo)
+                handleToUrl('/pages-fg/login/forgotPassword', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          uni.showToast({
+            title: faceInfo.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages-fg/login/forgotPassword', true)
+            },
+          })
+        }
       }
       else {
         uni.showToast({
@@ -112,46 +184,113 @@ onLaunch((options) => {
           complete: () => {
             useFaceStore().setFaceInfo({})
             useFaceStore().setType(-1)
-            handleToUrl('/pages-fg/login/forgotPassword')
+            handleToUrl('/pages-fg/login/forgotPassword', true)
           },
         })
       }
-      // handleToUrl('/pages-fg/login/register?faceAuth=true')
-      // useFaceStore().setFaceInfo({})
-      // useFaceStore().setType(-1)
     }
-    // 这里可以添加实际的业务逻辑，如更新用户状态、触发其他事件等
-  }, (error) => {
-    useFaceStore().setFaceInfo({})
-    useFaceStore().setType(-1)
-    console.error('人脸活体检测消息处理失败:', error)
+
+    if (useFaceStore().type === 5) {
+      if (faceInfo.success === true) {
+        try {
+          const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
+          if (verifyFaceRes === true) {
+            uni.showToast({
+              title: '人脸验证成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo(faceInfo)
+                handleToUrl('/pages/paymentPassword/index', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          uni.showToast({
+            title: faceInfo.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages/paymentPassword/index', true)
+            },
+          })
+        }
+      }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages/paymentPassword/index', true)
+          },
+        })
+      }
+    }
+
+    if (useFaceStore().type === 6) {
+      if (faceInfo.success === true) {
+        try {
+          const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
+          if (verifyFaceRes === true) {
+            uni.showToast({
+              title: '人脸验证成功',
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo(faceInfo)
+                handleToUrl('/pages/withdraw/index', true)
+              },
+            })
+          }
+        }
+        catch (error) {
+          uni.showToast({
+            title: faceInfo.message || '人脸验证失败',
+            icon: 'none',
+            duration: 2000,
+            complete: () => {
+              useFaceStore().setFaceInfo({})
+              useFaceStore().setType(-1)
+              handleToUrl('/pages/withdraw/index', true)
+            },
+          })
+        }
+      }
+      else {
+        uni.showToast({
+          title: faceInfo.message || '人脸验证失败',
+          icon: 'none',
+          duration: 2000,
+          complete: () => {
+            useFaceStore().setFaceInfo({})
+            useFaceStore().setType(-1)
+            handleToUrl('/pages/withdraw/index', true)
+          },
+        })
+      }
+    }
   })
   listenFaceLivenessError((data, event) => {
     console.log('data :>> ', data)
-    uni.showToast({
-      title: '人脸检测失败',
-      icon: 'none',
-      duration: 2000,
-      complete: () => {
-        if (useFaceStore().type === 4) {
-          handleToUrl('/pages-fg/login/forgotPassword')
-        }
-        if (useFaceStore().type === 3) {
-          handleToUrl('/pages-fg/login/loginC')
-        }
-        if (useFaceStore().type === 2) {
-          handleToUrl('/pages/changePassword/index')
-        }
-        if (useFaceStore().type === 1) {
-          handleToUrl('/pages-fg/login/register')
-        }
-        useFaceStore().setFaceInfo({})
-        useFaceStore().setType(-1)
-        // handleToUrl('/pages-fg/login/register')
-      },
-    })
-  }, (error) => {
-    console.error('人脸活体检测错误处理失败监听:', error)
+    // console.log('data :>> ', data)
+    // const faceInfo = data
+    // if (useFaceStore().type === 3) {
+    //   uni.showToast({
+    //     title: faceInfo.message || '人脸验证失败',
+    //     icon: 'none',
+    //     duration: 2000,
+    //     complete: () => {
+    //       useFaceStore().setFaceInfo({})
+    //       useFaceStore().setType(-1)
+    //     },
+    //   })
+    // }
   })
 })
 onShow((options) => {

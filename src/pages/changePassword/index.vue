@@ -20,11 +20,6 @@ let userInfo = reactive({
   isFaceAuth: false,
 })
 onShow((options) => {
-  console.log('options :>> ', options)
-  console.log(' :>> ', useFaceStore().faceInfo)
-  // if (options?.query?.faceAuth === 'true') {
-  //   userInfo.isFaceAuth = true
-  // }
   if (useFaceStore().type === 2) {
     if (JSON.stringify(useFaceStore().form) !== '{}') {
       userInfo = useFaceStore().form
