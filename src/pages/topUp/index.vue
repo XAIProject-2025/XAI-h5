@@ -26,13 +26,13 @@ onMounted(async () => {
 <template>
   <view class="p-[15px]">
     <div class="mb-[10px] text-[13px] font-bold">
-      充值币种
+      {{ $t("chong-zhi-bi-zhong") }}
     </div>
     <div class="bg-default text-[13px] font-bold">
       USDT
     </div>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-      充值网络
+      {{ $t("chong-zhi-wang-luo") }}
     </div>
     <div class="bg-default text-[13px] font-bold">
       TRON
@@ -41,7 +41,7 @@ onMounted(async () => {
       <up-qrcode cid="ex2" :size="200" val="uview-plus" />
     </div>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-      充值地址
+      {{ $t("chong-zhi-di-zhi") }}
     </div>
     <div
       class="bg-default box-border w-full flex items-center justify-center text-[13px] font-bold"
@@ -54,18 +54,30 @@ onMounted(async () => {
         class="flex flex-1 items-center justify-center text-[13px] text-[#19A71D]"
         @click="handleCopy(depositWallets.address)"
       >
-        复制
+        {{ $t("fu-zhi") }}
       </div>
     </div>
     <div class="mt-[20px] text-[13px] text-[#94999A]">
       <div class="mb-[10px]">
-        *您只能将USDT存入该地址，其他资产将无法到账
+        {{
+          $t(
+            "nin-zhi-neng-jiang-usdt-cun-ru-gai-di-zhi-qi-ta-zi-chan-jiang-wu-fa-dao-zhang",
+          )
+        }}
       </div>
       <div class="mb-[10px]">
-        *请选择与提现平台一致的网络充值，否则充值无法到帐
+        {{
+          $t(
+            "qing-xuan-ze-yu-ti-xian-ping-tai-yi-zhi-de-wang-luo-chong-zhi-fou-ze-chong-zhi-wu-fa-dao-zhang",
+          )
+        }}
       </div>
       <div class="mb-[10px]">
-        *充值请勿低于最小充值额，否则将不会上账且不可退回
+        {{
+          $t(
+            "chong-zhi-qing-wu-di-yu-zui-xiao-chong-zhie-fou-ze-jiang-bu-hui-shang-zhang-qie-bu-ke-tui-hui",
+          )
+        }}
       </div>
     </div>
   </view>

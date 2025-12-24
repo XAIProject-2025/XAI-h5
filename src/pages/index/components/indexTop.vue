@@ -2,9 +2,9 @@
 import { storeToRefs } from 'pinia'
 import { getChatTask } from '@/api'
 import { getPowerOrders } from '@/api/funds'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { useTokenStore } from '@/store/token'
-
 import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 
 const emits = defineEmits(['getTask'])
@@ -35,7 +35,7 @@ onMounted(async () => {
   await getPowerOrdersData()
   conuntToXcoin.value = userInfo.value.kdkBalance
   if (powerOrdersData.value.length === 0) {
-    notifyTitle.value = '当前没有算力服务器,请前往租赁后完成任务获取奖励'
+    notifyTitle.value = t('dang-qian-mei-you-suan-li-fu-wu-qi-qing-qian-wang-zu-lin-hou-wan-cheng-ren-wu-huo-qu-jiang-li')
   }
 })
 // // 监听userinfo roleid 变化
@@ -72,7 +72,7 @@ async function fetchCountToXcoin() {
   // }
   await getTask()
   if (taskData.value.usedPower > 0) {
-    notifyTitle.value = '任务开始,再次增加服务器明日才开始计算收益'
+    notifyTitle.value = t('ren-wu-kai-shi-zai-ci-zeng-jia-fu-wu-qi-ming-ri-cai-kai-shi-ji-suan-shou-yi')
   }
 }
 function handleClickAlert() {
@@ -108,10 +108,15 @@ defineExpose({
           />
           <view class="ml-[20px]">
             <view class="text-[14px] text-[#666]">
-              客服名称
+              {{ $t("ke-fu-ming-cheng") }}
             </view>
+
             <view class="mt-[2px] text-[12px]">
-              {{ userInfo.roleId === -1 ? "游客模式" : userInfo.customer.name }}
+              {{
+                userInfo.roleId === -1
+                  ? $t("you-ke-mo-shi")
+                  : userInfo.customer.name
+              }}
             </view>
           </view>
         </view>
@@ -170,7 +175,9 @@ defineExpose({
             <view class="ml-[15px]">
               <view class="mb-[5px] text-[14px]">
                 <!-- {{ userInfo.name }} -->
-                {{ userInfo.roleId === -1 ? "游客模式" : userInfo.name }}
+                {{
+                  userInfo.roleId === -1 ? $t("you-ke-mo-shi") : userInfo.name
+                }}
               </view>
               <level />
             </view>
@@ -193,7 +200,7 @@ defineExpose({
                     {{ item.serverInfo.serverName }}
                   </view>
                   <view class="mt-[5px]">
-                    剩余:{{ Number(item.power) - Number(item.usedPower) }}
+                    <span>{{ $t("sheng-yu") }}</span>:{{ Number(item.power) - Number(item.usedPower) }}
                     <!-- {{ item.usedPower }}/{{ item.power }} -->
                   </view>
                 </view>
@@ -202,7 +209,7 @@ defineExpose({
           </view>
           <view v-else class="w-1/2 flex items-center justify-center">
             <view class="text-[14px] text-[#999]">
-              没有算力服务器
+              {{ $t("mei-you-suan-li-fu-wu-qi") }}
             </view>
           </view>
         </view>
@@ -225,7 +232,7 @@ defineExpose({
               </view>
             </view>
             <view class="mt-[5px] text-[14px]">
-              Xcoin余额
+              Xcoin <span>{{ $t("yu-e") }}</span>
             </view>
           </view>
           <view class="h-[50px] w-[1px] bg-[#374447]" />
@@ -234,8 +241,8 @@ defineExpose({
             @click="handleToUrl('/pages/server/index')"
           >
             <up-icon name="plus" size="20px" class="h-[25px]" color="#fff" />
-            <view class="mt-[5px] text-[14px]">
-              算力服务器
+            <view class="mt-[5px] text-center text-[14px]">
+              {{ $t("suan-li-fu-wu-qi") }}
             </view>
           </view>
         </view>
@@ -244,14 +251,16 @@ defineExpose({
     <view>
       <view class="mb-[10px] flex items-center justify-between text-[12px]">
         <view>
-          AI对话
+          <span> {{ $t("ai-dui-hua") }}</span>
           {{
             taskData.todayChatCount > taskData.taskTarget
               ? taskData.taskTarget
               : taskData.todayChatCount
           }}/{{ taskData.taskTarget }}
         </view>
-        <view>奖励{{ formatAmount(taskData.rewardAmount) }}Xcoin</view>
+        <view>
+          <span>{{ $t("jiang-li") }}</span>{{ formatAmount(taskData.rewardAmount) }}Xcoin
+        </view>
       </view>
       <up-line-progress
         height="16px"
@@ -269,11 +278,16 @@ defineExpose({
       font-size="12"
       closable
     />
+
     <up-alert
       v-if="userInfo.roleId === -1"
       class="mt-[5px]"
       type="error"
-      description="当前为游客模式,请尽快登录账号，就能解锁正式奖励哦(点击登录)"
+      :description="
+        $t(
+          'dang-qian-wei-you-ke-mo-shi-qing-jin-kuai-deng-lu-zhang-hao-jiu-neng-jie-suo-zheng-shi-jiang-lio-dian-ji-deng-lu',
+        )
+      "
       font-size="12"
       @click="handleClickAlert"
     />
@@ -318,7 +332,7 @@ defineExpose({
             />
           </svg>
           <div class="text-[18px] text-[#333333] font-bold">
-            奖励提示
+            {{ $t("jiang-li-ti-shi") }}
           </div>
         </div>
 
@@ -327,13 +341,17 @@ defineExpose({
           class="mb-[8px] w-full border border-[#FFE8DD] rounded-[12px] bg-[#FFF9F6] p-[16px]"
         >
           <div class="text-[15px] text-[#333333] leading-[1.5]">
-            你已成功领取体验奖励啦～ 现在登录账号，就能解锁正式奖励哦！
+            {{
+              $t(
+                "ni-yi-cheng-gong-ling-qu-ti-yan-jiang-li-la-xian-zai-deng-lu-zhang-hao-jiu-neng-jie-suo-zheng-shi-jiang-lio",
+              )
+            }}
           </div>
         </div>
 
         <!-- 小字提示（增加引导性） -->
         <div class="mb-[4px] text-[12px] text-[#999999]">
-          登录后会有更多的奖励哦
+          {{ $t("deng-lu-hou-hui-you-geng-duo-de-jiang-li-o") }}
         </div>
       </div>
     </up-modal>

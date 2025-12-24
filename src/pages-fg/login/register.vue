@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
 import { bindFace } from '@/api/index'
+import { t } from '@/locale/index'
 import { LOGIN_PAGE, REGISTER_PAGE } from '@/router/config'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
@@ -40,7 +41,7 @@ onMounted(() => {
 async function doLogin() {
   if (!userInfo.name) {
     uni.showToast({
-      title: '请输入用户名',
+      title: t('qing-shu-ru-yong-hu-ming'),
       icon: 'none',
     })
     return
@@ -48,7 +49,7 @@ async function doLogin() {
   // 8位以上包含字母和数字
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
     uni.showToast({
-      title: '请输入密码（8位以上包含字母和数字）',
+      title: t('qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi'),
       icon: 'none',
     })
     return
@@ -56,21 +57,21 @@ async function doLogin() {
   // 8位以上包含字母和数字
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.passwordNew)) {
     uni.showToast({
-      title: '请输入确认密码（8位以上包含字母和数字）',
+      title: t('qing-shu-ru-que-ren-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi'),
       icon: 'none',
     })
     return
   }
   if (!userInfo.inviteCode) {
     uni.showToast({
-      title: '请输入邀请码',
+      title: t('qing-shu-ru-yao-qing-ma'),
       icon: 'none',
     })
     return
   }
   if (userInfo.password !== userInfo.passwordNew) {
     uni.showToast({
-      title: '两次输入密码不一致',
+      title: t('liang-ci-shu-ru-mi-ma-bu-yi-zhi'),
       icon: 'none',
     })
     return
@@ -87,7 +88,7 @@ async function doLogin() {
     }
     // const bindFaceRes = await bindFace(useFaceStore().faceInfo)
     uni.showToast({
-      title: '注册成功',
+      title: t('zhu-ce-cheng-gong'),
       icon: 'none',
     })
     setTimeout(() => {
@@ -101,7 +102,7 @@ async function doLogin() {
     tokenStore.logout()
     console.log('注册失败', error)
     uni.showToast({
-      title: '注册失败',
+      title: t('zhu-ce-shi-bai'),
       icon: 'none',
     })
   }
@@ -117,14 +118,14 @@ function handleFaceAuth() {
   <view class="login relative">
     <view class="box-border w-full flex items-center px-[20px] pt-[25vh]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        用户名
+        {{ $t("yong-hu-ming") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.name"
-          placeholder="请输入内容"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
         >
           <template #prefix>
@@ -140,14 +141,14 @@ function handleFaceAuth() {
     </view>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        密码
+        {{ $t("mi-ma") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.password"
-          placeholder="请输入内容"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
           type="password"
         >
@@ -164,14 +165,14 @@ function handleFaceAuth() {
     </view>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        确认密码
+        {{ $t("que-ren-mi-ma") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.passwordNew"
-          placeholder="请输入内容"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
           type="password"
         >
@@ -188,14 +189,14 @@ function handleFaceAuth() {
     </view>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        邀请码
+        {{ $t("yao-qing-ma") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.inviteCode"
-          placeholder="请输入内容"
+          :placeholder="t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
         >
           <template #prefix>
@@ -214,7 +215,7 @@ function handleFaceAuth() {
       @click="handleFaceAuth"
     >
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        人脸验证
+        {{ $t("ren-lian-yan-zheng") }}
       </view>
       <view
         class="w-[30%] flex items-center border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[9px] py-[6px] shadow-blueGray"
@@ -229,7 +230,7 @@ function handleFaceAuth() {
           v-if="!userInfo.isFaceAuth"
           class="ml-[10px] text-[14px] text-[#94999A]"
         >
-          未认证
+          {{ $t("wei-ren-zheng") }}
         </view>
         <image
           v-if="userInfo.isFaceAuth"
@@ -238,7 +239,7 @@ function handleFaceAuth() {
           mode="scaleToFill"
         />
         <view v-if="userInfo.isFaceAuth" class="ml-[10px] text-[14px]">
-          已认证
+          {{ $t("yi-ren-zheng") }}
         </view>
       </view>
     </view>
@@ -246,13 +247,13 @@ function handleFaceAuth() {
       class="mt-[20px] px-[20px] text-right text-[14px]"
       @click="handleToUrl(LOGIN_PAGE)"
     >
-      登录
+      {{ $t("deng-lu") }}
     </view>
     <view
       class="btn-block absolute bottom-[100px] left-[5%] mx-auto h-[40px] w-[90%]"
       @click="doLogin"
     >
-      注册
+      {{ $t("zhu-ce") }}
     </view>
   </view>
 </template>

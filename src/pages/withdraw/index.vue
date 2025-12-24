@@ -2,6 +2,8 @@
 import md5 from 'js-md5'
 import { storeToRefs } from 'pinia'
 import { applyWithdrawal, getVipInfo } from '@/api/index'
+import { t } from '@/locale'
+
 import { useUserStore } from '@/store'
 import { useFaceStore } from '@/store/face'
 import { formatAmount, handleCopy, handleToUrl } from '@/utils/util'
@@ -41,7 +43,7 @@ onMounted(async () => {
 async function applyWithdrawalData() {
   if (!form.address || !form.amount) {
     uni.showToast({
-      title: '请输入提现地址和金额',
+      title: t('qing-shu-ru-ti-xian-di-zhi-he-jin-e'),
       icon: 'none',
       duration: 2000,
     })
@@ -51,7 +53,7 @@ async function applyWithdrawalData() {
   if (vipInfoData.value.serverNum > 0) {
     if (!form.payPwd) {
       uni.showToast({
-        title: '请输入支付密码,未设置请前往个人中心设置',
+        title: t('qing-shu-ru-zhi-fu-mi-ma-wei-she-zhi-qing-qian-wang-ge-ren-zhong-xin-she-zhi'),
         icon: 'none',
         duration: 2000,
       })
@@ -61,7 +63,7 @@ async function applyWithdrawalData() {
   else {
     if (!form.isFaceAuth) {
       uni.showToast({
-        title: '请先进行人脸验证',
+        title: t('qing-xian-jin-hang-ren-lian-yan-zheng'),
         icon: 'none',
         duration: 2000,
       })
@@ -105,7 +107,7 @@ async function applyWithdrawalData() {
 async function applyWithdrawalDataConfirm() {
   show.value = false
   uni.showLoading({
-    title: '提现申请中',
+    title: t('ti-xian-shen-qing-zhong'),
     zIndex: 20000,
   })
   const data = {
@@ -121,7 +123,7 @@ async function applyWithdrawalDataConfirm() {
   try {
     const applyRes = await applyWithdrawal(data)
     uni.showToast({
-      title: '提现申请成功,等待审核',
+      title: t('ti-xian-shen-qing-cheng-gong-deng-dai-shen-he'),
       icon: 'none',
       duration: 2000,
     })
@@ -137,7 +139,7 @@ async function applyWithdrawalDataConfirm() {
     console.log('error :>> ', error)
     uni.hideLoading()
     uni.showToast({
-      title: error.data.message || '提现申请失败',
+      title: error.data.message || t('ti-xian-shen-qing-shi-bai'),
       icon: 'none',
       duration: 2000,
     })
@@ -157,34 +159,34 @@ async function handleFaceAuth() {
 <template>
   <view class="p-[15px]">
     <div class="mb-[10px] text-[13px] font-bold">
-      提现币种
+      {{ $t("ti-xian-bi-zhong") }}
     </div>
     <div class="bg-default text-[13px] font-bold">
       USDT
     </div>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-      提现网络
+      {{ $t("ti-xian-wang-luo") }}
     </div>
     <div class="bg-default text-[13px] font-bold">
       TRON
     </div>
     <template v-if="userInfo.serverCount > 0">
       <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-        支付密码
+        {{ $t("zhi-fu-mi-ma-0") }}
       </div>
       <div class="bg-default">
         <up-input
           v-model="form.payPwd"
           class="!p-[0]"
           type="password"
-          placeholder="请输入支付密码"
+          :placeholder="$t('qing-shu-ru-zhi-fu-mi-ma')"
           border="surround"
         />
       </div>
     </template>
     <template v-else>
       <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-        人脸验证
+        {{ $t("ren-lian-yan-zheng-0") }}
       </div>
       <div class="bg-default" @click="handleFaceAuth">
         <view
@@ -200,7 +202,7 @@ async function handleFaceAuth() {
             v-if="!form.isFaceAuth"
             class="ml-[10px] text-[14px] text-[#94999A]"
           >
-            未认证
+            {{ $t("wei-ren-zheng") }}
           </view>
           <image
             v-if="form.isFaceAuth"
@@ -209,30 +211,30 @@ async function handleFaceAuth() {
             mode="scaleToFill"
           />
           <view v-if="form.isFaceAuth" class="ml-[10px] text-[14px]">
-            已认证
+            {{ $t("yi-ren-zheng") }}
           </view>
         </view>
       </div>
     </template>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-      提现地址
+      {{ $t("ti-xian-di-zhi") }}
     </div>
     <div class="bg-default">
       <up-input
         v-model="form.address"
         class="!p-[0]"
-        placeholder="请输入提现地址"
+        :placeholder="$t('qing-shu-ru-ti-xian-di-zhi')"
         border="surround"
       />
     </div>
     <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
-      提现金额
+      {{ $t("ti-xian-jin-e") }}
     </div>
     <div class="bg-default flex items-center justify-between">
       <up-input
         v-model="form.amount"
         class="!p-[0]"
-        placeholder="请输入提现金额"
+        :placeholder="$t('qing-shu-ru-ti-xian-jin-e')"
         border="surround"
       >
         <template #suffix>
@@ -249,7 +251,7 @@ async function handleFaceAuth() {
 
     <div class="mt-[10px] flex items-center justify-between">
       <div class="text-[12px] text-[#94999A]">
-        当前手续费比例:
+        {{ $t("dang-qian-shou-xu-fei-bi-li") }}
         <span class="text-[#94999A]">
           {{
             Number(
@@ -258,26 +260,42 @@ async function handleFaceAuth() {
           }}%</span>
       </div>
       <div class="text-[12px] text-[#94999A]">
-        当前余额:
+        {{ $t("dang-qian-yue") }}
         <span class="text-[#94999A]">{{ formatAmount(userInfo.usdtBalance) }} USDT</span>
       </div>
     </div>
     <div class="mt-[20px] text-[13px] text-[#94999A]">
       <div class="mb-[10px]">
-        *请仅向该地址提现 USDT，其他资产将无法到账且无法找回
+        {{
+          $t(
+            "qing-jin-xiang-gai-di-zhi-ti-xian-usdt-qi-ta-zi-chan-jiang-wu-fa-dao-zhang-qie-wu-fa-zhao-hui",
+          )
+        }}
       </div>
       <div class="mb-[10px]">
-        *提现网络需与目标平台完全一致（TRON/TRC20），否则资产将丢失
+        {{
+          $t(
+            "ti-xian-wang-luo-xu-yu-mu-biao-ping-tai-wan-quan-yi-zhi-trontrc20-fou-ze-zi-chan-jiang-diu-shi",
+          )
+        }}
       </div>
       <div class="mb-[10px]">
-        *提现金额需大于最小提现额度，低于该额度的提现将不会处理
+        {{
+          $t(
+            "ti-xian-jinexu-da-yu-zui-xiao-ti-xianedu-di-yu-gaiedu-de-ti-xian-jiang-bu-hui-chu-li",
+          )
+        }}
       </div>
       <div class="mb-[10px]">
-        *提现申请提交后，请耐心等待区块链确认，到账时间以网络情况为准
+        {{
+          $t(
+            "ti-xian-shen-qing-ti-jiao-hou-qing-nai-xin-deng-dai-qu-kuai-lian-que-ren-dao-zhang-shi-jian-yi-wang-luo-qing-kuang-wei-zhun",
+          )
+        }}
       </div>
     </div>
     <div class="btn-block mt-[40px] h-[40px]" @click="applyWithdrawalData">
-      确认
+      {{ $t("que-ren") }}
     </div>
 
     <up-modal
@@ -291,20 +309,20 @@ async function handleFaceAuth() {
       <div class="flex flex-col items-center px-[20px] py-[10px]">
         <!-- 标题 -->
         <div class="mb-[12px] text-[16px] font-bold">
-          提现确认
+          {{ $t("ti-xian-que-ren") }}
         </div>
 
         <!-- 内容卡片 -->
         <div class="w-full rounded-[8px] bg-[#f7f7f7] p-[12px] space-y-[8px]">
           <div class="flex justify-between text-[14px]">
-            <span class="text-[#666]">提现金额</span>
+            <span class="text-[#666]">{{ $t("ti-xian-jin-e-0") }}</span>
             <span class="text-[#000] font-semibold">
               {{ formatAmount(form.amount) }} USDT
             </span>
           </div>
 
           <div class="flex justify-between text-[14px]">
-            <span class="text-[#666]">当前手续费</span>
+            <span class="text-[#666]">{{ $t("dang-qian-shou-xu-fei") }}</span>
             <span class="text-[#e53e3e] font-semibold">
               {{
                 formatAmount(
@@ -317,7 +335,7 @@ async function handleFaceAuth() {
           </div>
 
           <div class="flex justify-between text-[13px]">
-            <span class="text-[#999]">手续费比例</span>
+            <span class="text-[#999]">{{ $t("shou-xu-fei-bi-li") }}</span>
             <span class="text-[#999]">
               {{
                 Number(
@@ -332,7 +350,11 @@ async function handleFaceAuth() {
         <div
           class="mt-[10px] text-center text-[12px] text-[#999] leading-[18px]"
         >
-          实际到账金额将扣除对应手续费，请确认后继续操作
+          {{
+            $t(
+              "shi-ji-dao-zhang-jinejiang-kou-chu-dui-ying-shou-xu-fei-qing-que-ren-hou-ji-xu-cao-zuo",
+            )
+          }}
         </div>
       </div>
     </up-modal>

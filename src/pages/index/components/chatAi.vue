@@ -1,13 +1,22 @@
 <template>
   <view class="content">
     <z-paging
-      ref="paging" v-model="dataList" use-chat-record-mode safe-area-inset-bottom bottom-bg-color="#f8f8f8"
-      empty-view-text="完成任务领取奖励" @query="queryList" @keyboard-height-change="keyboardHeightChange"
+      ref="paging"
+      v-model="dataList"
+      use-chat-record-mode
+      safe-area-inset-bottom
+      bottom-bg-color="#f8f8f8"
+      @query="queryList"
+      @keyboard-height-change="keyboardHeightChange"
       @hided-keyboard="hidedKeyboard"
     >
       <!-- 聊天记录渲染 -->
-      <view v-for="(item, index) in dataList" :key="index" style="position: relative;">
-        <view style="transform: scaleY(-1);">
+      <view
+        v-for="(item, index) in dataList"
+        :key="index"
+        style="position: relative"
+      >
+        <view style="transform: scaleY(-1)">
           <chat-item :item="item" />
         </view>
       </view>

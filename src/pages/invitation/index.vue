@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { getStatistics, getSubordinateList } from '@/api/funds'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { formatAmount, handleCopy } from '@/utils/util'
 
@@ -22,7 +23,7 @@ const statistics = ref({})
 const inviteCodeLink = ref('')
 onMounted(async () => {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
   })
   const getSubordinateListRes = await getSubordinateList()
   const getStatisticsRes = await getStatistics()
@@ -43,15 +44,19 @@ onMounted(async () => {
   <view class="">
     <div class="bg1 box-border h-[170px] w-[100vw] px-[30px] py-[15px]">
       <div class="text-[#fff]">
-        邀请好友
+        {{ $t("yao-qing-hao-you") }}
       </div>
       <div class="mt-[10px] text-[12px] text-[#94999A]">
-        邀请好友加入成为 AI 训练者，双方都能获得奖励
+        {{
+          $t(
+            "yao-qing-hao-you-jia-ru-cheng-wei-ai-xun-lian-zhe-shuang-fang-du-neng-huo-de-jiang-li",
+          )
+        }}
       </div>
     </div>
     <div class="bg2 mx-[15px] mt-[-80px] h-[280px] pt-[20px]">
       <div class="text-center text-[15px] font-bold">
-        我的邀请码
+        {{ $t("wo-de-yao-qing-ma") }}
       </div>
       <div
         class="bg3 mx-auto mt-[20px] w-[200px] flex items-center justify-between rounded-[20px] px-[20px] py-[10px] text-center text-[14px] font-bold"
@@ -63,14 +68,14 @@ onMounted(async () => {
           class="ml-[10px] text-[13px] text-[#19A71D]"
           @click="handleCopy(userInfo.inviteCode)"
         >
-          复制
+          {{ $t("fu-zhi") }}
         </div>
       </div>
       <div
-        class="btn-block mx-auto mt-[60px] h-[30px] w-[270px]"
+        class="btn-block mx-auto mt-[60px] h-[50px] w-[270px] px-[10px] text-center"
         @click="handleCopy(inviteCodeLink)"
       >
-        复制邀请链接以邀请好友
+        {{ $t("fu-zhi-yao-qing-lian-jie-yi-yao-qing-hao-you") }}
       </div>
       <!-- <div class="mx-[20px] mt-[20px] text-center text-[12px] text-[#94999A]">
         当你的好友使用你的邀请码注册并完成新手任务后，双方都可获得 5 个算力币作为奖励
@@ -91,18 +96,24 @@ onMounted(async () => {
       class="bg-desc mx-[20px] mt-[20px] rounded-[10px] px-[15px] py-[20px]"
     >
       <view class="mb-[20px] text-[16px] font-bold">
-        邀请奖励
+        {{ $t("yao-qing-jiang-li") }}
       </view>
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          完成人脸认证并完成一项 AI 训练任务的用户，即为有效用户。
+          {{
+            $t(
+              "wan-cheng-ren-lian-ren-zheng-bing-wan-cheng-yi-xiang-ai-xun-lian-ren-wu-de-yong-hu-ji-wei-you-xiao-yong-hu",
+            )
+          }}
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          邀请 1 位有效用户，将获得 1 个算力值
+          {{
+            $t("yao-qing-1-wei-you-xiao-yong-hu-jiang-huo-de-1-ge-suan-li-zhi")
+          }}
           <!-- + 3 个幸运点数。 -->
         </view>
       </view>
@@ -122,7 +133,7 @@ onMounted(async () => {
       <div class="w-full flex items-center justify-center">
         <div class="w-1/2 flex flex-col items-center justify-center">
           <div class="text-[12px] text-[#94999A]">
-            今日佣金收益
+            {{ $t("jin-ri-yong-jin-shou-yi") }}
           </div>
           <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
             {{ formatAmount(statistics.todayCommission) }}
@@ -130,7 +141,7 @@ onMounted(async () => {
         </div>
         <div class="w-1/2 flex flex-col items-center justify-center">
           <div class="text-[12px] text-[#94999A]">
-            佣金总收益
+            {{ $t("yong-jin-zong-shou-yi") }}
           </div>
           <div class="mt-[5px] text-[14px] text-[#b84f32] font-bold">
             {{ formatAmount(statistics.totalCommission) }}
@@ -140,17 +151,17 @@ onMounted(async () => {
       <div
         class="mt-[20px] flex items-center justify-between text-[14px] font-bold"
       >
-        <div class="w-1/4 text-center">
-          昵称
+        <div class="w-1/5 text-center">
+          {{ $t("ni-cheng") }}
         </div>
-        <div class="w-1/4 text-center">
-          关系类型
+        <div class="w-1/5 text-center">
+          {{ $t("guan-xi-lei-xing") }}
         </div>
-        <div class="w-1/4 text-center">
-          注册时间
+        <div class="w-2/5 text-center">
+          {{ $t("zhu-ce-shi-jian") }}
         </div>
-        <div class="w-1/4 text-center">
-          有效用户
+        <div class="w-1/5 text-center">
+          {{ $t("you-xiao-yong-hu") }}
         </div>
       </div>
       <template v-if="recordList.length > 0">
@@ -159,22 +170,28 @@ onMounted(async () => {
           :key="index"
           class="mt-[10px] flex items-center justify-between text-[12px] text-[#94999A]"
         >
-          <div class="w-1/4 text-center">
+          <div class="w-1/5 text-center">
             {{ item.name }}
           </div>
-          <div class="w-1/4 text-center">
-            <span v-if="item.level == 1"> 一级</span>
-            <span v-else-if="item.level == 2"> 二级</span>
-            <span v-else> 三级</span>
+          <div class="w-1/5 text-center">
+            <span v-if="item.level == 1"> {{ $t("yi-ji") }}</span>
+            <span v-else-if="item.level == 2"> {{ $t("er-ji") }}</span>
+            <span v-else> {{ $t("san-ji") }}</span>
           </div>
-          <div class="w-1/4 text-center">
+          <div class="w-2/5 text-center">
             {{ item.registerTime }}
           </div>
-          <div class="w-1/4 text-center">
-            <span v-if="item.roleId == 4" class="text-[#eb4d3e]">无限代理</span>
-            <span v-if="item.roleId == 3" class="text-[#f2c142]">普通代理</span>
-            <span v-if="item.roleId == 2" class="text-[#89d5fa]">激活用户</span>
-            <span v-if="item.roleId == 1">未激活</span>
+          <div class="w-1/5 text-center">
+            <span v-if="item.roleId == 4" class="text-[#eb4d3e]">{{
+              $t("wu-xian-dai-li")
+            }}</span>
+            <span v-if="item.roleId == 3" class="text-[#f2c142]">{{
+              $t("pu-tong-dai-li")
+            }}</span>
+            <span v-if="item.roleId == 2" class="text-[#89d5fa]">{{
+              $t("ji-huo-yong-hu")
+            }}</span>
+            <span v-if="item.roleId == 1">{{ $t("wei-ji-huo") }}</span>
           </div>
         </div>
       </template>

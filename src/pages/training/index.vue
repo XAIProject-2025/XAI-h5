@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { getPowerOrders, redeemPowerOrder } from '@/api/funds'
 import { getVipInfo } from '@/api/index'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { formatAmount, handleToUrl } from '@/utils/util'
 
@@ -20,7 +21,7 @@ const vipInfoData = ref({})
 const serverList = ref([])
 onShow(async () => {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
     mask: true,
   })
   await userStore.fetchUserInfo()
@@ -71,37 +72,47 @@ const computedNextTimeDecay = computed(() => {
         <view
           class="btn-block--white ml-[10px] h-[20px] min-h-[20px] rounded-[12px] px-[15px] py-[4px]"
         >
-          <span v-if="userInfo.roleId == 4">无限代理</span>
-          <span v-if="userInfo.roleId == 3">普通代理</span>
-          <span v-if="userInfo.roleId == 2">激活用户</span>
-          <span v-if="userInfo.roleId == 1">未激活</span>
-          <span v-if="userInfo.roleId == 0">顶级账号</span>
+          <span v-if="userInfo.roleId == 4">{{ $t("wu-xian-dai-li") }}</span>
+          <span v-if="userInfo.roleId == 3">{{ $t("pu-tong-dai-li") }}</span>
+          <span v-if="userInfo.roleId == 2">{{ $t("ji-huo-yong-hu") }}</span>
+          <span v-if="userInfo.roleId == 1">{{ $t("wei-ji-huo") }}</span>
+          <span v-if="userInfo.roleId == 0">{{ $t("ding-ji-zhang-hao") }}</span>
         </view>
       </view>
       <view
         class="mt-[15px] flex items-center justify-center text-[12px] text-[#94999A]"
       >
-        <view>
-          <span class="mr-[4px]">算力服务器</span>{{ serverList.length }}
+        <view class="h-[60px] w-[45%]">
+          <div class="mr-[4px] flex items-center justify-center text-center">
+            {{ $t("suan-li-fu-wu-qi") }}
+          </div>
+          <div class="text-center">
+            {{ serverList.length }}
+          </div>
         </view>
         <view class="mx-[10px]">
           |
         </view>
-        <view>
-          <span class="mr-[4px]">Xcoin余额</span>{{ formatAmount(userInfo.kdkBalance) }} Xcoin
+        <view class="h-[60px] w-[45%]">
+          <div class="mr-[4px] flex items-center justify-center text-center">
+            {{ $t("xcoin-yu-e") }}
+          </div>
+          <div class="text-center">
+            {{ formatAmount(userInfo.kdkBalance) }} Xcoin
+          </div>
         </view>
       </view>
       <view
         class="mt-[5px] flex items-center justify-center text-[12px] text-[#94999A]"
       >
         <view>
-          <span class="mr-[4px]">USDT余额</span>{{ formatAmount(userInfo.usdtBalance) }}
+          <span class="mr-[4px]">{{ $t("usdt-yu-e") }}</span>{{ formatAmount(userInfo.usdtBalance) }}
         </view>
         <view class="mx-[10px]">
           |
         </view>
         <view>
-          <span class="mr-[4px]">活跃度</span>{{ vipInfoData.currentActivity }}
+          <span class="mr-[4px]">{{ $t("huo-yue-du") }}</span>{{ vipInfoData.currentActivity }}
         </view>
       </view>
       <view
@@ -117,7 +128,7 @@ const computedNextTimeDecay = computed(() => {
             mode="scaleToFill"
             alt=""
           />
-          邀请
+          {{ $t("yao-qing") }}
         </view>
         <view
           class="btn-block--white h-[35px] w-1/2"
@@ -129,14 +140,14 @@ const computedNextTimeDecay = computed(() => {
             mode="scaleToFill"
             alt=""
           />
-          提现
+          {{ $t("ti-xian") }}
         </view>
       </view>
     </view>
     <!-- 升级信息 -->
     <view class="bg-default mt-[20px] px-[20px] py-[20px]">
       <view class="text-[16px] font-bold">
-        升级进度
+        {{ $t("sheng-ji-jin-du") }}
       </view>
       <view class="mt-[20px] flex items-center justify-center">
         <view class="flex flex-col items-center justify-center">
@@ -170,7 +181,7 @@ const computedNextTimeDecay = computed(() => {
           />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
-              当前等级
+              {{ $t("dang-qian-deng-ji") }}
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
               E{{ vipInfoData.vipLevel }}
@@ -178,13 +189,17 @@ const computedNextTimeDecay = computed(() => {
           </view>
         </view>
         <u-image
+          v-if="!vipInfoData.isMaxLevel"
           src="/static/training/arrow.png"
           width="72"
           height="20"
           class="mx-[30px]"
           alt=""
         />
-        <view class="flex flex-col items-center justify-center">
+        <view
+          v-if="!vipInfoData.isMaxLevel"
+          class="flex flex-col items-center justify-center"
+        >
           <u-image
             v-if="vipInfoData.nextVipLevel == 0"
             src="/static/level/level_0.png"
@@ -215,7 +230,7 @@ const computedNextTimeDecay = computed(() => {
           />
           <view class="mt-[10px]">
             <view class="text-[14px] text-[#94999A]">
-              下一等级
+              {{ $t("xia-yi-deng-ji") }}
             </view>
             <view class="mt-[5px] text-center text-[#000] font-bold">
               E{{ vipInfoData.nextVipLevel }}
@@ -224,13 +239,13 @@ const computedNextTimeDecay = computed(() => {
         </view>
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        升级条件
+        {{ $t("sheng-ji-tiao-jian") }}
       </view>
       <view class="mt-[10px]">
         <view
           class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
         >
-          <view>邀请好友</view>
+          <view>{{ $t("yao-qing-hao-you") }}</view>
           <view>
             {{ vipInfoData.currentInviteUsers }}/{{
               vipInfoData.nextRequiredInviteUsers
@@ -253,7 +268,7 @@ const computedNextTimeDecay = computed(() => {
         <view
           class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
         >
-          <view>直接推荐充值</view>
+          <view>{{ $t("zhi-jie-tui-jian-chong-zhi") }}</view>
           <view>
             {{ vipInfoData.currentRecharge }}/{{
               vipInfoData.nextRequiredRecharge
@@ -275,7 +290,7 @@ const computedNextTimeDecay = computed(() => {
         <view
           class="mb-[5px] flex items-center justify-between text-[14px] text-[#94999A]"
         >
-          <view>活跃度</view>
+          <view>{{ $t("huo-yue-du") }}</view>
           <view>
             {{ vipInfoData.currentActivity }}/{{
               vipInfoData.nextRequiredActivity
@@ -305,10 +320,10 @@ const computedNextTimeDecay = computed(() => {
     <!-- 手续费信息 -->
     <view class="bg3 mt-[20px] px-[20px] py-[20px] text-[#fff]">
       <view class="text-[16px] font-bold">
-        费用信息
+        {{ $t("fei-yong-xin-xi") }}
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        当前费率
+        {{ $t("dang-qian-fei-shuai") }}
         <span
           v-if="vipInfoData.currentPremium"
           class="text-[40px] text-[#FFEE00]"
@@ -323,14 +338,14 @@ const computedNextTimeDecay = computed(() => {
       <view class="flex items-center gap-[5px] rounded-[6px] p-[10px]">
         <up-icon name="info-circle" color="#94999A" />
         <view class="text-[14px] text-[#94999A]">
-          训练师等级越高，初始费率越低
+          {{ $t("xun-lian-shi-deng-ji-yue-gao-chu-shi-fei-shuai-yue-di") }}
         </view>
       </view>
     </view>
     <!-- 手续费减免 -->
     <view class="bg-default mt-[20px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
-        剩余天数
+        {{ $t("sheng-yu-tian-shu") }}
       </view>
       <view class="flex items-center justify-center">
         <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
@@ -348,22 +363,26 @@ const computedNextTimeDecay = computed(() => {
             class="flex flex-col items-center justify-center text-[14px] font-bold"
           >
             <div class="">
-              最低手续费
+              {{ $t("zui-di-shou-xu-fei") }}
             </div>
-            <div>还需{{ vipInfoData.needDays }}天</div>
+            <div>
+              <span>{{ $t("huan-xu") }}</span>{{ vipInfoData.needDays }} <span>{{ $t("tian") }}</span>
+            </div>
           </div>
         </l-circle>
         <l-circle
           v-else
           :stroke-width="10"
-          size="150px"
+          size="180px"
           :trail-width="10"
           stroke-color="#000"
           trail-color="#ebedf0"
           :percent="100"
           :max="100"
         >
-          <text>当前最低手续费</text>
+          <text class="px-[10px] text-center">
+            {{ $t("dang-qian-zui-di-shou-xu-fei") }}
+          </text>
         </l-circle>
         <!-- <lime-circle v-model:current="modelVale" :percent="100">
           <text>{{ modelVale }}%</text>
@@ -372,20 +391,19 @@ const computedNextTimeDecay = computed(() => {
       </view>
       <template v-if="vipInfoData.needDays == 0">
         <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
-          当前手续费为等级最低{{
-            Number(vipInfoData.decayMin * 100).toFixed(2)
-          }}%
+          <span>{{ $t("dang-qian-shou-xu-fei-wei-deng-ji-zui-di") }}</span>{{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
         </view>
       </template>
 
       <template v-else>
         <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
-          下次减免
+          {{ $t("xia-ci-jian-mian") }}
         </view>
         <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
           <!-- 下次的费用减免，还剩 1 天 -->
-          距离
-          {{ computedNextTimeDecay }}% 的费用优惠还剩 1 天
+          <span>{{ $t("ju-li") }}</span>
+          {{ computedNextTimeDecay }}%
+          <span>{{ $t("de-fei-yong-you-hui-huan-sheng-1-tian") }}</span>
         </view>
       </template>
     </view>
@@ -393,32 +411,41 @@ const computedNextTimeDecay = computed(() => {
     <!-- 详细规则 -->
     <view class="bg-desc mt-[20px] rounded-[10px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
-        费用规则
+        {{ $t("fei-yong-gui-ze") }}
       </view>
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          未提取的资金：提现手续费每天自动降低
+          <span>
+            {{
+              $t(
+                "wei-ti-qu-de-zi-jin-ti-xian-shou-xu-fei-mei-tian-zi-dong-jiang-di",
+              )
+            }}</span>
           {{ Number(vipInfoData.decayNum * 100).toFixed(2) }}%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          提现手续费最低可降至
+          <span> {{ $t("ti-xian-shou-xu-fei-zui-di-ke-jiang-zhi") }}</span>
           {{ Number(vipInfoData.decayMin * 100).toFixed(2) }}%
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          提取后，费用计算将从初始费率重新开始
+          {{
+            $t(
+              "ti-qu-hou-ti-xian-shou-xu-fei-jiang-cong-chu-shi-fei-shuai-zhong-xin-kai-shi",
+            )
+          }}
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          训练师等级越高，初始费率越低
+          {{ $t("xun-lian-shi-deng-ji-yue-gao-ti-xian-shou-xu-fei-yue-di") }}
         </view>
       </view>
       <!-- <view class="mt-[10px] flex items-center text-[14px]">

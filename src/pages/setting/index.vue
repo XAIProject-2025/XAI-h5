@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { t } from '@/locale/index'
 import { LOGIN_PAGE } from '@/router/config'
 import { useUserStore } from '@/store'
 import { useTokenStore } from '@/store/token'
@@ -34,16 +35,18 @@ definePage({
 })
 function handleLogout() {
   uni.showModal({
-    title: '提示',
-    content: '确定要退出登录吗？',
+    title: t('ti-shi'),
+    content: t('que-ding-yao-tui-chu-deng-lu-ma'),
     confirmColor: '#000',
+    confirmText: t('queding'),
+    cancelText: t('quxiao'),
     success: (res) => {
       if (res.confirm) {
         // 清空用户信息
         tokenStore.logout()
         // 执行退出登录逻辑
         uni.showToast({
-          title: '退出登录成功',
+          title: t('tui-chu-deng-lu-cheng-gong'),
           icon: 'success',
           success: () => {
             uni.navigateTo({
@@ -63,7 +66,7 @@ function confirmLanguage(e) {
 }
 function showToast() {
   uni.showToast({
-    title: '暂未开放',
+    title: t('zan-wei-kai-fang'),
     icon: 'none',
   })
 }
@@ -75,7 +78,7 @@ function handleToPaymentPassword() {
   else {
     if (userInfo.value.serverCount === 0) {
       uni.showToast({
-        title: '当前没有服务器,不能设置支付密码',
+        title: t('dang-qian-mei-you-fu-wu-qi-bu-neng-she-zhi-zhi-fu-mi-ma'),
         icon: 'none',
       })
     }
@@ -112,7 +115,7 @@ function handleToPaymentPassword() {
       <div class="flex items-center text-[14px]">
         <up-icon name="lock-open" size="20" />
         <div class="ml-[10px]">
-          修改密码
+          {{ $t("xiu-gai-mi-ma") }}
         </div>
       </div>
       <up-icon name="arrow-right" />
@@ -124,7 +127,7 @@ function handleToPaymentPassword() {
       <div class="flex items-center text-[14px]">
         <up-icon name="lock-open" size="20" />
         <div class="ml-[10px]">
-          支付密码
+          {{ $t("zhi-fu-mi-ma") }}
         </div>
       </div>
       <up-icon name="arrow-right" />
@@ -136,7 +139,7 @@ function handleToPaymentPassword() {
       <div class="flex items-center text-[14px]">
         <up-icon name="google" size="20" />
         <div class="ml-[10px]">
-          关于我们
+          {{ $t("guan-yu-wo-men") }}
         </div>
       </div>
       <up-icon name="arrow-right" />
@@ -148,7 +151,7 @@ function handleToPaymentPassword() {
       <div class="flex items-center text-[14px]">
         <up-icon name="google" size="20" />
         <div class="ml-[10px]">
-          切换语言
+          {{ $t("qie-huan-yu-yan") }}
         </div>
       </div>
       <up-icon name="arrow-right" />
@@ -157,18 +160,19 @@ function handleToPaymentPassword() {
       class="mt-[30px] border border-[#000] rounded-[20px] border-solid bg-[#fff] px-[10px] py-[10px] text-center text-[14px] text-[#000]"
       @click="handleLogout"
     >
-      退出登录
+      {{ $t("tui-chu-deng-lu") }}
     </div>
 
     <up-picker
       :show="show"
       :columns="columns"
-      confirm-button-text="确定"
-      cancel-button-text="取消"
+      :confirm-button-text="$t('queding')"
+      :cancel-button-text="$t('quxiao')"
       confirm-color="#000"
       key-name="label"
       value-name="value"
       @confirm="confirmLanguage"
+      @cancel="show = false"
     />
   </view>
 </template>

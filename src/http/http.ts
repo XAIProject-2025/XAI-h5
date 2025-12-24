@@ -1,6 +1,7 @@
 import type { IDoubleTokenRes } from '@/api/types/login'
 import type { CustomRequestOptions, IResponse } from '@/http/types'
 import { nextTick } from 'vue'
+import { t } from '@/locale/index'
 import { useTokenStore } from '@/store/token'
 import { isDoubleTokenMode } from '@/utils'
 import { toLoginPage } from '@/utils/toLoginPage'
@@ -13,11 +14,15 @@ const taskQueue: (() => void)[] = [] // 刷新 token 请求队列
 export function http<T>(options: CustomRequestOptions) {
   // 1. 返回 Promise 对象
   return new Promise<T>((resolve, reject) => {
+    console.log('options :>> ', options)
     uni.request({
       ...options,
       dataType: 'json',
       // #ifndef MP-WEIXIN
       responseType: 'json',
+      header: {
+        'accept-language': 'es-es',
+      },
       // #endif
       // 响应成功
       success: async (res) => {
@@ -25,13 +30,13 @@ export function http<T>(options: CustomRequestOptions) {
         const { code } = responseData
         // 检查是否是401错误（包括HTTP状态码401或业务码401）
         const isTokenExpired = res.statusCode === 401 || code === 401
-
+        console.log('code :>> ', code)
         if (isTokenExpired) {
           const tokenStore = useTokenStore()
           nextTick(() => {
             uni.hideToast()
             uni.showToast({
-              title: '登录已过期，请重新登录',
+              title: t('deng-lu-yi-guo-qi-qing-zhong-xin-deng-lu'),
               icon: 'none',
             })
           })
@@ -46,21 +51,23 @@ export function http<T>(options: CustomRequestOptions) {
         }
         // 处理其他成功状态（HTTP状态码200-299）
         if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log('111 :>> ', 111)
           // 处理业务逻辑错误
           if (code !== ResultEnum.Success0 && code !== ResultEnum.Success200) {
+            console.log('22222 :>> ', 22222)
             uni.showToast({
               icon: 'none',
-              title: responseData.msg || responseData.message || '请求错误',
+              title: responseData.msg || responseData.message || t('qing-qiu-cuo-wu'),
             })
+            return reject(res)
           }
           return resolve(responseData.data)
         }
-        console.log('111 :>> ', 111)
         // 处理其他错误
         !options.hideErrorToast
         && uni.showToast({
           icon: 'none',
-          title: (res.data as any).msg || (res.data as any).message || '请求错误',
+          title: (res.data as any).msg || (res.data as any).message || t('qing-qiu-cuo-wu'),
         })
         reject(res)
       },
@@ -68,7 +75,7 @@ export function http<T>(options: CustomRequestOptions) {
       fail(err) {
         uni.showToast({
           icon: 'none',
-          title: '网络错误，换个网络试试',
+          title: t('wang-luo-cuo-wu-huan-ge-wang-luo-shi-shi'),
         })
         reject(err)
       },

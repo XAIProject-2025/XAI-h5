@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { touristLogin } from '@/api/login'
+import { t } from '@/locale'
 import { LOGIN_C_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
@@ -15,7 +16,7 @@ async function handleTouristLogin() {
   const tokenStore = useTokenStore()
   tokenStore._postLogin(res)
   uni.showToast({
-    title: '游客模式登录成功',
+    title: t('you-ke-mo-shi-deng-lu-cheng-gong'),
     icon: 'none',
     duration: 2000,
     complete: () => {
@@ -41,7 +42,7 @@ async function handleTouristLogin() {
       @click="handleTouristLogin"
     >
       <!-- @click="handleToUrl(LOGIN_C_PAGE)" -->
-      立即开始
+      {{ $t("li-ji-kai-shi") }}
     </view>
   </view>
 </template>

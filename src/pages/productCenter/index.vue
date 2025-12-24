@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { getChatTask } from '@/api'
 import { getPowerOrders, redeemPowerOrder } from '@/api/funds'
+import { t } from '@/locale/index'
 import { formatAmount, handleToUrl } from '@/utils/util'
 
 definePage({
@@ -23,7 +24,7 @@ async function getTask() {
 const serverList = ref([])
 async function getList() {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
   })
   const getPowerOrdersRes = await getPowerOrders()
   serverList.value = getPowerOrdersRes.content || []
@@ -42,7 +43,7 @@ async function redemption(item) {
   if (taskData.value.taskCompleted == false) {
     if (taskData.value.todayChatCount !== 0) {
       uni.showToast({
-        title: '当前任务已经开始,请先完成任务',
+        title: t('dang-qian-ren-wu-yi-jing-kai-shi-qing-xian-wan-cheng-ren-wu'),
         icon: 'none',
       })
       return
@@ -59,14 +60,14 @@ async function redemption(item) {
   try {
     await redeemPowerOrder({ orderId: item.id })
     uni.showToast({
-      title: '赎回成功',
+      title: t('shu-hui-cheng-gong'),
     })
     await getList()
     confirmData.show = false
   }
   catch (error) {
     uni.showToast({
-      title: error.data.message || '赎回失败,请重试',
+      title: error.data.message || t('shu-hui-shi-bai-qing-zhong-shi'),
       icon: 'none',
     })
   }
@@ -83,10 +84,12 @@ async function redemption(item) {
     >
       <view class="text-[15px]">
         <view class="mb-[5px] font-bold">
-          算力服务器
+          {{ $t("suan-li-fu-wu-qi") }}
         </view>
         <view class="text-[12px] text-[#94999A]">
-          管理你的算力服务器，查看状态与收益
+          {{
+            $t("guan-li-ni-de-suan-li-fu-wu-qi-cha-kan-zhuang-tai-yu-shou-yi")
+          }}
         </view>
       </view>
 
@@ -94,7 +97,7 @@ async function redemption(item) {
         class="btn-block h-[30px] min-h-[30px] w-[100px]"
         @click="handleToUrl('/pages/server/index')"
       >
-        租赁
+        {{ $t("zu-lin") }}
       </view>
     </view>
 
@@ -103,7 +106,7 @@ async function redemption(item) {
       <view
         v-for="(item, index) in serverList"
         :key="index"
-        class="mt-[15px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb] p-[15px]"
+        class="mt-[15px] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb]"
       >
         <view class="relative flex">
           <div
@@ -114,67 +117,75 @@ async function redemption(item) {
             }"
             class="absolute right-[0px] top-[0px] z-[100] w-[30%] py-[4px] text-center text-[12px] text-[#fff]"
           >
-            <span v-if="item.status === 0">正常</span>
-            <span v-if="item.status === 1">可赎回</span>
-            <span v-if="item.status === 2 || item.status === 3">完成</span>
+            <span v-if="item.status === 0">{{ $t("zheng-chang") }}</span>
+            <span v-if="item.status === 1">{{ $t("ke-shu-hui") }}</span>
+            <span v-if="item.status === 2 || item.status === 3">{{
+              $t("wan-cheng")
+            }}</span>
             <!-- <span v-if="item.status === 3">已赎回</span> -->
           </div>
-          <view
-            class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded rounded-[5px] bg-[#000]"
-          >
-            <u-image
-              v-if="item.serverInfo.type == 3"
-              src="/static/productCenter/server.png"
-              width="20"
-              height="20"
-            />
-            <u-image
-              v-else
-              :src="item.serverInfo.imgUrl"
-              width="100%"
-              height="100%"
-              rounded="5px"
-            />
-          </view>
-          <view class="ml-[20px] flex-1">
-            <view class="font-bold">
-              {{ item.name }}
-            </view>
-            <view class="flex items-center text-[10px] text-[#94999A]">
-              <view class="mr-[5px]">
-                服务器名称: {{ item.serverInfo.serverName }}
-              </view>
-              <view>{{ item.serverName }}</view>
-            </view>
-            <view class="mt-[5px] flex items-center text-[10px] text-[#94999A]">
-              <view class="mr-[5px]">
-                租用日期
-              </view>
-              <view>{{ item.createTime }}</view>
-            </view>
-
-            <view class="mt-[5px] flex items-center text-[10px] text-[#94999A]">
-              <view class="mr-[5px]">
-                算力值
-              </view>
-              <view>{{ item.usedPower }}/{{ item.power }}</view>
-            </view>
-
-            <!-- 展开按钮 -->
+          <div class="w-full flex p-[15px]">
             <view
-              class="w-full flex items-center justify-end text-[12px] text-[#94999A]"
-              @click="item.isExpired = !item.isExpired"
+              class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded rounded-[5px] bg-[#000]"
             >
-              {{ item.isExpired ? "收起" : "展开" }}
-              <u-icon
-                name="arrow-down"
-                color="#94999A"
-                size="12"
-                class="transition-transform duration-200"
-                :class="item.isExpired ? 'rotate-180' : 'rotate-0'"
+              <u-image
+                v-if="item.serverInfo.type == 3"
+                src="/static/productCenter/server.png"
+                width="20"
+                height="20"
+              />
+              <u-image
+                v-else
+                :src="item.serverInfo.imgUrl"
+                width="100%"
+                height="100%"
+                rounded="5px"
               />
             </view>
-          </view>
+            <view class="ml-[20px] flex-1">
+              <view class="font-bold">
+                {{ item.name }}
+              </view>
+              <view class="flex items-center text-[10px] text-[#94999A]">
+                <view class="mr-[5px]">
+                  <span>{{ $t("fu-wu-qi-ming-cheng") }}</span>: {{ item.serverInfo.serverName }}
+                </view>
+                <view>{{ item.serverName }}</view>
+              </view>
+              <view
+                class="mt-[5px] flex items-center text-[10px] text-[#94999A]"
+              >
+                <view class="mr-[5px]">
+                  {{ $t("zu-yong-ri-qi") }}
+                </view>
+                <view>{{ item.createTime }}</view>
+              </view>
+
+              <view
+                class="mt-[5px] flex items-center text-[10px] text-[#94999A]"
+              >
+                <view class="mr-[5px]">
+                  {{ $t("suan-li-zhi") }}
+                </view>
+                <view>{{ item.usedPower }}/{{ item.power }}</view>
+              </view>
+
+              <!-- 展开按钮 -->
+              <view
+                class="w-full flex items-center justify-end text-[12px] text-[#94999A]"
+                @click="item.isExpired = !item.isExpired"
+              >
+                {{ item.isExpired ? $t("shou-qi") : $t("zhan-kai") }}
+                <u-icon
+                  name="arrow-down"
+                  color="#94999A"
+                  size="12"
+                  class="transition-transform duration-200"
+                  :class="item.isExpired ? 'rotate-180' : 'rotate-0'"
+                />
+              </view>
+            </view>
+          </div>
         </view>
 
         <!-- 展开动画容器 -->
@@ -186,7 +197,7 @@ async function redemption(item) {
                   {{ item.power }}
                 </view>
                 <view class="mt-[10px] text-[#94999A]">
-                  总算力值
+                  {{ $t("zong-suan-li-zhi") }}
                 </view>
               </view>
 
@@ -195,7 +206,7 @@ async function redemption(item) {
                   {{ item.power - item.usedPower }}
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
-                  剩余算力值
+                  {{ $t("sheng-yu-suan-li-zhi") }}
                 </view>
               </view>
             </view>
@@ -206,7 +217,7 @@ async function redemption(item) {
                   {{ item.taskSpend }}
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
-                  每任务消耗
+                  {{ $t("mei-ren-wu-xiao-hao") }}
                 </view>
               </view>
 
@@ -215,7 +226,7 @@ async function redemption(item) {
                   {{ item.serverInfo.priceRate }}%
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
-                  每日返还率
+                  {{ $t("mei-ri-fan-huan-shuai") }}
                 </view>
               </view>
             </view>
@@ -229,7 +240,7 @@ async function redemption(item) {
                   {{ formatAmount(item.payPrice) }}
                 </view>
                 <view class="mt-[10px] text-[12px] text-[#94999A]">
-                  到期后返还
+                  {{ $t("dao-qi-hou-fan-huan") }}
                 </view>
               </view>
 
@@ -249,7 +260,7 @@ async function redemption(item) {
                   "
                 >
                   <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
-                    提前赎回
+                    {{ $t("ti-qian-shu-hui") }}
                   </view>
                 </view>
                 <view
@@ -261,7 +272,7 @@ async function redemption(item) {
                   "
                 >
                   <view class="btn-block h-[35px] min-h-[35px] w-[100%]">
-                    赎回
+                    {{ $t("shu-hui") }}
                   </view>
                 </view>
               </template>
@@ -277,25 +288,36 @@ async function redemption(item) {
     <!-- 详细规则 -->
     <view class="bg-desc mt-[20px] rounded-[10px] px-[20px] py-[20px]">
       <view class="mb-[20px] text-[16px] font-bold">
-        费用规则
+        {{ $t("fei-yong-gui-ze") }}
       </view>
       <view class="flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          租赁计算力服务器需支付相应的基础费用，该费用会在租赁期结束后全额退还。
+          {{
+            $t(
+              "zu-lin-ji-suan-li-fu-wu-qi-xu-zhi-fu-xiang-ying-de-ji-chu-fei-yong-gai-fei-yong-hui-zai-zu-lin-qi-jie-shu-hou-quanetui-huan",
+            )
+          }}
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          完成每日聊天任务会消耗算力值；当算力值耗尽时，需重新租赁。
+          {{
+            $t(
+              "wan-cheng-mei-ri-liao-tian-ren-wu-hui-xiao-hao-suan-li-zhi-dang-suan-li-zhi-hao-jin-shi-xu-zhong-xin-zu-lin",
+            )
+          }}
         </view>
       </view>
       <view class="mt-[10px] flex items-center text-[14px]">
         <up-icon name="checkmark-circle-fill" size="18px" color="#000" />
         <view class="ml-[10px]">
-          训练师等级决定了可同时运行的服务器数量 ——
-          等级越高，支持同时运行的服务器数量越多。
+          {{
+            $t(
+              "xun-lian-shi-deng-ji-jue-ding-le-ke-tong-shi-yun-hang-de-fu-wu-qi-shu-liang-deng-ji-yue-gao-zhi-chi-tong-shi-yun-hang-de-fu-wu-qi-shu-liang-yue-duo",
+            )
+          }}
         </view>
       </view>
     </view>
@@ -308,17 +330,20 @@ async function redemption(item) {
     >
       <div class="flex flex-col items-center justify-center p-[20px]">
         <div class="text-[18px] font-bold">
-          提示
+          {{ $t("ti-shi") }}
         </div>
         <view class="mt-[10px] text-[12px]">
           <span v-if="confirmData.item.usedPower !== confirmData.item.power">
-            确定提前赎回算力服务器吗？</span>
-          <span v-else> 确定赎回算力服务器吗？</span>
+            {{ $t("que-ding-ti-qian-shu-hui-suan-li-fu-wu-qi-ma") }}</span>
+          <span v-else> {{ $t("que-ding-shu-hui-suan-li-fu-wu-qi-ma") }}</span>
         </view>
         <div class="mt-[5px] text-center text-[12px]">
-          注意：提前赎回算力服务器需要扣除手续费(本金{{
-            confirmData.item.redeemRate * 100
-          }}%)。
+          <span>
+            {{
+              $t(
+                "zhu-yi-ti-qian-shu-hui-suan-li-fu-wu-qi-xu-yao-kou-chu-shou-xu-fei-ben-jin",
+              )
+            }}</span>{{ confirmData.item.redeemRate * 100 }}%)。
         </div>
       </div>
     </confirm>

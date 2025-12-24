@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { useCommonStore } from '@/store/common'
 import { formatAmount, handleToUrl } from '@/utils/util'
@@ -22,7 +23,7 @@ definePage({
 const tabData = reactive({
   tabs: [
     {
-      title: '全部',
+      title: t('quan-bu'),
       index: -1,
     },
     {
@@ -53,17 +54,18 @@ function handleTabClick(item) {
 <template>
   <view class="p-[15px]">
     <div class="px-[15px] text-[15px] font-bold">
-      X-AI支付
+      {{ $t("xai-zhi-fu") }}
     </div>
     <div class="mb-[5px] mt-[5px] px-[15px] text-[12px] text-[#94999A]">
-      管理你的Xcoin与USDT资产
+      {{ $t("guan-li-ni-de-xcoin-yu-usdt-zi-chan") }}
     </div>
     <div class="bg3 mt-[10px] box-border w-full rounded-[4px] p-[15px]">
       <div class="flex items-center">
         <u-image src="/static/images/coin.png" width="40" height="45" />
         <div class="ml-[15px]">
           <div class="text-[14px] text-[#fff] font-bold">
-            Xcoin余额
+            Xcoin
+            <span>{{ $t("yu-e") }}</span>
           </div>
         </div>
       </div>
@@ -73,7 +75,7 @@ function handleTabClick(item) {
       <div class="flex items-center justify-between">
         <div class="">
           <div class="text-[10px] text-[#94999A]">
-            约等于
+            {{ $t("yue-deng-yu") }}
           </div>
           <div class="mt-[5px] text-[10px] text-[#94999A]">
             {{ formatAmount(userInfo?.kdkBalance * tokenPrice) }} USDT
@@ -90,7 +92,7 @@ function handleTabClick(item) {
             height="16"
             alt=""
           />
-          兑换
+          {{ $t("dui-huan") }}
         </div>
       </div>
     </div>
@@ -100,10 +102,10 @@ function handleTabClick(item) {
         <u-image src="/static/images/coin.png" width="40" height="45" />
         <div class="ml-[15px]">
           <div class="text-[14px] text-[#fff] font-bold">
-            USDT余额
+            {{ $t("usdt-yu-e") }}
           </div>
           <div class="text-[10px] text-[#94999A]">
-            稳定币 (单位：USDT)
+            {{ $t("wen-ding-bi-dan-wei-usdt") }}
           </div>
         </div>
       </div>
@@ -122,7 +124,7 @@ function handleTabClick(item) {
             height="16"
             alt=""
           />
-          提现
+          {{ $t("ti-xian") }}
         </div>
         <div
           class="btn-block--white h-[30px] w-[40%]"
@@ -135,14 +137,14 @@ function handleTabClick(item) {
             height="16"
             alt=""
           />
-          充值
+          {{ $t("chong-zhi") }}
         </div>
       </div>
     </div>
     <!-- 详细规则 -->
     <view class="mt-[20px] rounded-[10px] bg-[#f5f5f5] px-[20px] py-[20px]">
       <div class="text-[14px] font-bold">
-        余额变动记录
+        {{ $t("yuebian-dong-ji-lu") }}
       </div>
       <div class="m-[10px] flex items-center">
         <div

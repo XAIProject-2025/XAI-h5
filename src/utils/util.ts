@@ -1,6 +1,8 @@
 // =====================
 // 事件监听与回调
 // =====================
+import { t } from '@/locale/index'
+
 let listeners = {
   success: [],
   cancel: [],
@@ -209,7 +211,7 @@ export function handleCopy(value: string) {
     success: () => {
       // 复制成功提示（UniApp 原生提示）
       uni.showToast({
-        title: '复制成功',
+        title: t('fu-zhi-cheng-gong'),
         icon: 'success',
         duration: 1500,
       })
@@ -217,7 +219,7 @@ export function handleCopy(value: string) {
     fail: (err) => {
       // 复制失败处理
       uni.showToast({
-        title: '复制失败',
+        title: t('fu-zhi-shi-bai'),
         icon: 'none',
         duration: 1500,
       })
@@ -436,34 +438,34 @@ export function getRecordType(type: number) {
     color: '',
   }
   if (type == 0) {
-    obj.name = '人工充值'
+    obj.name = t('ren-gong-chong-zhi')
   }
   if (type == 1) {
-    obj.name = '充值'
+    obj.name = t('chong-zhi')
   }
   if (type == 2) {
-    obj.name = '租赁算力服务器'
+    obj.name = t('zu-lin-suan-li-fu-wu-qi')
   }
   if (type == 3) {
-    obj.name = '奖励'
+    obj.name = t('jiang-li')
   }
   if (type == 4) {
-    obj.name = '兑换'
+    obj.name = t('dui-huan')
   }
   if (type == 5) {
-    obj.name = '任务奖励'
+    obj.name = t('ren-wu-jiang-li')
   }
   if (type == 6) {
-    obj.name = '服务器赎回'
+    obj.name = t('fu-wu-qi-shu-hui')
   }
   if (type == 7) {
-    obj.name = '提现审核中'
+    obj.name = t('ti-xian-shen-he-zhong')
   }
   if (type == 8) {
-    obj.name = '提现失败'
+    obj.name = t('ti-xian-shi-bai')
   }
   if (type == 9) {
-    obj.name = '提现通过'
+    obj.name = t('ti-xian-tong-guo')
   }
   return obj
 }

@@ -6,6 +6,8 @@
       use-page-scroll
       to-bottom-loading-more-enabled
       :refresher-enabled="false"
+      :loading-text="$t('jia-zai-zhong')"
+      :no-data-text="$t('zan-wu-shu-ju')"
       @query="queryList"
     >
       <view v-for="(item, index) in dataList" :key="index">
@@ -28,7 +30,7 @@
             </view>
           </view>
           <div v-if="item.type === 8" class="text-[12px] text-[#94999A]">
-            拒绝原因:{{ item.remark }}
+            <span>{{ $t("ju-jue-yuan-yin") }}</span>:{{ item.remark }}
           </div>
           <div
             v-if="item.type !== 9"

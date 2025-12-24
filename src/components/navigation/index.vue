@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+// import { t } from '@/locales'
+import { t } from '@/locale/index'
+
 import { useUserStore } from '@/store'
 import { useTokenStore } from '@/store/token'
 
@@ -22,42 +25,42 @@ defineExpose({
 const navList = ref([
   {
     icon: 'sy',
-    title: '首页',
+    title: t('tabbar.home'),
     url: '/pages/index/index',
   },
   {
     icon: 'xl',
-    title: '训练中心',
+    title: t('xun-lian-zhong-xin'),
     url: '/pages/training/index',
   },
   {
     icon: 'sl',
-    title: '算力服务器',
+    title: t('suan-li-fu-wu-qi'),
     url: '/pages/server/index',
   },
   {
     icon: 'cp',
-    title: '产品中心',
+    title: t('chan-pin-zhong-xin'),
     url: '/pages/productCenter/index',
   },
   {
     icon: 'dh',
-    title: '兑换中心',
+    title: t('dui-huan-zhong-xin'),
     url: '/pages/exchange/index',
   },
   {
     icon: 'yq',
-    title: '邀请好友',
+    title: t('yao-qing-hao-you'),
     url: '/pages/invitation/index',
   },
   {
     icon: 'zj',
-    title: 'X支付',
+    title: t('x-zhi-fu'),
     url: '/pages/funds/index',
   },
   {
     icon: 'sz',
-    title: '设置中心',
+    title: t('she-zhi-zhong-xin'),
     url: '/pages/setting/index',
   },
   // {
@@ -69,7 +72,7 @@ const navList = ref([
 function handleToTab(item) {
   if (userInfo.value.roleId === -1 && item.icon !== 'sy') {
     uni.showToast({
-      title: '当前游客用户,请登录使用',
+      title: t('dang-qian-you-ke-yong-hu-qing-deng-lu-shi-yong'),
       icon: 'none',
       duration: 2000,
       complete: () => {
@@ -127,7 +130,7 @@ function handleClickAlert() {
         class="btn-block mt-[20px] h-[30px] flex items-center justify-center"
         @click="handleClickAlert"
       >
-        登录
+        {{ $t("deng-lu") }}
       </div>
     </view>
   </up-popup>

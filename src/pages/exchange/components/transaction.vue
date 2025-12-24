@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { exchange } from '@/api/exchange'
 import { getCurrencyHistory } from '@/api/funds'
 
+import { t } from '@/locale'
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 
@@ -87,8 +88,8 @@ const typeRange = ref(
   {
     current: 1,
     list: [
-      { key: 1, name: '买入' },
-      { key: 2, name: '卖出' },
+      { key: 1, name: t('mai-ru') },
+      { key: 2, name: t('mai-chu') },
     ],
   },
 )
@@ -109,7 +110,7 @@ async function handleBuy(type) {
   if (type == 1) {
     if (Number(form.amountPay) > Number(userInfo.value.usdtBalance)) {
       uni.showToast({
-        title: 'USDT余额不足',
+        title: t('usdt-yuebu-zu'),
         icon: 'none',
       })
       return
@@ -118,7 +119,7 @@ async function handleBuy(type) {
   if (type == 2) {
     if (Number(form.amount) > Number(userInfo.value.kdkBalance)) {
       uni.showToast({
-        title: 'Xcoin余额不足',
+        title: t('xcoin-yuebu-zu'),
         icon: 'none',
       })
       return
@@ -126,14 +127,14 @@ async function handleBuy(type) {
   }
   if (!form.amount) {
     uni.showToast({
-      title: '请输入金额',
+      title: t('qing-shu-ru-jin-e'),
       icon: 'none',
     })
     return
   }
   const { confirm } = await uni.showModal({
-    title: '提示',
-    content: '确认兑换吗?',
+    title: t('ti-shi'),
+    content: t('que-ren-dui-huan-ma'),
     confirmColor: '#000',
   })
   if (!confirm) {
@@ -149,7 +150,7 @@ async function handleBuy(type) {
   form.amountPay = null
   await userStore.fetchUserInfo()
   uni.showToast({
-    title: '兑换成功',
+    title: t('dui-huan-cheng-gong'),
     icon: 'none',
   })
 }
@@ -169,7 +170,7 @@ function changeTab(item) {
     <view class="bg-default">
       <!-- 11 -->
       <view class="flex items-center justify-center text-[16px] font-bold">
-        Xcoin价格趋势
+        {{ $t("xcoin-jia-ge-qu-shi") }}
       </view>
       <view class="mb-[20px] mt-[20px] flex items-center">
         <div
@@ -198,7 +199,7 @@ function changeTab(item) {
             {{ formatAmount(tokenPrice) }}
           </view>
           <view class="mt-[5px] text-[14px] text-[#999]">
-            当前价格
+            {{ $t("dang-qian-jia-ge") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
@@ -206,7 +207,7 @@ function changeTab(item) {
             {{ formatAmount(10000) }}
           </view>
           <view class="mt-[5px] text-[14px] text-[#999]">
-            24小时涨幅
+            {{ $t("24-xiao-shi-zhang-fu") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
@@ -214,7 +215,7 @@ function changeTab(item) {
             {{ formatAmount(10000) }}
           </view>
           <view class="mt-[5px] text-[14px] text-[#999]">
-            24小时最高
+            {{ $t("24-xiao-shi-zui-gao") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
@@ -222,7 +223,7 @@ function changeTab(item) {
             {{ formatAmount(10000) }}
           </view>
           <view class="mt-[5px] text-[14px] text-[#999]">
-            24小时最低
+            {{ $t("24-xiao-shi-zui-di") }}
           </view>
         </view>
       </view>
@@ -244,7 +245,7 @@ function changeTab(item) {
       </view>
       <view class="mt-[15px]">
         <view class="text-[14px] text-[#94999A]">
-          价格
+          {{ $t("jia-ge") }}
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
           {{ formatAmount(tokenPrice) }}
@@ -252,13 +253,13 @@ function changeTab(item) {
       </view>
       <view class="mt-[15px]">
         <view class="text-[14px] text-[#94999A]">
-          数量(Xcoin)
+          {{ $t("shu-liang-xcoin") }}
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
           <up-input
             v-model="form.amount"
             class="!p-[0]"
-            placeholder="请输入数量"
+            :placeholder="$t('qing-shu-ru-shu-liang')"
             border="surround"
             @change="change"
           />
@@ -266,8 +267,8 @@ function changeTab(item) {
       </view>
       <view class="mt-[15px]">
         <view class="text-[14px] text-[#94999A]">
-          <span v-if="typeRange.current === 1">支付金额(USD)</span>
-          <span v-else>接收金额(USDT)</span>
+          <span v-if="typeRange.current === 1">{{ $t("zhi-fu-jineusd") }}</span>
+          <span v-else>{{ $t("jie-shou-jineusdt") }}</span>
         </view>
         <view class="mt-[10px] rounded-[5px] bg-[#f1f1f1] px-[10px] py-[10px]">
           {{ formatAmount(form.amountPay) }}
@@ -278,10 +279,10 @@ function changeTab(item) {
         class="btn-block mt-[20px] h-[40px]"
         @click="handleBuy(1)"
       >
-        <span>买入Xcoin</span>
+        <span>{{ $t("mai-ru-xcoin") }}</span>
       </view>
       <view v-else class="btn-block mt-[20px] h-[40px]" @click="handleBuy(2)">
-        <span>卖出Xcoin</span>
+        <span>{{ $t("mai-chu-xcoin") }}</span>
       </view>
     </view>
   </view>

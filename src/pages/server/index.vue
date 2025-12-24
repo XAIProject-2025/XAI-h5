@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { getVipInfo } from '@/api/index'
 import { buyServer, getServerList } from '@/api/server'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 
@@ -26,7 +27,7 @@ const dynamicData = reactive({
 })
 onMounted(async () => {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
   })
   await getServerListData()
   const vipInfoRes = await getVipInfo()
@@ -56,7 +57,7 @@ async function buyType1(item) {
   }
   if (userInfo.value.kdkBalance < item.fixedPrice) {
     uni.showToast({
-      title: '余额不足,请兑换Xcoin',
+      title: t('yuebu-zu-qing-dui-huan-xcoin'),
       icon: 'none',
       mask: true,
     })
@@ -64,7 +65,7 @@ async function buyType1(item) {
   }
   if (userInfo.value.roleId === 1) {
     uni.showToast({
-      title: '当前用户未激活,请联系客服激活',
+      title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
       icon: 'none',
       mask: true,
     })
@@ -76,7 +77,7 @@ async function buyType1(item) {
       serverId: item.id,
     })
     uni.showToast({
-      title: '租赁成功',
+      title: t('zu-lin-cheng-gong'),
       icon: 'success',
       mask: true,
     })
@@ -87,7 +88,7 @@ async function buyType1(item) {
   catch (error) {
     console.log('error :>> ', error)
     uni.showToast({
-      title: error.data.message || '租赁失败',
+      title: error.data.message || t('zu-lin-shi-bai'),
       icon: 'none',
     })
   }
@@ -101,7 +102,7 @@ async function buyType2(item) {
   }
   if (userInfo.value.kdkBalance < dynamicData.amount) {
     uni.showToast({
-      title: '余额不足,请兑换Xcoin',
+      title: t('yuebu-zu-qing-dui-huan-xcoin'),
       icon: 'none',
       mask: true,
     })
@@ -109,7 +110,7 @@ async function buyType2(item) {
   }
   if (userInfo.value.roleId === 1) {
     uni.showToast({
-      title: '当前用户未激活,请联系客服激活',
+      title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
       icon: 'none',
       mask: true,
     })
@@ -117,7 +118,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) < item.dynamicMin) {
     uni.showToast({
-      title: `动态租赁金额不能小于${item.dynamicMin}Xcoin`,
+      title: `${t('dong-tai-zu-lin-jinebu-neng-xiao-yu')}${item.dynamicMin}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -125,7 +126,7 @@ async function buyType2(item) {
   }
   if (Number(dynamicData.amount) > item.dynamicMax) {
     uni.showToast({
-      title: `动态租赁金额不能大于${item.dynamicMax}Xcoin`,
+      title: `${t('dong-tai-zu-lin-jinebu-neng-da-yu')}${item.dynamicMax}Xcoin`,
       icon: 'none',
       mask: true,
     })
@@ -138,7 +139,7 @@ async function buyType2(item) {
       price: dynamicData.amount,
     })
     uni.showToast({
-      title: '租赁成功',
+      title: t('zu-lin-cheng-gong'),
       icon: 'success',
       mask: true,
     })
@@ -149,7 +150,7 @@ async function buyType2(item) {
   catch (error) {
     console.log('error :>> ', error)
     uni.showToast({
-      title: error.data.message || '租赁失败',
+      title: error.data.message || t('zu-lin-shi-bai'),
       icon: 'none',
 
     })
@@ -207,28 +208,32 @@ function changeDynamicIncome(e) {
           v-if="item.type === 1"
           class="mt-[5px] text-[12px] text-[#94999A]"
         >
-          每日 {{ formatAmount(item.fixedPrice * item.priceRate) }} (Xcoin)
+          <span>{{ $t("mei-ri") }}</span>
+          {{ formatAmount(item.fixedPrice * item.priceRate) }} (Xcoin)
         </view>
         <view
           v-if="item.type === 4"
           class="mt-[5px] text-[12px] text-[#94999A]"
         >
-          每日 {{ formatAmount(1 * item.priceRate) }} (Xcoin)
+          <span>{{ $t("mei-ri") }}</span>
+          {{ formatAmount(1 * item.priceRate) }} (Xcoin)
         </view>
         <view
           v-if="item.type === 1"
           class="mt-[5px] text-[12px] text-[#94999A]"
         >
-          每月 {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (Xcoin)
+          <span>{{ $t("mei-yue") }}</span>
+          {{ formatAmount(item.fixedPrice * item.priceRate * 30) }} (Xcoin)
         </view>
         <view
           v-if="item.type === 4"
           class="mt-[5px] text-[12px] text-[#94999A]"
         >
-          每月 {{ formatAmount(1 * item.priceRate * 30) }} (Xcoin)
+          <span>{{ $t("mei-yue") }}</span>
+          {{ formatAmount(1 * item.priceRate * 30) }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          算力值 {{ item.fixedPower }}
+          <span>{{ $t("suan-li-zhi") }}</span> {{ item.fixedPower }}
         </view>
         <!-- <view class="mt-[5px] text-[12px] text-[#94999A]">
           收利率 {{ item.priceRate * 100 }}%
@@ -241,13 +246,13 @@ function changeDynamicIncome(e) {
             v-if="item.type === 1"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
-            库存 :{{ item.stock }}
+            <span>{{ $t("ku-cun") }}</span> :{{ item.stock }}
           </view>
           <view
             v-if="item.type === 4"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
-            限购 :{{ item.buyLimit }}
+            <span>{{ $t("xian-gou") }}</span> :{{ item.buyLimit }}
           </view>
         </view>
       </view>
@@ -257,35 +262,36 @@ function changeDynamicIncome(e) {
           {{ item.serverName }}
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          租赁下限 {{ item.dynamicMin }} (Xcoin)
+          <span>{{ $t("zu-lin-xia-xian") }}</span> {{ item.dynamicMin }} (Xcoin)
         </view>
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          租赁上限 {{ item.dynamicMax }} (Xcoin)
+          <span>{{ $t("zu-lin-shang-xian") }}</span>
+          {{ item.dynamicMax }} (Xcoin)
         </view>
 
         <view class="mt-[5px] text-[12px] text-[#94999A]">
-          算力值 {{ item.fixedPower }}
+          <span>{{ $t("suan-li-zhi") }}</span> {{ item.fixedPower }}
         </view>
         <view class="mt-[5px]">
           <view class="mr-[8px] text-[12px] text-[#D73A3C] font-bold">
             <div class="">
-              租赁:{{ item.dynamicMax }} Xcoin
+              <span>{{ $t("zu-lin") }}</span>:{{ item.dynamicMax }} Xcoin
             </div>
             <div class="">
-              收益:{{ item.dynamicMax * item.priceRate }} Xcoin
+              <span>{{ $t("shou-yi") }}</span>:{{ item.dynamicMax * item.priceRate }} Xcoin
             </div>
           </view>
           <view
             v-if="item.buyLimit === -1"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
-            库存 :{{ item.stock }}
+            <span>{{ $t("ku-cun") }}</span> :{{ item.stock }}
           </view>
           <view
             v-if="item.buyLimit !== -1"
             class="mt-[5px] text-[12px] text-[#94999A]"
           >
-            限购 :{{ item.buyLimit }}
+            <span>{{ $t("xian-gou") }}</span> :{{ item.buyLimit }}
           </view>
         </view>
       </view>
@@ -296,14 +302,14 @@ function changeDynamicIncome(e) {
           showDetail = true;
         "
       >
-        立即租赁
+        {{ $t("li-ji-zu-lin") }}
       </view>
       <view
         class="flex items-end items-center justify-center rounded-b-[8px] px-[4px] py-[6px] text-center text-[10px] text-[#000]"
       >
         <up-icon name="info-circle" size="12px" color="#000" />
         <view class="ml-[4px]">
-          说明:所有服务器可以提前赎回
+          {{ $t("shuo-ming-suo-you-fu-wu-qi-ke-yi-ti-qian-shu-hui") }}
         </view>
       </view>
     </view>
@@ -335,7 +341,7 @@ function changeDynamicIncome(e) {
             v-if="currentItem.type === 1"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            每日
+            <span>{{ $t("mei-ri") }}</span>
             {{ formatAmount(currentItem.fixedPrice * currentItem.priceRate) }}
             (Xcoin)
           </view>
@@ -343,7 +349,7 @@ function changeDynamicIncome(e) {
             v-if="currentItem.type === 4"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            每日
+            <span>{{ $t("mei-ri") }}</span>
             {{ formatAmount(1 * currentItem.priceRate) }}
             (Xcoin)
           </view>
@@ -351,7 +357,7 @@ function changeDynamicIncome(e) {
             v-if="currentItem.type === 1"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            每月
+            <span>{{ $t("mei-yue") }}</span>
             {{
               formatAmount(currentItem.fixedPrice * currentItem.priceRate * 30)
             }}
@@ -361,24 +367,24 @@ function changeDynamicIncome(e) {
             v-if="currentItem.type === 4"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            每月
+            <span>{{ $t("mei-yue") }}</span>
             {{ formatAmount(1 * currentItem.priceRate * 30) }}
             (Xcoin)
           </view>
           <view class="mt-[5px] text-center text-[12px] text-[#94999A]">
-            算力值 {{ currentItem.fixedPower }}
+            <span>{{ $t("suan-li-zhi") }}</span> {{ currentItem.fixedPower }}
           </view>
           <view
             v-if="currentItem.type === 1"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            库存 :{{ currentItem.stock }}
+            <span>{{ $t("ku-cun") }}</span> :{{ currentItem.stock }}
           </view>
           <view
             v-if="currentItem.type === 4"
             class="mt-[5px] text-center text-[12px] text-[#94999A]"
           >
-            限购 :{{ currentItem.buyLimit }}
+            <span>{{ $t("xian-gou") }}</span> :{{ currentItem.buyLimit }}
           </view>
 
           <view class="mt-[5px] flex items-center justify-center">
@@ -397,48 +403,50 @@ function changeDynamicIncome(e) {
           </view>
           <div class="mt-[10px] flex items-center justify-center">
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              租赁下限 {{ currentItem.dynamicMin }} (Xcoin)
+              <span>{{ $t("zu-lin-xia-xian") }}</span>
+              {{ currentItem.dynamicMin }} (Xcoin)
             </view>
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              租赁上限 {{ currentItem.dynamicMax }} (Xcoin)
+              <span>{{ $t("zu-lin-shang-xian") }}</span>
+              {{ currentItem.dynamicMax }} (Xcoin)
             </view>
           </div>
           <div class="mt-[5px] flex items-center justify-center">
             <view class="mt-[5px] w-1/2 text-[12px] text-[#94999A]">
-              算力值 {{ currentItem.fixedPower }}
+              <span>{{ $t("suan-li-zhi") }}</span> {{ currentItem.fixedPower }}
             </view>
             <view
               v-if="currentItem.buyLimit === -1"
               class="mt-[5px] w-1/2 text-[12px] text-[#94999A]"
             >
-              库存 :{{ currentItem.stock }}
+              <span>{{ $t("ku-cun") }}</span> :{{ currentItem.stock }}
             </view>
             <view
               v-if="currentItem.buyLimit !== -1"
               class="mt-[5px] w-1/2 text-[12px] text-[#94999A]"
             >
-              限购 :{{ currentItem.buyLimit }}
+              <span>{{ $t("xian-gou") }}</span> :{{ currentItem.buyLimit }}
             </view>
           </div>
           <view
             class="mt-[5px] flex items-center text-[12px] text-[#D73A3C] font-bold"
           >
             <view class="mt-[5px] w-1/2 text-[12px]">
-              租赁:{{ currentItem.dynamicMax }} Xcoin
+              <span>{{ $t("zu-lin") }}</span>:{{ currentItem.dynamicMax }} Xcoin
             </view>
             <view class="mt-[5px] w-1/2 text-[12px]">
-              收益:{{ currentItem.dynamicMax * currentItem.priceRate }}
+              <span>{{ $t("shou-yi") }}</span>:{{ currentItem.dynamicMax * currentItem.priceRate }}
               Xcoin
             </view>
           </view>
           <div class="mt-[10px] text-[12px] text-[#94999A]">
-            租赁金额
+            {{ $t("zu-lin-jin-e") }}
           </div>
           <div class="bg-default mt-[10px]">
             <up-input
               v-model="dynamicData.amount"
               class="!p-[0]"
-              placeholder="请输入租赁金额"
+              :placeholder="$t('qing-shu-ru-zu-lin-jin-e')"
               border="surround"
               type="number"
               @change="changeDynamicIncome"
@@ -450,7 +458,7 @@ function changeDynamicIncome(e) {
           </div>
           <div class="mt-[20px]">
             <div class="mt-[5px] text-[12px] text-[#94999A]">
-              预估收益: {{ dynamicData.income || 0 }} Xcoin
+              <span>{{ $t("yu-gu-shou-yi") }}</span>: {{ dynamicData.income || 0 }} Xcoin
             </div>
           </div>
         </view>

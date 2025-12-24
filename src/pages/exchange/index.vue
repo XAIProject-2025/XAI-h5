@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { getBalanceRate, getCurrencyHistory } from '@/api/funds'
+import { t } from '@/locale'
 import { useUserStore } from '@/store'
 import { formatAmount } from '@/utils/util'
 import transaction from './components/transaction.vue'
@@ -19,7 +20,7 @@ const tabCurrent = ref(0)
 const tokenPrice = ref(0)
 onMounted(async () => {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
   })
   const getBalanceRateRes = await getBalanceRate({
     currencyName: '1',
@@ -36,10 +37,11 @@ onShow(() => {
 <template>
   <view class="p-[15px]">
     <view class="text-[16px] font-bold">
-      闪电兑换中心
+      {{ $t("shan-dian-dui-huan-zhong-xin") }}
     </view>
     <view class="mb-[10px] mt-[5px] text-[14px] text-[#94999A]">
-      实时计算能力币市场 & 闪电兑换中心
+      {{ $t("shi-shi-ji-suan-neng-li-bi-shi-chang") }} &
+      <span>{{ $t("shan-dian-dui-huan-zhong-xin") }}</span>
     </view>
     <view
       class="bg-default my-[20px] flex items-center justify-between py-[20px]"
@@ -69,14 +71,14 @@ onShow(() => {
         :class="{ 'text-[#000]': tabCurrent === 0 }"
         @click="tabCurrent = 0"
       >
-        交易
+        {{ $t("jiao-yi") }}
       </div>
       <div
         class="ml-[15px] text-[16px] font-bold"
         :class="{ 'text-[#000]': tabCurrent === 1 }"
         @click="tabCurrent = 1"
       >
-        交易记录
+        {{ $t("jiao-yi-ji-lu") }}
       </div>
     </view>
     <view v-if="tabCurrent === 0" class="mt-[20px]">

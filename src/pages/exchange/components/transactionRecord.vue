@@ -5,6 +5,8 @@
       v-model="dataList"
       use-page-scroll
       to-bottom-loading-more-enabled
+      :loading-text="$t('jia-zai-zhong')"
+      :no-data-text="$t('zan-wu-shu-ju')"
       @query="queryList"
     >
       <view v-for="(item, index) in dataList" :key="index">
@@ -46,6 +48,7 @@
 
 <script setup>
 import { getBalanceLogs } from '@/api/funds'
+import { t } from '@/locale'
 import { formatAmount, getRecordType } from '@/utils/util'
 
 const paging = ref(null)
@@ -53,12 +56,14 @@ const paging = ref(null)
 const dataList = ref([
 ])
 onReachBottom(() => {
-  paging.value.doLoadMore()
+  if (paging.value) {
+    paging.value.doLoadMore()
+  }
 })
 // @query所绑定的方法不要自己调用！！需要刷新列表数据时，只需要调用paging.value.reload()即可
 async function queryList(pageNo, pageSize) {
   uni.showLoading({
-    title: '加载中',
+    title: t('jia-zai-zhong'),
   })
   const data = {
     page: pageNo,

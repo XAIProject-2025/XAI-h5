@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import md5 from 'js-md5'
 import { touristLogin } from '@/api/login'
+import { t } from '@/locale'
 import Textface from '@/pages/textface/index.vue'
 import { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } from '@/router/config'
 import { useFaceStore } from '@/store/face'
@@ -20,7 +21,7 @@ const tokenStore = useTokenStore()
 async function doLogin() {
   if (!userInfo.name || !userInfo.password) {
     uni.showToast({
-      title: '请输入用户名和密码',
+      title: t('qing-shu-ru-yong-hu-ming-he-mi-ma'),
       icon: 'none',
     })
     return
@@ -48,15 +49,15 @@ function handleFaceAuth() {
 <template>
   <view class="login relative">
     <view class="box-border w-full flex items-center px-[20px] pt-[30vh]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        用户名
+      <view class="mr-[10px] w-[80px] text-right text-[14px] text-[#151D1F]">
+        {{ $t("yong-hu-ming") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.name"
-          placeholder="请输入内容"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
         >
           <template #prefix>
@@ -71,15 +72,15 @@ function handleFaceAuth() {
       </view>
     </view>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
-      <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
-        密码
+      <view class="mr-[10px] w-[80px] text-right text-[14px] text-[#151D1F]">
+        {{ $t("mi-ma") }}
       </view>
       <view
         class="flex-1 border border-[#E2E2E2] rounded-[20px] border-solid bg-[#fff] px-[4px] py-[2px] shadow-blueGray"
       >
         <up-input
           v-model="userInfo.password"
-          placeholder="请输入内容"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
           color="#94999A"
           type="password"
         >
@@ -99,13 +100,13 @@ function handleFaceAuth() {
         class="mt-[15px] px-[20px] text-right text-[14px]"
         @click="handleToUrl(FORGOT_PASSWORD_PAGE)"
       >
-        忘记密码
+        {{ $t("wang-ji-mi-ma") }}
       </view>
       <view
         class="mt-[15px] px-[20px] text-right text-[14px]"
         @click="handleToUrl(REGISTER_PAGE)"
       >
-        注册
+        {{ $t("zhu-ce") }}
       </view>
     </div>
     <view
@@ -113,13 +114,13 @@ function handleFaceAuth() {
       @click="handleFaceAuth"
     >
       <image src="/static/login/face.png" class="mb-[5px] h-[40px] w-[40px]" />
-      <view>人脸登录</view>
+      <view>{{ $t("ren-lian-deng-lu") }}</view>
     </view>
     <view
       class="btn-block absolute bottom-[80px] left-[5%] mx-auto h-[40px] w-[90%]"
       @click="doLogin"
     >
-      登录
+      {{ $t("deng-lu") }}
     </view>
     <!-- <view
       class="btn-block--white absolute bottom-[140px] left-[5%] mx-auto h-[40px] w-[90%]"

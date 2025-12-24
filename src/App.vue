@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { bindFace, loginByFace, registerByFace, verifyFace } from '@/api/index'
+import { t } from '@/locale/index'
 import { navigateToInterceptor } from '@/router/interceptor'
 import { useCommonStore } from '@/store/common'
 import { useFaceStore } from '@/store/face'
 import { useTokenStore } from '@/store/token'
+
 import { debounce, handleToUrl, listenFaceLivenessError, listenFaceLivenessSuccess } from '@/utils/util'
 
 onLaunch((options) => {
@@ -21,7 +23,7 @@ onLaunch((options) => {
           const registerByFaceRes = await registerByFace(faceInfo)
           if (registerByFaceRes === true) {
             uni.showToast({
-              title: '人脸验证成功',
+              title: t('ren-lian-yan-zheng-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -32,7 +34,7 @@ onLaunch((options) => {
           }
           else {
             uni.showToast({
-              title: faceInfo.message || '人脸验证失败,已注册或者活体检查未通过,请重新校验',
+              title: t('ren-lian-yan-zheng-shi-bai-yi-zhu-ce-huo-zhe-huo-ti-jian-cha-wei-tong-guo-qing-zhong-xin-xiao-yan'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -46,7 +48,7 @@ onLaunch((options) => {
         catch (error) {
           console.log('error :>> ', error)
           uni.showToast({
-            title: error.message || '人脸验证失败',
+            title: error.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -61,7 +63,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {
@@ -78,7 +80,7 @@ onLaunch((options) => {
           const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
           if (verifyFaceRes === true) {
             uni.showToast({
-              title: '人脸验证成功',
+              title: t('ren-lian-yan-zheng-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -87,10 +89,22 @@ onLaunch((options) => {
               },
             })
           }
+          else {
+            uni.showToast({
+              title: t('ren-lian-yan-zheng-shi-bai-yi-zhu-ce-huo-zhe-huo-ti-jian-cha-wei-tong-guo-qing-zhong-xin-xiao-yan'),
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages/changePassword/index', true)
+              },
+            })
+          }
         }
         catch (error) {
           uni.showToast({
-            title: faceInfo.message || '人脸验证失败',
+            title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -103,7 +117,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {
@@ -123,7 +137,7 @@ onLaunch((options) => {
             tokenStore._postLogin(TokenInfo)
             // sessionId
             uni.showToast({
-              title: '登录成功',
+              title: t('deng-lu-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -135,7 +149,7 @@ onLaunch((options) => {
           }
           else {
             uni.showToast({
-              title: '人脸验证失败',
+              title: t('ren-lian-yan-zheng-shi-bai'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -149,7 +163,7 @@ onLaunch((options) => {
         catch (error) {
           console.log('error :>> ', error)
           uni.showToast({
-            title: error.message || '人脸验证失败',
+            title: error.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -162,7 +176,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {
@@ -183,7 +197,7 @@ onLaunch((options) => {
           const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
           if (verifyFaceRes === true) {
             uni.showToast({
-              title: '人脸验证成功',
+              title: t('ren-lian-yan-zheng-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -192,10 +206,22 @@ onLaunch((options) => {
               },
             })
           }
+          else {
+            uni.showToast({
+              title: t('ren-lian-yan-zheng-shi-bai-yi-zhu-ce-huo-zhe-huo-ti-jian-cha-wei-tong-guo-qing-zhong-xin-xiao-yan'),
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages-fg/login/forgotPassword', true)
+              },
+            })
+          }
         }
         catch (error) {
           uni.showToast({
-            title: faceInfo.message || '人脸验证失败',
+            title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -208,7 +234,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {
@@ -226,7 +252,7 @@ onLaunch((options) => {
           const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
           if (verifyFaceRes === true) {
             uni.showToast({
-              title: '人脸验证成功',
+              title: t('ren-lian-yan-zheng-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -235,10 +261,22 @@ onLaunch((options) => {
               },
             })
           }
+          else {
+            uni.showToast({
+              title: t('ren-lian-yan-zheng-shi-bai-yi-zhu-ce-huo-zhe-huo-ti-jian-cha-wei-tong-guo-qing-zhong-xin-xiao-yan'),
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages/paymentPassword/index', true)
+              },
+            })
+          }
         }
         catch (error) {
           uni.showToast({
-            title: faceInfo.message || '人脸验证失败',
+            title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -251,7 +289,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {
@@ -269,7 +307,7 @@ onLaunch((options) => {
           const verifyFaceRes = await verifyFace({ sessionId: faceInfo.sessionId })
           if (verifyFaceRes === true) {
             uni.showToast({
-              title: '人脸验证成功',
+              title: t('ren-lian-yan-zheng-cheng-gong'),
               icon: 'none',
               duration: 2000,
               complete: () => {
@@ -278,10 +316,22 @@ onLaunch((options) => {
               },
             })
           }
+          else {
+            uni.showToast({
+              title: t('ren-lian-yan-zheng-shi-bai-yi-zhu-ce-huo-zhe-huo-ti-jian-cha-wei-tong-guo-qing-zhong-xin-xiao-yan'),
+              icon: 'none',
+              duration: 2000,
+              complete: () => {
+                useFaceStore().setFaceInfo({})
+                useFaceStore().setType(-1)
+                handleToUrl('/pages/withdraw/index', true)
+              },
+            })
+          }
         }
         catch (error) {
           uni.showToast({
-            title: faceInfo.message || '人脸验证失败',
+            title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
             icon: 'none',
             duration: 2000,
             complete: () => {
@@ -294,7 +344,7 @@ onLaunch((options) => {
       }
       else {
         uni.showToast({
-          title: faceInfo.message || '人脸验证失败',
+          title: faceInfo.message || t('ren-lian-yan-zheng-shi-bai'),
           icon: 'none',
           duration: 2000,
           complete: () => {

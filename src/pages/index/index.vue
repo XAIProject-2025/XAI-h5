@@ -34,6 +34,7 @@
 import { storeToRefs } from 'pinia'
 import { nextTick, ref } from 'vue'
 import { getChatHistory, getChatLose } from '@/api/index'
+import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
 import { useTokenStore } from '@/store/token'
 import chatInputBar from './components/chat-input-bar.vue'
@@ -69,7 +70,7 @@ async function getTask(data) {
 }
 onMounted(async () => {
   uni.showLoading({
-    title: '加载中...',
+    title: t('jia-zai-zhong'),
   })
   const chatHistoryRes = await getChatHistory()
   dataList.value = chatHistoryRes.content
