@@ -377,7 +377,7 @@ function msToMidnight(date = new Date()) {
         <l-circle
           v-if="vipInfoData.needDays != 0"
           :stroke-width="10"
-          size="150px"
+          size="180px"
           :trail-width="10"
           stroke-color="#000"
           trail-color="#ebedf0"
@@ -385,11 +385,9 @@ function msToMidnight(date = new Date()) {
           :max="vipInfoData.currentPremium"
         >
           <div
-            class="flex flex-col items-center justify-center text-[14px] font-bold"
+            class="flex flex-col items-center justify-center text-center text-[14px] font-bold"
           >
-            <div class="">
-              {{ $t("ju-li-zui-di-shou-xu-fei") }}
-            </div>
+            {{ $t("ju-li-zui-di-shou-xu-fei") }}
             <!-- <div class="">
               {{ $t("zui-di-shou-xu-fei") }}
             </div>

@@ -319,7 +319,7 @@ function changeDynamicIncome(e) {
       :show="showDetail"
       :button-loading="buttonLoading"
       :height="
-        currentItem.type === 1 || currentItem.type == 4 ? '420px' : '530px'
+        currentItem.type === 1 || currentItem.type == 4 ? '420px' : '560px'
       "
       @close="showDetail = false"
       @confirm="buyServerCon(currentItem)"
