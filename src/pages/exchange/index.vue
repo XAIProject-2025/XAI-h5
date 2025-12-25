@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { getCurrencyStatistics } from '@/api/exchange'
 import { getBalanceRate, getCurrencyHistory } from '@/api/funds'
 import { t } from '@/locale'
 import { useUserStore } from '@/store'
@@ -18,6 +19,7 @@ definePage({
 })
 const tabCurrent = ref(0)
 const tokenPrice = ref(0)
+let currentData = reactive({})
 onMounted(async () => {
   uni.showLoading({
     title: t('jia-zai-zhong'),
@@ -25,7 +27,10 @@ onMounted(async () => {
   const getBalanceRateRes = await getBalanceRate({
     currencyName: '1',
   })
-
+  const getCurrencyStatisticsRes = await getCurrencyStatistics({
+    currencyName: '1',
+  })
+  currentData = getCurrencyStatisticsRes
   tokenPrice.value = getBalanceRateRes?.toUsdt || 0
   uni.hideLoading()
 })
@@ -82,7 +87,7 @@ onShow(() => {
       </div>
     </view>
     <view v-if="tabCurrent === 0" class="mt-[20px]">
-      <transaction :token-price="tokenPrice" />
+      <transaction :token-price="tokenPrice" :current-data="currentData" />
     </view>
     <view v-else class="mt-[20px]">
       <transactionRecord />

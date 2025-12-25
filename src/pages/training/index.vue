@@ -113,7 +113,7 @@ function msToMidnight(date = new Date()) {
             {{ $t("suan-li-fu-wu-qi") }}
           </div>
           <div class="text-center">
-            {{ vipInfoData.serverNum }}
+            {{ userInfo.serverCount }}
           </div>
         </view>
         <view class="mx-[10px]">
@@ -339,17 +339,18 @@ function msToMidnight(date = new Date()) {
       v-if="vipInfoData.vipLevel === 0"
       class="my-[10px]"
       type="warning"
-      description="租赁一台服务器即可立即升级E1"
+      :description="$t('zu-lin-yi-tai-fu-wu-qi-ji-ke-li-ji-sheng-ji-e1')"
       font-size="12"
     />
-
     <!-- 手续费信息 -->
     <view class="bg3 mt-[20px] px-[20px] py-[20px] text-[#fff]">
       <view class="text-[16px] font-bold">
-        {{ $t("fei-yong-xin-xi") }}
+        <!-- {{ $t("fei-yong-xin-xi") }} -->
+        {{ $t('shou-xu-fei') }}
       </view>
       <view class="mt-[20px] text-[16px] font-bold">
-        {{ $t("dang-qian-fei-shuai") }}
+        <!-- {{ $t("dang-qian-fei-shuai") }} -->
+        {{ $t('shou-xu-fei') }}
         <span
           v-if="vipInfoData.currentPremium"
           class="text-[40px] text-[#FFEE00]"

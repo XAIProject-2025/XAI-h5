@@ -258,10 +258,14 @@
   "you-ke-mo-shi": "游客模式",
   "yong-hu-ming-zhi-neng-bao-han-zi-mu-he-shu-zi": "用户名只能包含字母和数字",
   "qing-shi-yong-zi-mu-he-shu-zi-zu-he-bu-yun-xu-shi-yong-te-shu-zi-fu-fu-hao": "请使用字母或数字(不允许使用特殊字符符号)",
-  "ju-li-zui-di-shou-xu-fei": "距离最低手续费",
+  "ju-li-zui-di-shou-xu-fei": "最低可无需提交手续费",
   "de-fei-yong-huan-sheng": "的费用还剩",
   "shi": "时",
   "fen": "分",
   "miao": "秒",
-  "yong-jin-jiang-li": "佣金奖励"
+  "yong-jin-jiang-li": "佣金奖励",
+  "zu-lin-yi-tai-fu-wu-qi-ji-ke-li-ji-sheng-ji-e1": "租赁一台服务器即可立即升级E1",
+  "shou-xu-fei": "手续费",
+  "dang-qian-zhang-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo": "当前账户未激活,请联系客服激活",
+  "ji-huo-hou-ji-ke-shi-yong-suo-you-gong-neng-he-geng-duo-jiang-li": "激活后即可使用所有功能和更多奖励"
 }

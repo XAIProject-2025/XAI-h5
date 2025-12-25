@@ -260,8 +260,12 @@
   "yong-hu-ming-zhi-neng-bao-han-zi-mu-he-shu-zi": "El nombre de usuario solo puede contener letras y números.",
   "de-fei-yong-huan-sheng": "gastos restantes",
   "fen": "punto",
-  "ju-li-zui-di-shou-xu-fei": "Distancia a la tarifa de gestión más baja",
+  "ju-li-zui-di-shou-xu-fei": "Mínimo sin tarifa de manejo requerida",
   "miao": "Segundo",
   "shi": "hora",
-  "yong-jin-jiang-li": "Recompensas de comisiones"
+  "yong-jin-jiang-li": "Recompensas de comisiones",
+  "zu-lin-yi-tai-fu-wu-qi-ji-ke-li-ji-sheng-ji-e1": "Alquile un servidor y actualice a E1 inmediatamente",
+  "shou-xu-fei": "tarifa de manejo",
+  "dang-qian-zhang-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo": "La cuenta actual no está activada, por favor contacte con atención al cliente para activarla",
+  "ji-huo-hou-ji-ke-shi-yong-suo-you-gong-neng-he-geng-duo-jiang-li": "Actívelo para obtener acceso a todas las funciones y más bonificaciones"
 }

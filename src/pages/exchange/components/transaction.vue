@@ -12,6 +12,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  currentData: {
+    type: Object,
+    default: () => { },
+  },
 })
 
 onMounted(async () => {
@@ -195,34 +199,34 @@ function changeTab(item) {
       />
       <view class="mt-[20px] flex items-center justify-between">
         <view class="w-1/4 flex flex-col items-center justify-center">
-          <view class="text-[18px] font-bold">
-            {{ formatAmount(tokenPrice) }}
+          <view class="text-[16px] font-bold">
+            {{ formatAmount(currentData.currentPrice) }}
           </view>
-          <view class="mt-[5px] text-[14px] text-[#999]">
+          <view class="mt-[5px] text-[12px] text-[#999]">
             {{ $t("dang-qian-jia-ge") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
-          <view class="text-[18px] font-bold">
-            {{ formatAmount(10000) }}
+          <view class="text-[16px] font-bold">
+            {{ formatAmount(currentData.increase24h) }}
           </view>
-          <view class="mt-[5px] text-[14px] text-[#999]">
+          <view class="mt-[5px] text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zhang-fu") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
-          <view class="text-[18px] font-bold">
-            {{ formatAmount(10000) }}
+          <view class="text-[16px] font-bold">
+            {{ formatAmount(currentData.high24h) }}
           </view>
-          <view class="mt-[5px] text-[14px] text-[#999]">
+          <view class="mt-[5px] text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zui-gao") }}
           </view>
         </view>
         <view class="w-1/4 flex flex-col items-center justify-center">
-          <view class="text-[18px] font-bold">
-            {{ formatAmount(10000) }}
+          <view class="text-[16px] font-bold">
+            {{ formatAmount(currentData.low24h) }}
           </view>
-          <view class="mt-[5px] text-[14px] text-[#999]">
+          <view class="mt-[5px] text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zui-di") }}
           </view>
         </view>

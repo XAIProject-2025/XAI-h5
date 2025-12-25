@@ -41,15 +41,15 @@ onMounted(async () => {
   vipInfoData.value = vipInfoRes
 })
 async function applyWithdrawalData() {
-  if (!form.address || !form.amount) {
+  console.log('userInfo.value :>> ', userInfo.value)
+  if (userInfo.value.roleId === 1) {
     uni.showToast({
-      title: t('qing-shu-ru-ti-xian-di-zhi-he-jin-e'),
+      title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
       icon: 'none',
       duration: 2000,
     })
     return
   }
-  console.log('userInfo.value :>> ', userInfo.value)
   if (vipInfoData.value.serverNum > 0) {
     if (!form.payPwd) {
       uni.showToast({

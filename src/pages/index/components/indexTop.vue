@@ -10,6 +10,7 @@ import { formatAmount, handleToUrl, openExternalUrl } from '@/utils/util'
 const emits = defineEmits(['getTask'])
 const userStore = useUserStore()
 const showLoginModal = ref(false)
+const showLoginModalUser1 = ref(false)
 const { userInfo } = storeToRefs(userStore)
 const { UNI_PLATFORM } = process.env
 const systemInfo = uni.getSystemInfoSync()
@@ -55,6 +56,9 @@ async function getTask() {
   if (taskData.value.taskCompleted && userInfo.value.roleId === -1) {
     showLoginModal.value = true
   }
+  if (userInfo.value.roleId === 1 && taskData.value.taskCompleted) {
+    showLoginModalUser1.value = true
+  }
 }
 async function getPowerOrdersData() {
   const getPowerOrdersRes = await getPowerOrders({
@@ -80,12 +84,21 @@ function handleClickAlert() {
   handleToUrl('/pages-fg/login/loginC')
   tokenStore.logout()
 }
+function handleClickAlertUser1() {
+  // const tokenStore = useTokenStore()
+  // handleToUrl('/pages-fg/login/loginC')
+  // tokenStore.logout()
+}
 function openShowLoginModal() {
   showLoginModal.value = true
+}
+function openShowLoginModalUser1() {
+  showLoginModalUser1.value = true
 }
 defineExpose({
   fetchCountToXcoin,
   openShowLoginModal,
+  openShowLoginModalUser1,
 })
 </script>
 
@@ -352,6 +365,77 @@ defineExpose({
         <!-- 小字提示（增加引导性） -->
         <div class="mb-[4px] text-[12px] text-[#999999]">
           {{ $t("deng-lu-hou-hui-you-geng-duo-de-jiang-li-o") }}
+        </div>
+      </div>
+    </up-modal>
+
+    <up-modal
+      :show="showLoginModalUser1"
+      show-cancel-button
+      confirm-text="立即联系"
+      cancel-text="稍后再说"
+      confirm-color="#FF6738"
+      confirm-bg-color="#FF6738"
+      cancel-color="#666666"
+      cancel-bg-color="#F5F5F5"
+      modal-radius="12px"
+      button-radius="8px"
+      style="z-index: 1000"
+      @cancel="showLoginModalUser1 = false"
+      @confirm="openExternalUrl(userInfo.customer.link)"
+    >
+      <div class="flex flex-col items-center px-[24px] py-[16px]">
+        <!-- 标题区域（带图标更生动） -->
+        <div class="mb-[16px] flex items-center">
+          <svg
+            class="mr-[8px] h-[20px] w-[20px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 2L4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8L12 2Z"
+              stroke="#FF6738"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9 12L11 14L15 10"
+              stroke="#FF6738"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <div class="text-[18px] text-[#333333] font-bold">
+            <!-- {{ $t("jiang-li-ti-shi") }} -->
+            {{ $t("ti-shi") }}
+          </div>
+        </div>
+
+        <!-- 内容卡片（优化背景/内边距/文字排版） -->
+        <div
+          class="mb-[8px] w-full border border-[#FFE8DD] rounded-[12px] bg-[#FFF9F6] p-[16px]"
+        >
+          <div class="text-[15px] text-[#333333] leading-[1.5]">
+            <!-- {{
+              $t(
+                "ni-yi-cheng-gong-ling-qu-ti-yan-jiang-li-la-xian-zai-deng-lu-zhang-hao-jiu-neng-jie-suo-zheng-shi-jiang-lio",
+              )
+            }} -->
+            {{ $t("dang-qian-zhang-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo") }}
+          </div>
+        </div>
+
+        <!-- 小字提示（增加引导性） -->
+        <div class="mb-[4px] text-[12px] text-[#999999]">
+          <!-- {{ $t("deng-lu-hou-hui-you-geng-duo-de-jiang-li-o") }} -->
+          {{
+            $t(
+              "ji-huo-hou-ji-ke-shi-yong-suo-you-gong-neng-he-geng-duo-jiang-li",
+            )
+          }}
         </div>
       </div>
     </up-modal>
