@@ -36,7 +36,9 @@ import { nextTick, ref } from 'vue'
 import { getChatHistory, getChatLose } from '@/api/index'
 import { t } from '@/locale/index'
 import { useUserStore } from '@/store'
+
 import { useTokenStore } from '@/store/token'
+import { getLocalLanguage } from '@/utils/util'
 import chatInputBar from './components/chat-input-bar.vue'
 import chatItem from './components/chat-item.vue'
 import indexTop from './components/indexTop.vue'
@@ -183,6 +185,7 @@ async function startStream(aiItem, message) {
         'Content-Type': 'application/json',
         'Accept': 'text/event-stream',
         'Authorization': useTokenStore().validToken,
+        'Accept-Language': getLocalLanguage(),
       },
       body: JSON.stringify({ message, chatId: '123' }),
       signal: abortController.signal,

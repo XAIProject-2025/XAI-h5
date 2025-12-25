@@ -5,6 +5,7 @@ import { t } from '@/locale/index'
 import { useTokenStore } from '@/store/token'
 import { isDoubleTokenMode } from '@/utils'
 import { toLoginPage } from '@/utils/toLoginPage'
+import { getLocalLanguage } from '@/utils/util'
 import { ResultEnum } from './tools/enum'
 
 // 刷新 token 状态管理
@@ -15,13 +16,14 @@ export function http<T>(options: CustomRequestOptions) {
   // 1. 返回 Promise 对象
   return new Promise<T>((resolve, reject) => {
     console.log('options :>> ', options)
+    console.log('getLocalLanguage :>> ', getLocalLanguage())
     uni.request({
       ...options,
       dataType: 'json',
       // #ifndef MP-WEIXIN
       responseType: 'json',
       header: {
-        'accept-language': 'es-es',
+        'accept-language': getLocalLanguage(),
       },
       // #endif
       // 响应成功

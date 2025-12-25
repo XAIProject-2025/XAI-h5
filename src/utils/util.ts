@@ -469,3 +469,16 @@ export function getRecordType(type: number) {
   }
   return obj
 }
+
+export function getLocalLanguage() {
+  const language = uni.getLocale()
+  if (language == 'zh-Hans') {
+    return 'zh-cn'
+  }
+  if (language == 'en') {
+    return 'en-us'
+  }
+  if (language == 'es') {
+    return 'es-es'
+  }
+}

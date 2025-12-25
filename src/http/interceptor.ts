@@ -54,8 +54,8 @@ const httpInterceptor = {
 
     if (token) {
       options.header.Authorization = `${token}`
-      let language = 'es-es'
-      options.header['accept-language'] = language
+      // let language = 'es-es'
+      // options.header['accept-language'] = language
     }
     return options
   },

@@ -38,17 +38,21 @@ onShow(async () => {
 onMounted(async () => {
 })
 const computedNextTimeDecay = computed(() => {
-  if (!vipInfoData.value.currentPremium || !vipInfoData.value.decayedNum || !vipInfoData.value.decayNum) {
-    return 0
-  }
+  // if (!vipInfoData.value.currentPremium || !vipInfoData.value.decayedNum || !vipInfoData.value.decayNum) {
+  //   return 0
+  // }
   let nextTime = (vipInfoData.value.currentPremium
     - vipInfoData.value.decayedNum
     - vipInfoData.value.decayNum) * 100
   if (nextTime < vipInfoData.value.decayMin) {
     nextTime = vipInfoData.value.decayMin
   }
-
-  return Number(nextTime).toFixed(2)
+  if (nextTime) {
+    return Number(nextTime).toFixed(2)
+  }
+  else {
+    return 0
+  }
 })
 </script>
 
