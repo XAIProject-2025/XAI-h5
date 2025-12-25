@@ -453,7 +453,7 @@ export function getRecordType(type: number) {
     obj.name = t('dui-huan')
   }
   if (type == 5) {
-    obj.name = t('ren-wu-jiang-li')
+    obj.name = t('yong-jin-jiang-li')
   }
   if (type == 6) {
     obj.name = t('fu-wu-qi-shu-hui')
