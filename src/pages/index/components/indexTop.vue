@@ -164,11 +164,11 @@ defineExpose({
       </view>
       <!-- <view class="my-[15px] h-[1px] w-full bg-[transparent]" /> -->
       <view class="bg mb-[10px] mt-[10px] py-[25px] text-[#fff]">
-        <view class="flex items-center justify-between px-[20px]">
-          <view class="w-1/2 flex items-center justify-center">
+        <view class="flex items-center justify-between px-[10px]">
+          <view class="w-[45%] flex items-center justify-center">
             <up-image
-              :width="60"
-              :height="60"
+              :width="50"
+              :height="50"
               round
               src="/static/images/avatar.png"
             />
@@ -184,10 +184,10 @@ defineExpose({
           </view>
           <view
             v-if="powerOrdersData.length > 0"
-            class="w-1/2 flex items-center justify-center"
+            class="w-[55%] flex items-center justify-center"
           >
             <up-swiper
-              class="w-[150px] !h-[50px] !bg-[transparent]"
+              class="w-full !h-[60px] !bg-[transparent]"
               :list="powerOrdersData"
               @change="onChange"
               @click="handleClick"

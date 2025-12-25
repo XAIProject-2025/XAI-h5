@@ -97,6 +97,7 @@ async function buyType1(item) {
   }
 }
 async function buyType2(item) {
+  console.log('item1111 :>> ', item)
   if (buttonLoading.value) {
     return
   }
@@ -108,7 +109,8 @@ async function buyType2(item) {
     })
     return
   }
-  if (userInfo.value.roleId === 1) {
+
+  if (userInfo.value.roleId === 1 && item.type != 4) {
     uni.showToast({
       title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
       icon: 'none',

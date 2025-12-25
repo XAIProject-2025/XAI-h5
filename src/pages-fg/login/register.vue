@@ -46,6 +46,15 @@ async function doLogin() {
     })
     return
   }
+  // 判断是否只包含字母和数字
+  const nameRegex = /^[A-Z0-9]+$/i
+  if (!nameRegex.test(userInfo.name)) {
+    uni.showToast({
+      title: t('yong-hu-ming-zhi-neng-bao-han-zi-mu-he-shu-zi'),
+      icon: 'none',
+    })
+    return
+  }
   // 8位以上包含字母和数字
   if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfo.password)) {
     uni.showToast({
@@ -139,6 +148,17 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
+    <div class="ml-[90px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{
+          $t(
+            "qing-shi-yong-zi-mu-he-shu-zi-zu-he-bu-yun-xu-shi-yong-te-shu-zi-fu-fu-hao",
+          )
+        }}
+        <!-- {{ $t("qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi") }} -->
+      </div>
+    </div>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
         {{ $t("mi-ma") }}
@@ -163,7 +183,13 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
-    <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
+    <div class="ml-[90px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{ $t("qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi") }}
+      </div>
+    </div>
+    <view class="mt-[15px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
         {{ $t("que-ren-mi-ma") }}
       </view>
@@ -187,6 +213,12 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
+    <div class="ml-[90px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{ $t("qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi") }}
+      </div>
+    </div>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[60px] text-right text-[14px] text-[#151D1F]">
         {{ $t("yao-qing-ma") }}

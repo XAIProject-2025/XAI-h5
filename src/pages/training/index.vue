@@ -54,6 +54,28 @@ const computedNextTimeDecay = computed(() => {
     return 0
   }
 })
+// 使用 reactive 创建响应式对象
+const timeData = ref({})
+
+// 定义 onChange 方法
+function onChange(e) {
+  timeData.value = e
+}
+// 生成到服务器时间00点距离当前的毫秒
+function msToMidnight(date = new Date()) {
+  const now = date
+  const midnight = new Date(now)
+
+  // 设置到当天午夜
+  midnight.setHours(0, 0, 0, 0)
+
+  // 如果当前时间已经超过午夜，则取明天的午夜
+  if (now >= midnight) {
+    midnight.setDate(midnight.getDate() + 1)
+  }
+
+  return midnight - now
+}
 </script>
 
 <template>
@@ -91,7 +113,7 @@ const computedNextTimeDecay = computed(() => {
             {{ $t("suan-li-fu-wu-qi") }}
           </div>
           <div class="text-center">
-            {{ serverList.length }}
+            {{ vipInfoData.serverNum }}
           </div>
         </view>
         <view class="mx-[10px]">
@@ -352,7 +374,6 @@ const computedNextTimeDecay = computed(() => {
         {{ $t("sheng-yu-tian-shu") }}
       </view>
       <view class="flex items-center justify-center">
-        <!-- <l-circle :percent="75" size="150px" :stroke-width="8" :trail-width="8" /> -->
         <l-circle
           v-if="vipInfoData.needDays != 0"
           :stroke-width="10"
@@ -367,11 +388,14 @@ const computedNextTimeDecay = computed(() => {
             class="flex flex-col items-center justify-center text-[14px] font-bold"
           >
             <div class="">
+              {{ $t("ju-li-zui-di-shou-xu-fei") }}
+            </div>
+            <!-- <div class="">
               {{ $t("zui-di-shou-xu-fei") }}
             </div>
             <div>
               <span>{{ $t("huan-xu") }}</span>{{ vipInfoData.needDays }} <span>{{ $t("tian") }}</span>
-            </div>
+            </div> -->
           </div>
         </l-circle>
         <l-circle
@@ -388,10 +412,6 @@ const computedNextTimeDecay = computed(() => {
             {{ $t("dang-qian-zui-di-shou-xu-fei") }}
           </text>
         </l-circle>
-        <!-- <lime-circle v-model:current="modelVale" :percent="100">
-          <text>{{ modelVale }}%</text>
-        </lime-circle> -->
-        <!-- <circle-progress :value="50" :max="100" color="#3f808a" /> -->
       </view>
       <template v-if="vipInfoData.needDays == 0">
         <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
@@ -403,11 +423,34 @@ const computedNextTimeDecay = computed(() => {
         <view class="mt-[20px] text-center text-[16px] text-[#000] font-bold">
           {{ $t("xia-ci-jian-mian") }}
         </view>
-        <view class="mt-[10px] text-center text-[12px] text-[#94999A]">
+        <view
+          class="mb-[15px] mt-[10px] text-center text-[14px] text-[#94999A]"
+        >
           <!-- 下次的费用减免，还剩 1 天 -->
           <span>{{ $t("ju-li") }}</span>
           {{ computedNextTimeDecay }}%
-          <span>{{ $t("de-fei-yong-you-hui-huan-sheng-1-tian") }}</span>
+          <span class="mb-[5px]">{{ $t("de-fei-yong-huan-sheng") }}</span>
+          <up-count-down
+            :time="msToMidnight()"
+            format="HH:mm:ss:SSS"
+            auto-start
+            millisecond
+            @change="onChange"
+          >
+            <view class="time">
+              <text class="time__item mr-[2px]">
+                {{
+                  timeData.hours > 10 ? timeData.hours : `0${timeData.hours}`
+                }}
+              </text>
+              <span>{{ $t("shi") }}</span>
+              <text class="time__item mr-[2px]">{{ timeData.minutes }}</text>
+              <span>{{ $t("fen") }}</span>
+              <text class="time__item mr-[2px]">{{ timeData.seconds }}</text>
+              <span>{{ $t("miao") }}</span>
+            </view>
+          </up-count-down>
+          <!-- <span>{{ $t("de-fei-yong-you-hui-huan-sheng-1-tian") }}</span> -->
         </view>
       </template>
     </view>
