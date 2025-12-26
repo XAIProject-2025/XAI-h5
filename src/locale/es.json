@@ -277,5 +277,6 @@
   "ti-xian-shen-he-shi-jian-zai-9002100-nei": "*El horario de retiro es entre las 9:00-21:00",
   "xian-gou-fu-wu-qi-suan-li-zhi-sheng-yu-1-qing-an-shi-wan-cheng-ren-wu-24-xiao-shi-hou-zi-dong-qing-ling-qing-qian-wang-zu-lin-fu-wu-qi-bu-chong-suan-li-zhi": "El valor de la potencia informática del servidor de compra limitada es 1. Complete la tarea a tiempo. Se borrará automáticamente después de 24 horas. Vaya al servidor de alquiler para reponer el valor de la potencia informática.",
   "zui-xiao-ti-xian-jine3usdt": "Monto mínimo de retiro 3USDT",
-  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Inicie el retiro entre las 9:00 y las 21:00"
+  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Inicie el retiro entre las 9:00 y las 21:00",
+  "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "El monto del retiro debe ser un número entero"
 }

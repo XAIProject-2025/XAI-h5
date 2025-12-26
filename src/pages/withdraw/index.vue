@@ -53,6 +53,8 @@ function isChileTimeInRange() {
   return hour >= 9 && (hour < 21)
 }
 async function applyWithdrawalData() {
+  // form.amount 必须正整数
+
   // 判断智利时间9:00到21:00内
   if (!isChileTimeInRange()) {
     // console.log('不在时间范围内')
@@ -105,6 +107,14 @@ async function applyWithdrawalData() {
   if (form.amount <= 3) {
     uni.showToast({
       title: t('ti-xian-jinebi-xu-da-yu-3usdt'),
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
+  if (!/^\d+$/.test(form.amount)) {
+    uni.showToast({
+      title: t('ti-xian-jinebi-zhi-yao-shi-zheng-shu'),
       icon: 'none',
       duration: 2000,
     })

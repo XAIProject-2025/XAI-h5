@@ -34,22 +34,22 @@ onMounted(() => {
   const token = tokenStore.validToken
 
   if (useFaceStore().type === 1) {
-    iframeUrl.value = 'https://face.eladmin-test.click/?type=0'
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=0`
   }
   else if (useFaceStore().type === 2) {
-    iframeUrl.value = `https://face.eladmin-test.click/?type=1&token=${token}`
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=1&token=${token}`
   }
   else if (useFaceStore().type === 3) {
-    iframeUrl.value = `https://face.eladmin-test.click/?type=2`
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=2`
   }
   else if (useFaceStore().type === 4) {
-    iframeUrl.value = `https://face.eladmin-test.click/?type=2`
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=2`
   }
   else if (useFaceStore().type === 5) {
-    iframeUrl.value = `https://face.eladmin-test.click/?type=2`
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=2`
   }
   else if (useFaceStore().type === 6) {
-    iframeUrl.value = `https://face.eladmin-test.click/?type=2`
+    iframeUrl.value = `${import.meta.env.VITE_SERVER_BASEURL}?type=2`
   }
   // #ifdef APP-PLUS
   plus.android.requestPermissions(['android.permission.CAMERA'], (e) => {

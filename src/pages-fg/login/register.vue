@@ -85,6 +85,13 @@ async function doLogin() {
     })
     return
   }
+  if (!useFaceStore().faceInfo?.sessionId) {
+    uni.showToast({
+      title: '请验证人脸',
+      icon: 'none',
+    })
+    return
+  }
   try {
     const res = await tokenStore.register({
       name: userInfo.name.trim(),

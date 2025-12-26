@@ -277,5 +277,6 @@
   "ti-xian-shen-he-shi-jian-zai-9002100-nei": "* 提现时间在9:00-21:00内",
   "zui-xiao-ti-xian-jine3usdt": "最小提现金额3USDT",
   "xian-gou-fu-wu-qi-suan-li-zhi-sheng-yu-1-qing-an-shi-wan-cheng-ren-wu-24-xiao-shi-hou-zi-dong-qing-ling-qing-qian-wang-zu-lin-fu-wu-qi-bu-chong-suan-li-zhi": "限购服务器算力值剩余1,请按时完成任务,24小时后自动清零,请前往租赁服务器,补充算力值",
-  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "请在9点-21点内发起提现"
+  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "请在9点-21点内发起提现",
+  "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "提现金额必须为整数"
 }

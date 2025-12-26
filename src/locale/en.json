@@ -277,5 +277,6 @@
   "ti-xian-shen-he-shi-jian-zai-9002100-nei": "* Withdrawal time is between 9:00-21:00",
   "xian-gou-fu-wu-qi-suan-li-zhi-sheng-yu-1-qing-an-shi-wan-cheng-ren-wu-24-xiao-shi-hou-zi-dong-qing-ling-qing-qian-wang-zu-lin-fu-wu-qi-bu-chong-suan-li-zhi": "The computing power value of the limited purchase server is 1. Please complete the task on time. It will be automatically cleared after 24 hours. Please go to the rental server to replenish the computing power value.",
   "zui-xiao-ti-xian-jine3usdt": "Minimum withdrawal amount 3USDT",
-  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Please initiate withdrawal between 9:00 and 21:00"
+  "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Please initiate withdrawal between 9:00 and 21:00",
+  "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "Withdrawal amount must be an integer"
 }

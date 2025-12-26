@@ -141,7 +141,7 @@ function handleToPaymentPassword() {
       </div>
       <up-icon name="arrow-right" />
     </div>
-    <div
+    <!-- <div
       class="bg-default flex items-center justify-between rounded-[20px] px-[10px] py-[10px]"
       @click="show = true"
     >
@@ -152,7 +152,7 @@ function handleToPaymentPassword() {
         </div>
       </div>
       <up-icon name="arrow-right" />
-    </div>
+    </div> -->
     <div
       class="mt-[30px] border border-[#000] rounded-[20px] border-solid bg-[#fff] px-[10px] py-[10px] text-center text-[14px] text-[#000]"
       @click="handleLogout"
