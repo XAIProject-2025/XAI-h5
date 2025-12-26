@@ -312,8 +312,9 @@ defineExpose({
         $t('dang-qian-zhang-hu-wei-ji-huo-qing-jin-kuai-lian-xi-ke-fu-ji-huo')
       "
       font-size="12"
-      @click="handleClickAlert"
+      @click="openExternalUrl(userInfo.customer.link)"
     />
+    <!-- @click="handleClickAlert" -->
 
     <up-modal
       :show="showLoginModal"

@@ -269,5 +269,10 @@
   "dang-qian-zhang-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo": "The current account is not activated, please contact customer service to activate it",
   "ji-huo-hou-ji-ke-shi-yong-suo-you-gong-neng-he-geng-duo-jiang-li": "Activate to gain access to all features and more bonuses",
   "dang-qian-zhang-hu-wei-ji-huo-qing-jin-kuai-lian-xi-ke-fu-ji-huo": "The current account is not activated, please contact customer service as soon as possible to activate it",
-  "zhi-fu-mi-ma-zhi-yao-shi-6-wei-shu-zi": "Please enter the six-digit payment password"
+  "zhi-fu-mi-ma-zhi-yao-shi-6-wei-shu-zi": "Please enter the six-digit payment password",
+  "ge": "indivual",
+  "qing-shu-ru-mi-ma-liu-wei-chun-shu-zi": "Please enter your password (six digits)",
+  "shuo-ming-xian-gou-fu-wu-qi-zhi-neng-gou-mai": "Note: Restricted purchase servers can only be purchased",
+  "ti-xian-jinebi-xu-da-yu-3usdt": "The withdrawal amount must be greater than 3USDT",
+  "ti-xian-shen-he-shi-jian-zai-9002100-nei": "* Withdrawal review time is between 9:00-21:00"
 }

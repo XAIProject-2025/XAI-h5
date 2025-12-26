@@ -202,7 +202,7 @@ function changeTab(item) {
           <view class="text-[16px] font-bold">
             {{ formatAmount(currentData.currentPrice) }}
           </view>
-          <view class="mt-[5px] text-[12px] text-[#999]">
+          <view class="mt-[5px] text-center text-[12px] text-[#999]">
             {{ $t("dang-qian-jia-ge") }}
           </view>
         </view>
@@ -210,7 +210,7 @@ function changeTab(item) {
           <view class="text-[16px] font-bold">
             {{ formatAmount(currentData.increase24h) }}
           </view>
-          <view class="mt-[5px] text-[12px] text-[#999]">
+          <view class="mt-[5px] text-center text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zhang-fu") }}
           </view>
         </view>
@@ -218,7 +218,7 @@ function changeTab(item) {
           <view class="text-[16px] font-bold">
             {{ formatAmount(currentData.high24h) }}
           </view>
-          <view class="mt-[5px] text-[12px] text-[#999]">
+          <view class="mt-[5px] text-center text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zui-gao") }}
           </view>
         </view>
@@ -226,7 +226,7 @@ function changeTab(item) {
           <view class="text-[16px] font-bold">
             {{ formatAmount(currentData.low24h) }}
           </view>
-          <view class="mt-[5px] text-[12px] text-[#999]">
+          <view class="mt-[5px] text-center text-[12px] text-[#999]">
             {{ $t("24-xiao-shi-zui-di") }}
           </view>
         </view>

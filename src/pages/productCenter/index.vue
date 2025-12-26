@@ -124,7 +124,7 @@ async function redemption(item) {
             }}</span>
             <!-- <span v-if="item.status === 3">已赎回</span> -->
           </div>
-          <div class="w-full flex p-[15px]">
+          <div class="w-full flex p-[15px] pt-[30px]">
             <view
               class="h-[40px] min-h-[40px] w-[40px] flex items-center justify-center rounded rounded-[5px] bg-[#000]"
             >

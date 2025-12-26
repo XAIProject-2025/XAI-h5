@@ -310,8 +310,13 @@ function changeDynamicIncome(e) {
         class="flex items-end items-center justify-center rounded-b-[8px] px-[4px] py-[6px] text-center text-[10px] text-[#000]"
       >
         <up-icon name="info-circle" size="12px" color="#000" />
-        <view class="ml-[4px]">
+        <view v-if="item.type !== 4" class="ml-[4px]">
           {{ $t("shuo-ming-suo-you-fu-wu-qi-ke-yi-ti-qian-shu-hui") }}
+        </view>
+        <view v-if="item.type === 4" class="ml-[4px]">
+          <span>{{ $t("shuo-ming-xian-gou-fu-wu-qi-zhi-neng-gou-mai") }}</span>
+          {{ item.buyLimit }}
+          <span>{{ $t("ge") }}</span>
         </view>
       </view>
     </view>

@@ -41,7 +41,6 @@ onMounted(async () => {
   vipInfoData.value = vipInfoRes
 })
 async function applyWithdrawalData() {
-  console.log('userInfo.value :>> ', userInfo.value)
   if (userInfo.value.roleId === 1) {
     uni.showToast({
       title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
@@ -78,6 +77,14 @@ async function applyWithdrawalData() {
       })
       return
     }
+  }
+  if (form.amount <= 3) {
+    uni.showToast({
+      title: t('ti-xian-jinebi-xu-da-yu-3usdt'),
+      icon: 'none',
+      duration: 2000,
+    })
+    return
   }
   //
   // if (vipInfoData.value.serverNum > 0 && !form.payPwd) {
@@ -243,7 +250,7 @@ async function handleFaceAuth() {
       <up-input
         v-model="form.amount"
         class="!p-[0]"
-        :placeholder="$t('qing-shu-ru-ti-xian-jin-e')"
+        :placeholder="$t('zui-xiao-ti-xian-jine3usdt')"
         border="surround"
       >
         <template #suffix>
@@ -274,6 +281,9 @@ async function handleFaceAuth() {
       </div>
     </div>
     <div class="mt-[20px] text-[13px] text-[#94999A]">
+      <div class="mb-[10px] color-[#e53e3e]">
+        {{ $t("ti-xian-shen-he-shi-jian-zai-9002100-nei") }}
+      </div>
       <div class="mb-[10px]">
         {{
           $t(
