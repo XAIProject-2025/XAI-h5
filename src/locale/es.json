@@ -279,5 +279,7 @@
   "zui-xiao-ti-xian-jine3usdt": "Monto mínimo de retiro 3USDT",
   "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Inicie el retiro entre las 9:00 y las 21:00",
   "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "El monto del retiro debe ser un número entero",
-  "que-ren-zhong": "Confirmando"
+  "que-ren-zhong": "Confirmando",
+  "you-ke-fu-wu-qi": "servidor invitado",
+  "fu-wu-qi": "servidor"
 }

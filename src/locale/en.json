@@ -279,5 +279,18 @@
   "zui-xiao-ti-xian-jine3usdt": "Minimum withdrawal amount 3USDT",
   "zhi-xian-jin-hang-zhi-chu-9-00-21-00": "Please initiate withdrawal between 9:00 and 21:00",
   "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "Withdrawal amount must be an integer",
-  "que-ren-zhong": "Confirming"
+  "que-ren-zhong": "Confirming",
+  "alova": {
+    "title": "Alova request"
+  },
+  "i18n": {
+    "title": "Chinese title"
+  },
+  "tabbar": {
+    "about": "about",
+    "home": "front page",
+    "me": "mine"
+  },
+  "you-ke-fu-wu-qi": "guest server",
+  "fu-wu-qi": "server"
 }

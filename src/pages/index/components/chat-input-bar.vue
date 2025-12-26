@@ -4,14 +4,27 @@
       <view class="chat-input-container">
         <!-- 必须关闭自动上顶：adjust-position="false" -->
         <input
-          v-model="msg" :focus="focus" class="chat-input" :adjust-position="false" type="text" confirm-type="send"
-          placeholder="请输入内容" @confirm="sendClick"
+          v-model="msg"
+          :focus="focus"
+          class="chat-input"
+          :adjust-position="false"
+          type="text"
+          confirm-type="send"
+          :placeholder="$t('qing-shu-ru-nei-rong-0')"
+          @confirm="sendClick"
         >
       </view>
+
       <!-- 发送按钮 -->
       <div @click="sendClick">
         <!-- <text class="chat-input-send-text">发送</text> -->
-        <up-image src="/static/index/tg.png" width="50" height="50" class="ml-[5px]" alt="" />
+        <up-image
+          src="/static/index/tg.png"
+          width="50"
+          height="50"
+          class="ml-[5px]"
+          alt=""
+        />
       </div>
     </view>
   </view>

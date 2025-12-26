@@ -87,7 +87,7 @@ async function doLogin() {
   }
   if (!useFaceStore().faceInfo?.sessionId) {
     uni.showToast({
-      title: '请验证人脸',
+      title: t('qing-yan-zheng-ren-lian'),
       icon: 'none',
     })
     return

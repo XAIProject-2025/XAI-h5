@@ -216,7 +216,11 @@ defineExpose({
                   class="w-full flex flex-col items-center justify-center text-[14px]"
                 >
                   <view class="">
-                    {{ item.serverInfo.serverName }}
+                    {{
+                      userInfo.roleId === -1
+                        ? $t("fu-wu-qi")
+                        : item.serverInfo.serverName
+                    }}
                   </view>
                   <view class="mt-[5px]">
                     <span>{{ $t("sheng-yu") }}</span>:{{ Number(item.power) - Number(item.usedPower) }}
