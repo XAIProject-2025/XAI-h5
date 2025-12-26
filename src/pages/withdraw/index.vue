@@ -170,7 +170,7 @@ async function handleFaceAuth() {
     <div class="bg-default text-[13px] font-bold">
       TRON
     </div>
-    <template v-if="userInfo.serverCount > 0">
+    <template v-if="vipInfoData.serverNum > 0">
       <div class="mb-[10px] mt-[10px] text-[13px] font-bold">
         {{ $t("zhi-fu-mi-ma-0") }}
       </div>

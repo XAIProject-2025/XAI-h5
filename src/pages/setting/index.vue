@@ -5,7 +5,7 @@ import { LOGIN_PAGE } from '@/router/config'
 import { useUserStore } from '@/store'
 import { useTokenStore } from '@/store/token'
 import { testI18n } from '@/utils/i18n'
-import { handleToUrl } from '@/utils/util'
+import { handleToUrl, openExternalUrl } from '@/utils/util'
 
 const tokenStore = useTokenStore()
 
@@ -65,10 +65,7 @@ function confirmLanguage(e) {
   // #endif
 }
 function showToast() {
-  uni.showToast({
-    title: t('zan-wei-kai-fang'),
-    icon: 'none',
-  })
+  openExternalUrl('https://t.me/XAi515x')
 }
 // 支付密码
 function handleToPaymentPassword() {
