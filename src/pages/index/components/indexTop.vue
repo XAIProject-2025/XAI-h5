@@ -60,9 +60,15 @@ async function getTask() {
     showLoginModalUser1.value = true
   }
 }
+const clearComputingPower0Show = ref(false)
 async function getPowerOrdersData() {
   const getPowerOrdersRes = await getPowerOrders({
     status: 0,
+  })
+  getPowerOrdersRes.content.forEach((item) => {
+    if (item.type === 4 && (item.power - item.usedPower) == 1) {
+      clearComputingPower0Show.value = true
+    }
   })
   powerOrdersData.value = getPowerOrdersRes.content
 }
@@ -292,6 +298,18 @@ defineExpose({
       closable
     />
 
+    <up-alert
+      v-if="clearComputingPower0Show"
+      class="mt-[5px]"
+      type="warning"
+      :description="
+        $t(
+          'xian-gou-fu-wu-qi-suan-li-zhi-sheng-yu-1-qing-an-shi-wan-cheng-ren-wu-24-xiao-shi-hou-zi-dong-qing-ling-qing-qian-wang-zu-lin-fu-wu-qi-bu-chong-suan-li-zhi',
+        )
+      "
+      font-size="12"
+      @click="handleToUrl('/pages/server/index')"
+    />
     <up-alert
       v-if="userInfo.roleId === -1"
       class="mt-[5px]"

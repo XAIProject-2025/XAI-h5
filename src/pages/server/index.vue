@@ -184,7 +184,7 @@ function changeDynamicIncome(e) {
       class="relative mb-[20px] w-[48%] border border-[#eeefeb] rounded-[8px] border-solid bg-[#fefffb]"
     >
       <div
-        class="absolute right-[0px] top-[0px] z-[100] w-[70%] py-[4px] text-center text-[12px] text-[#fff]"
+        class="absolute right-[0px] top-[0px] z-[10] w-[70%] py-[4px] text-center text-[12px] text-[#fff]"
         :class="{
           'bg': item.type % 2 === 1,
           'status-green': item.type % 2 === 0,

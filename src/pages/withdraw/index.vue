@@ -40,7 +40,31 @@ onMounted(async () => {
   const vipInfoRes = await getVipInfo()
   vipInfoData.value = vipInfoRes
 })
+function isChileTimeInRange() {
+  // 获取智利时间
+  const now = new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'America/Santiago' }),
+  )
+
+  const hour = now.getHours()
+  const minute = now.getMinutes()
+
+  // 9:00 <= time < 21:00
+  return hour >= 9 && (hour < 21)
+}
 async function applyWithdrawalData() {
+  // 判断智利时间9:00到21:00内
+  if (!isChileTimeInRange()) {
+    // console.log('不在时间范围内')
+    return uni.showToast({
+      title: t('zhi-xian-jin-hang-zhi-chu-9-00-21-00'),
+      icon: 'none',
+      duration: 2000,
+    })
+  }
+  else {
+    console.log('在智利时间 9:00 - 21:00 内')
+  }
   if (userInfo.value.roleId === 1) {
     uni.showToast({
       title: t('dang-qian-yong-hu-wei-ji-huo-qing-lian-xi-ke-fu-ji-huo'),
