@@ -57,6 +57,15 @@ async function applyWithdrawalData() {
         icon: 'none',
         duration: 2000,
       })
+      // 校验支付密码六位数字
+      if (!/^\d{6}$/.test(form.payPwd)) {
+        uni.showToast({
+          title: t('zhi-fu-mi-ma-zhi-yao-shi-6-wei-shu-zi'),
+          icon: 'none',
+          duration: 2000,
+        })
+        return
+      }
       return
     }
   }

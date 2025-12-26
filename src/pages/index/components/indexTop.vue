@@ -304,6 +304,16 @@ defineExpose({
       font-size="12"
       @click="handleClickAlert"
     />
+    <up-alert
+      v-if="userInfo.roleId === 1"
+      class="mt-[5px]"
+      type="error"
+      :description="
+        $t('dang-qian-zhang-hu-wei-ji-huo-qing-jin-kuai-lian-xi-ke-fu-ji-huo')
+      "
+      font-size="12"
+      @click="handleClickAlert"
+    />
 
     <up-modal
       :show="showLoginModal"

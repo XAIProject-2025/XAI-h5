@@ -84,16 +84,16 @@ async function doLogin() {
     })
     return
   }
-  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfoData.passwordNew)) {
+  if (!/^\d{6}$/.test(userInfoData.passwordNew)) {
     uni.showToast({
-      title: t('qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi'),
+      title: t('zhi-fu-mi-ma-zhi-yao-shi-6-wei-shu-zi'),
       icon: 'none',
     })
     return
   }
-  if (!/^(?=.*[a-z])(?=.*\d).{8,}$/i.test(userInfoData.passwordNewConfirm)) {
+  if (!/^\d{6}$/.test(userInfoData.passwordNewConfirm)) {
     uni.showToast({
-      title: t('qing-shu-ru-mi-ma-8-wei-yi-shang-bao-han-zi-mu-he-shu-zi'),
+      title: t('zhi-fu-mi-ma-zhi-yao-shi-6-wei-shu-zi'),
       icon: 'none',
     })
     return
@@ -173,6 +173,12 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
+    <div v-if="userInfo.payPwd" class="ml-[100px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{ $t("qing-shu-ru-mi-ma-liu-wei-chun-shu-zi") }}
+      </div>
+    </div>
     <view
       class="mt-[20px] box-border w-full flex items-center px-[20px]"
       :class="{ '!mt-[50px]': userInfoData.payPwd }"
@@ -200,7 +206,12 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
-
+    <div class="ml-[100px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{ $t("qing-shu-ru-mi-ma-liu-wei-chun-shu-zi") }}
+      </div>
+    </div>
     <view class="mt-[20px] box-border w-full flex items-center px-[20px]">
       <view class="mr-[10px] w-[80px] text-right text-[14px] text-[#151D1F]">
         {{ $t("que-ren-mi-ma") }}
@@ -225,6 +236,12 @@ function handleFaceAuth() {
         </up-input>
       </view>
     </view>
+    <div class="ml-[100px] mt-[5px] flex items-center">
+      <up-icon name="info-circle" size="14" color="#999" />
+      <div class="ml-[5px] text-[12px] text-[#999]">
+        {{ $t("qing-shu-ru-mi-ma-liu-wei-chun-shu-zi") }}
+      </div>
+    </div>
     <view
       class="mt-[20px] box-border w-full flex items-center px-[20px]"
       @click="handleFaceAuth"
