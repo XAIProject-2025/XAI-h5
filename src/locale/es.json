@@ -281,5 +281,23 @@
   "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "El monto del retiro debe ser un número entero",
   "que-ren-zhong": "Confirmando",
   "you-ke-fu-wu-qi": "servidor invitado",
-  "fu-wu-qi": "servidor"
+  "fu-wu-qi": "servidor",
+  "alova": {
+    "__i18n_ally_root__": {
+      "title": ""
+    }
+  },
+  "i18n": {
+    "__i18n_ally_root__": {
+      "title": ""
+    }
+  },
+  "tabbar": {
+    "__i18n_ally_root__": {
+      "about": "",
+      "home": "",
+      "me": ""
+    }
+  },
+  "wan-cheng-ren-wu-ling-qu-jiang-li": "Completa tareas y recibe recompensas."
 }

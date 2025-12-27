@@ -281,16 +281,34 @@
   "ti-xian-jinebi-zhi-yao-shi-zheng-shu": "Withdrawal amount must be an integer",
   "que-ren-zhong": "Confirming",
   "alova": {
-    "title": "Alova request"
+    "title": "Alova request",
+    "__i18n_ally_root__": {
+      "__i18n_ally_root__": {
+        "title": ""
+      }
+    }
   },
   "i18n": {
-    "title": "Chinese title"
+    "title": "Chinese title",
+    "__i18n_ally_root__": {
+      "__i18n_ally_root__": {
+        "title": ""
+      }
+    }
   },
   "tabbar": {
     "about": "about",
     "home": "front page",
-    "me": "mine"
+    "me": "mine",
+    "__i18n_ally_root__": {
+      "__i18n_ally_root__": {
+        "about": "",
+        "home": "",
+        "me": ""
+      }
+    }
   },
   "you-ke-fu-wu-qi": "guest server",
-  "fu-wu-qi": "server"
+  "fu-wu-qi": "server",
+  "wan-cheng-ren-wu-ling-qu-jiang-li": "Complete tasks and receive rewards"
 }

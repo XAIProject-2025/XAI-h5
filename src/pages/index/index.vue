@@ -6,7 +6,7 @@
       use-chat-record-mode
       safe-area-inset-bottom
       bottom-bg-color="#f8f8f8"
-      empty-view-text="完成任务领取奖励"
+      :empty-view-text="$t('wan-cheng-ren-wu-ling-qu-jiang-li')"
       @query="queryList"
       @keyboard-height-change="keyboardHeightChange"
       @hided-keyboard="hidedKeyboard"

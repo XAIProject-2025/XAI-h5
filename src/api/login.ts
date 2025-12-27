@@ -101,8 +101,8 @@ export function wxLogin(data: { code: string }) {
 }
 
 // 游客模式登录
-export function touristLogin() {
-  return http.post<IAuthLoginRes>('/api/v1/auth/guest')
+export function touristLogin(inviteCode: string) {
+  return http.post<IAuthLoginRes>(`/api/v1/auth/guest?inviteCode=${inviteCode}`)
 }
 
 // 支付密码

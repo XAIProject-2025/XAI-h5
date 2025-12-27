@@ -9,6 +9,9 @@ onShow(() => {
   const { path } = currRoute()
   // “蜡笔小开心”提到本地是 '/pages/index/index'，线上是 '/' 导致线上 tabbar 不见了
 })
+onLoad(() => {
+  // uni.setLocale('es')
+})
 const navigationRef = ref(null)
 
 const exposeRef = ref('this is form app.Ku.vue')
@@ -20,10 +23,16 @@ defineExpose({
 
 <template>
   <view>
-    <up-navbar v-if="tokenStore.hasLogin" placeholder class="bg-shadow" height="52px">
+    <up-navbar
+      v-if="tokenStore.hasLogin"
+      placeholder
+      class="bg-shadow"
+      height="52px"
+    >
       <template #left>
         <image
-          src="/static/images/burgerButton.png" class="mt-[5px] h-[50px] w-[50px]"
+          src="/static/images/burgerButton.png"
+          class="mt-[5px] h-[50px] w-[50px]"
           @click="navigationRef.openPopup()"
         />
       </template>

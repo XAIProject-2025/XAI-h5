@@ -10,7 +10,6 @@ import { useTokenStore } from '@/store/token'
 import { debounce, handleToUrl, listenFaceLivenessError, listenFaceLivenessSuccess } from '@/utils/util'
 
 onLaunch((options) => {
-  uni.setLocale('es')
   if (options?.query?.inviteCode) {
     useCommonStore().setInviteCode(options.query.inviteCode)
   }

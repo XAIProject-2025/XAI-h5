@@ -85,12 +85,15 @@ async function doLogin() {
     })
     return
   }
-  if (!useFaceStore().faceInfo?.sessionId) {
-    uni.showToast({
-      title: t('qing-yan-zheng-ren-lian'),
-      icon: 'none',
-    })
-    return
+  console.log('import.meta.env.VITE_USER_NODE_ENV :>> ', import.meta.env.VITE_USER_NODE_ENV)
+  if (import.meta.env.VITE_USER_NODE_ENV !== 'development') {
+    if (!useFaceStore().faceInfo?.sessionId) {
+      uni.showToast({
+        title: t('qing-yan-zheng-ren-lian'),
+        icon: 'none',
+      })
+      return
+    }
   }
   try {
     const res = await tokenStore.register({

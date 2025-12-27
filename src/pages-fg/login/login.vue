@@ -2,6 +2,7 @@
 import { touristLogin } from '@/api/login'
 import { t } from '@/locale'
 import { LOGIN_C_PAGE } from '@/router/config'
+import { useCommonStore } from '@/store/common'
 import { useTokenStore } from '@/store/token'
 import { handleToUrl } from '@/utils/util'
 
@@ -12,7 +13,8 @@ definePage({
 })
 async function handleTouristLogin() {
   // handleToUrl('/pages/index/index')
-  const res = await touristLogin()
+  const inviteCode = useCommonStore().inviteCode
+  const res = await touristLogin(inviteCode)
   const tokenStore = useTokenStore()
   tokenStore._postLogin(res)
   uni.showToast({
