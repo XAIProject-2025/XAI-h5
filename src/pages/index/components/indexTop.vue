@@ -401,12 +401,13 @@ defineExpose({
         </div>
       </div>
     </up-modal>
-
+    <span />
+    <span />
     <up-modal
       :show="showLoginModalUser1"
       show-cancel-button
-      confirm-text="立即联系"
-      cancel-text="稍后再说"
+      :confirm-text="$t('li-ji-lian-xi')"
+      :cancel-text="$t('shao-hou-zai-shuo')"
       confirm-color="#FF6738"
       confirm-bg-color="#FF6738"
       cancel-color="#666666"

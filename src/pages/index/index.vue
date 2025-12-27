@@ -51,7 +51,7 @@ const { userInfo } = storeToRefs(userStore)
 let abortController = null
 
 const STREAM_URL
-  = 'https://www.eladmin-test.click/app-api/api/v1/chat/stream'
+  = `${import.meta.env.VITE_SERVER_BASEURL}/api/v1/chat/stream`
 
 definePage({
   // 使用 type: "home" 属性设置首页，其他页面不需要设置，默认为page
@@ -149,7 +149,7 @@ async function doAnswer() {
     time: '',
     icon: '/static/duola.jpg',
     name: '哆啦A梦',
-    msg: '思考中...',
+    msg: t('si-kao-zhong'),
     role: 'assistant',
     _streamStarted: false, // 👈 关键
 
